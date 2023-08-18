@@ -464,21 +464,11 @@ const path = require('path').join(__dirname, 'ezkl_bg.wasm');
 const bytes = require('fs').readFileSync(path);
 
 const wasmModule = new WebAssembly.Module(bytes);
-const memory = new WebAssembly.Memory({
-    initial: 256,
-    maximum: 256,
-    shared: true
-  });
-imports = {
-    ...imports,
-    env: {
-        ...imports.env,
-        memory: memory
-    }
-}
 const wasmInstance = new WebAssembly.Instance(wasmModule, imports);
 wasm = wasmInstance.exports;
 module.exports.__wasm = wasm;
 
 wasm.__wbindgen_start();
+
+
 

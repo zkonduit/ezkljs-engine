@@ -8,7 +8,7 @@ export default function ElgamalRandomVar() {
 
   return (
     <div>
-      <h1>Generate Elgamal Variable</h1>
+      <h1>Generate Elgamal Variables</h1>
       <button
         id='genREVButton'
         onClick={() => {

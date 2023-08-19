@@ -1,6 +1,6 @@
 let imports = {};
 imports['__wbindgen_placeholder__'] = module.exports;
-imports['env'] = require('env');
+imports['env'] = {memory: new WebAssembly.Memory({initial:20,maximum:16384,shared:true})}
 let wasm;
 const { TextDecoder, TextEncoder } = require(`util`);
 
@@ -469,6 +469,4 @@ wasm = wasmInstance.exports;
 module.exports.__wasm = wasm;
 
 wasm.__wbindgen_start();
-
-
 

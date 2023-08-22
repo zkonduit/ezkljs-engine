@@ -18,7 +18,7 @@ export default function GenProof({ files, handleFileChange }: GenProofProps) {
   return (
     <div>
       <h1>Prove</h1>
-      <label htmlFor='data_prove'>Input Data:</label>
+      <label htmlFor='data_prove'>Witness:</label>
       <input
         id='data_prove'
         type='file'
@@ -32,7 +32,7 @@ export default function GenProof({ files, handleFileChange }: GenProofProps) {
         onChange={handleFileChange}
         placeholder='pk_prove'
       />
-      <label htmlFor='model_ser_prove'>Model (.onnx):</label>
+      <label htmlFor='model_ser_prove'>Compiled Onnx Model:</label>
       <input
         id='model_ser_prove'
         type='file'

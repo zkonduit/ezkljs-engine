@@ -225,10 +225,21 @@ export async function handleGenElgamalDecryptionButton<T extends FileMapping>(
   }
 }
 
+interface HashResult {
+  output: Uint8ClampedArray;
+  executionTime: number;
+}
 
-export async function handleGenHashButton(message: File): Promise<Uint8ClampedArray> {
+
+export async function handleGenHashButton(message: File): Promise<HashResult> {
   const message_hash = await readUploadedFileAsBuffer(message)
-  return poseidonHash(message_hash)
+  const start = performance.now();  // Start the timer
+  const output =  poseidonHash(message_hash)
+  const end = performance.now();  // End the timer
+  return {
+    output: output,
+    executionTime: end - start
+  }
 }
 
 interface VerifyResult {

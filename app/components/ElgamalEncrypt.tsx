@@ -41,16 +41,25 @@ export default function ElgamalEncryption({ files, handleFileChange }: ElgamalEn
       <button
         id='genElgamalEncryptionButton'
         onClick={async () => {
+          // Set loading state
+          setEncryptionResult("Loading...");
+
           if (Object.values(files).every((file) => file instanceof File)) {
-            const {output, executionTime} = await handleGenElgamalEncryptionButton(
-              files as { [key: string]: File },
-            )
-            setBuffer(output)
-            setEncryptionResult(
-              output
-                ? 'Cipher generation successful. Execution time: ' + executionTime + 'ms'
-                : 'Cipher generation failed',
-            )
+            handleGenElgamalEncryptionButton(files as { [key: string]: File })
+              .then(({ output, executionTime }) => {
+                setBuffer(output);
+
+                // Update result based on the outcome
+                setEncryptionResult(
+                  output
+                    ? 'Cipher generation successful. Execution time: ' + executionTime + ' ms'
+                    : 'Cipher generation failed'
+                );
+              })
+              .catch(error => {
+                console.error("An error occurred:", error);
+                setEncryptionResult("Error");
+              });
           }
         }}
         disabled={!Object.values(files).every((file) => file instanceof File)}

@@ -56,16 +56,25 @@ export default function GenProof({ files, handleFileChange }: GenProofProps) {
       <button
         id='genProofButton'
         onClick={async () => {
+          // Set loading state
+          setProofResult('Loading...')
+
           if (Object.values(files).every((file) => file instanceof File)) {
-            const {output, executionTime} = await handleGenProofButton(
-              files as { [key: string]: File },
-            )
-            setBuffer(output)
-            setProofResult(
-              output
-                ? 'Proof generation successful. Execution time: ' + executionTime + ' ms'
-                : 'Proof generation failed',
-            )
+            handleGenProofButton(files as { [key: string]: File })
+              .then(({ output, executionTime }) => {
+                setBuffer(output)
+
+                // Update result based on the outcome
+                setProofResult(
+                  output
+                    ? 'Proof generation successful. Execution time: ' + executionTime + ' ms'
+                    : 'Proof generation failed'
+                )
+              })
+              .catch((error) => {
+                console.error('An error occurred:', error)
+                setProofResult('Error')
+              })
           }
         }}
         disabled={!Object.values(files).every((file) => file instanceof File)}

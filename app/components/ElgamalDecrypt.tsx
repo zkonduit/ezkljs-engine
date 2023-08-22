@@ -33,16 +33,25 @@ export default function ElgamalDecryption({ files, handleFileChange }: ElgamalDe
       <button
         id='genDecryptionButton'
         onClick={async () => {
+          // Set loading state
+          setDecryptionResult('Loading...')
+
           if (Object.values(files).every((file) => file instanceof File)) {
-            const {output, executionTime} = await handleGenElgamalDecryptionButton(
-              files as { [key: string]: File },
-            )
-            setBuffer(output)
-            setDecryptionResult(
-              output
-                ? 'Cipher decryption successful. Execution time: ' + executionTime + ' ms'
-                : 'Cipher decryption failed',
-            )
+            handleGenElgamalDecryptionButton(files as { [key: string]: File })
+              .then(({ output, executionTime }) => {
+                setBuffer(output)
+
+                // Update result based on the outcome
+                setDecryptionResult(
+                  output
+                    ? 'Decryption successful. Execution time: ' + executionTime + ' ms'
+                    : 'Decryption failed'
+                )
+              })
+              .catch(error => {
+                console.error("An error occurred:", error);
+                setDecryptionResult("An error occurred: " + error);
+              })
           }
         }}
         disabled={!Object.values(files).every((file) => file instanceof File)}

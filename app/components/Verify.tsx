@@ -43,11 +43,23 @@ export default function Verify({ files, handleFileChange }: VerifyProps) {
       <button
         id='verifyButton'
         onClick={async () => {
+          // Set loading state
+          setVerifyResult('Loading...')
+
           if (Object.values(files).every((file) => file instanceof File)) {
-            const {output, executionTime} = await handleVerifyButton(
-              files as { [key: string]: File },
-            )
-            setVerifyResult(output ? 'True. Execution time ' + executionTime + ' ms' : 'False')
+            handleVerifyButton(files as { [key: string]: File })
+              .then(({ output, executionTime }) => {
+                // Update result based on the outcome
+                setVerifyResult(
+                  output
+                    ? 'Verification successful. Execution time: ' + executionTime + ' ms'
+                    : 'Verification failed'
+                )
+              })
+              .catch(error => {
+                console.error("An error occurred:", error);
+                setVerifyResult("An error occurred: " + error);
+              })
           }
         }}
         disabled={!Object.values(files).every((file) => file instanceof File)}

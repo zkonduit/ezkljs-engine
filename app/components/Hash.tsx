@@ -7,7 +7,7 @@ interface HashProps {
 }
 
 export default function Hash({ message, handleFileChange }: HashProps) {
-  const [buffer, setBuffer] = useState<Uint8Array | null>(null)
+  const [buffer, setBuffer] = useState<Uint8ClampedArray | null>(null)
   const [hashResult, setHashResult] = useState<string | null>(null)
 
   return (
@@ -23,9 +23,23 @@ export default function Hash({ message, handleFileChange }: HashProps) {
       <button
         id='genHashButton'
         onClick={async () => {
-          const result = await handleGenHashButton(message as File) // 'as' cast should be safe b/c of disabled button
-          setBuffer(result)
-          setHashResult(result ? `Hash: ${result}` : 'Hash Generation failed')
+          // Set loading state
+          setHashResult('Loading...')
+          handleGenHashButton(message as File)
+            .then(({output, executionTime}) => {
+              setBuffer(output)
+
+              // Update result based on the outcome
+              setHashResult(
+                output
+                  ? 'Hash generation successful. Execution time: ' + executionTime + ' ms'
+                  : 'Hash generation failed'
+              )
+            })
+            .catch(error => {
+              console.error("An error occurred:", error);
+              setHashResult("An error occurred: " + error);
+            })
         }}
         disabled={!message}
       >
@@ -34,7 +48,7 @@ export default function Hash({ message, handleFileChange }: HashProps) {
       {buffer && (
         <FileDownload
           fileName='hash.txt'
-          buffer={buffer}
+          buffer={new Uint8Array(buffer.buffer)}
           handleDownloadCompleted={function (): void {
             setBuffer(null)
           }}

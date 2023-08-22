@@ -6,7 +6,7 @@ import {
   prove, 
   poseidonHash, 
   verify 
-} from '@ezkljs/engine'
+} from '@ezkljs/engine/web'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import JSONBig from 'json-bigint'
@@ -226,7 +226,7 @@ export async function handleGenElgamalDecryptionButton<T extends FileMapping>(
 }
 
 
-export async function handleGenHashButton(message: File): Promise<Uint8Array> {
+export async function handleGenHashButton(message: File): Promise<Uint8ClampedArray> {
   const message_hash = await readUploadedFileAsBuffer(message)
   return poseidonHash(message_hash)
 }

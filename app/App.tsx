@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
-import init from '@ezkljs/engine'
+import init from '@ezkljs/engine/web'
 
 import ElgamalRandomVar from './components/ElgamalRandomVar'
 import ElgamalEncrypt from './components/ElgamalEncrypt'
@@ -31,8 +31,92 @@ export default function Home() {
     setFiles((prevFiles) => ({ ...prevFiles, [id]: file }))
   }
 
+  async function populateWithSampleFiles() {
+
+    const sampleFiles: Files = {};
+
+    // Fetch the elgamal_cipher.txt file
+    const cipherResponse = await fetch('/data/elgamal_cipher.txt');
+    const cipherBlob: Blob = await cipherResponse.blob();
+    sampleFiles['elgamal_cipher'] = new File([cipherBlob], "elgamal_cipher.txt");
+
+    // Fetch the elgamal_sk.txt file
+    const skResponse = await fetch('/data/elgamal_var/sk.txt');
+    const skBlob: Blob = await skResponse.blob();
+    sampleFiles['elgamal_sk'] = new File([skBlob], "elgamal_sk.txt");
+
+    // Fetch the elgamal_pk.txt file
+    const pkResponse = await fetch('/data/elgamal_var/pk.txt');
+    const pkBlob: Blob = await pkResponse.blob();
+    sampleFiles['elgamal_pk'] = new File([pkBlob], "elgamal_pk.txt");
+
+    // Fetch the elgamal_message.txt file
+    const messageResponse = await fetch('/data/message.txt');
+    const messageBlob: Blob = await messageResponse.blob();
+    sampleFiles['elgamal_message'] = new File([messageBlob], "elgamal_message.txt");
+
+    // Fetch the elgamal_r.txt file
+    const rResponse = await fetch('/data/elgamal_var/r.txt');
+    const rBlob: Blob = await rResponse.blob();
+    sampleFiles['elgamal_r'] = new File([rBlob], "elgamal_r.txt");
+
+    // Fetch the data_prove.txt file
+    const dataProveResponse = await fetch('/data/test.witness.json');
+    const dataProveBlob: Blob = await dataProveResponse.blob();
+    sampleFiles['data_prove'] = new File([dataProveBlob], "data_prove.txt");
+
+    // Fetch the pk_prove.txt file
+    const pkProveResponse = await fetch('/data/test.provekey');
+    const pkProveBlob: Blob = await pkProveResponse.blob();
+    sampleFiles['pk_prove'] = new File([pkProveBlob], "pk_prove.txt");
+
+    // Fetch the model_ser_prove.txt file
+    const modelSerProveResponse = await fetch('/data/test_network.compiled');
+    const modelSerProveBlob: Blob = await modelSerProveResponse.blob();
+    sampleFiles['model_ser_prove'] = new File([modelSerProveBlob], "model_ser_prove.txt");
+
+    // Fetch the circuit_settings_ser_prove.txt file
+    const circuitSettingsSerProveResponse = await fetch('/data/settings.json');
+    const circuitSettingsSerProveBlob: Blob = await circuitSettingsSerProveResponse.blob();
+    sampleFiles['circuit_settings_ser_prove'] = new File([circuitSettingsSerProveBlob], "circuit_settings_ser_prove.txt");
+    
+    // Fetch the srs_ser_prove.txt file
+    const srsSerProveResponse = await fetch('/data/kzg');
+    const srsSerProveBlob: Blob = await srsSerProveResponse.blob();
+    sampleFiles['srs_ser_prove'] = new File([srsSerProveBlob], "srs_ser_prove.txt");
+
+    // Fetch the proof_js.txt file
+    const proofJsResponse = await fetch('/data/test.proof');
+    const proofJsBlob: Blob = await proofJsResponse.blob();
+    sampleFiles['proof_js'] = new File([proofJsBlob], "proof_js.txt");
+
+    // Fetch the vk.txt file
+    const vkResponse = await fetch('/data/test.key');
+    const vkBlob: Blob = await vkResponse.blob();
+    sampleFiles['vk'] = new File([vkBlob], "vk.txt");
+
+    // Fetch the circuit_settings_ser_verify.txt file
+    const circuitSettingsSerVerifyResponse = await fetch('/data/settings.json');
+    const circuitSettingsSerVerifyBlob: Blob = await circuitSettingsSerVerifyResponse.blob();
+    sampleFiles['circuit_settings_ser_verify'] = new File([circuitSettingsSerVerifyBlob], "circuit_settings_ser_verify.txt");
+
+    // Fetch the srs_ser_verify.txt file
+    const srsSerVerifyResponse = await fetch('/data/kzg');
+    const srsSerVerifyBlob: Blob = await srsSerVerifyResponse.blob();
+    sampleFiles['srs_ser_verify'] = new File([srsSerVerifyBlob], "srs_ser_verify.txt");
+
+    // Fetch the message_hash.txt file
+    const messageHashResponse = await fetch('/data/message.txt');
+    const messageHashBlob: Blob = await messageHashResponse.blob();
+    sampleFiles['message_hash'] = new File([messageHashBlob], "message_hash.txt");
+  
+    setFiles(sampleFiles);
+  }
+  
+
   return (
     <div className='App'>
+      <button onClick={populateWithSampleFiles}>Populate with sample files</button>
       <ElgamalRandomVar/>  
 
       <ElgamalEncrypt

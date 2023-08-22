@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import * as wasmFunctions from './pkg';
+import * as wasmFunctions from '@ezkljs/engine/nodejs';
 import JSONBig from 'json-bigint';
 
 describe('wasmFunctions', () => {
@@ -42,7 +42,7 @@ describe('wasmFunctions', () => {
         it('should return a Uint8Array', async () => {
           const message = await readDataFile('message.txt');
           const result = wasmFunctions.poseidonHash(message);
-          expect(result).toBeInstanceOf(Uint8Array);
+          expect(result).toBeInstanceOf(Uint8ClampedArray);
         });
       });
     

@@ -15,7 +15,7 @@ pnpm add @ezkljs/engine
 
 ---
 
-## Engine ([example usage in Next.js](https://github.com/zkonduit/ezkl))
+## Engine example usage in Next.js
 
 To get started using EZKL Engine in your appplication you'll want to use the `engine` submodule.
 
@@ -23,12 +23,6 @@ To get started using EZKL Engine in your appplication you'll want to use the `en
 import engine from '@ezkljs/engine'
 ```
 
-  elgamalGenRandom,
-  elgamalEncrypt,
-  elgamalDecrypt,
-  prove, 
-  poseidonHash, 
-  verify 
 The engine exposes useful JS bindings to the main ezkl repo that make hashing, encrypting, decrypting, proving and verifying in the browser seemless:
 
 - [elgamalGenRandom](#elgamal-variables): Generate an ElGamal keypair from a random seed
@@ -40,12 +34,20 @@ The engine exposes useful JS bindings to the main ezkl repo that make hashing, e
 
 ---
 
+### Nodejs vs Web targets
+
+The engine has two targets: `nodejs` and `web`. The `nodejs` target is used for nodejs applications (e.i. nodejs serverside data processing) and the `web` target is used for browser applications (e.i. React front ends). From a perforamnce standpoint, the only 
+difference between the two is that web support multithreading via a web worker instance and nodejs does not.
+
+This readme will focus on documenting the web target. If you are interested in using the nodejs target, please refer to the unit tests
+we wrote for [them](https://github.com/zkonduit/ezkljs-engine/tree/main/tests/wasmFunctions.test.ts).
+
 ### Elgamal Variables
 
 You can generate a random ElGamal keypair from a random seed to use for encryption and decryption by using the `elgamalGenRandom` method.
 
 ```typescript
-import { elgamalGenRandom } from '@ezkljs/engine'
+import { elgamalGenRandom } from '@ezkljs/engine/web'
 // Import the JSONBig library for parsing the Uint8Array response from elgamalGenRandom
 // We use JSONBig since some of the u64s returned by elgamalGenRandom
 // are too large for JSON to parse. 
@@ -153,7 +155,7 @@ For reference, check out the example message file [here](https://github.com/zkon
 
 
 ```typescript
-import { elgamalEncrypt } from '@ezkljs/engine'
+import { elgamalEncrypt } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // generation of the elgamal encyrption ciphertext. 
@@ -232,7 +234,7 @@ Output:
 Using the secret key (sk) and ciphertext from the previous step, you can decrypt the ciphertext using the `elgamalDecrypt` method.
 
 ```typescript
-import { elgamalDecrypt } from '@ezkljs/engine'
+import { elgamalDecrypt } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // generation of the elgamal decryption of the ciphertext. 
@@ -285,11 +287,11 @@ And as you can see, the output matches the original message inside of message.tx
 
 ### Prove
 
-Once you have all the necessary artifacts needed to prove (Input Data, Proving Key, Model (.onnx), Circuit settings and SRS) you can generate a proof using the `prove` method.
+Once you have all the necessary artifacts needed to prove (Witness, Proving Key, Compiled Onnx Model, Circuit settings and SRS) you can generate a proof using the `prove` method.
 
 
 ```typescript
-import { prove } from '@ezkljs/engine'
+import { prove } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // generation of a proof.
@@ -365,7 +367,7 @@ When the proof has generated, you can verify it using the `verify` method. In ad
 verification key, circuit settings and srs files. If all the artifacts are  correct, the verify method will return true.
 
 ```typescript
-import { verify } from '@ezkljs/engine'
+import { verify } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the
 // verification of a proof.
@@ -408,7 +410,7 @@ serialized field elements.
 
 
 ```typescript
-import { hash } from '@ezkljs/engine'
+import { hash } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the
 // posiedon hashing of a message.

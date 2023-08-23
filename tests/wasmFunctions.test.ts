@@ -1,41 +1,14 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import * as wasmFunctions from '@ezkljs/engine/nodejs';
-import JSONBig from 'json-bigint';
+import { 
+    uint8ArrayToJsonObject,
+    readDataFile,
+    deserialize,
+    serialize,
+    intToFieldElement,
+    randomZScore
+ } from './utils';
 
 describe('wasmFunctions', () => {
-
-    async function readDataFile(filename: string): Promise<Uint8ClampedArray> {
-        const filePath = path.join(__dirname, 'public', 'data', filename);
-        const buffer = await fs.readFile(filePath);
-        return new Uint8ClampedArray(buffer.buffer);
-    }
-
-    function deserialize(filename: string): Promise<any> {
-        return readDataFile(filename).then((uint8Array) => {
-            const string = new TextDecoder().decode(uint8Array);
-            const jsonObject = JSONBig.parse(string);
-            return jsonObject;
-        });
-    }
-
-    // Function to convert the return buffer elgamalGenRandom into a JSON object
-    function uint8ArrayToJsonObject(uint8Array: Uint8Array) {
-        let string = new TextDecoder().decode(uint8Array);
-        let jsonObject = JSONBig.parse(string);
-        return jsonObject;
-    }
-
-    function serialize(data: any): Uint8ClampedArray {
-        // Step 1: Stringify the Object with BigInt support
-        const jsonString = JSONBig.stringify(data);
-        
-        // Step 2: Encode the JSON String
-        const uint8Array = new TextEncoder().encode(jsonString);
-        
-        // Step 3: Convert to Uint8ClampedArray
-        return new Uint8ClampedArray(uint8Array.buffer);
-    }
     
 
     describe('poseidonHash', () => {
@@ -119,6 +92,47 @@ describe('wasmFunctions', () => {
             const result = wasmFunctions.verify(proof_ser, vk, circuit_settings_ser, params_ser);
             expect(typeof result).toBe('boolean');
             expect(result).toBe(true);
+        });
+    });
+
+    describe('Field element utils', () => {
+
+        it('field serialization round trip fuzzing', async() => {
+            const numRuns = 10; 
+            for(let i = 0; i < numRuns; i++) {
+                // Get a randome z-score value for testing 
+                const floatingPoint = randomZScore();
+                // Max scale used in the calibrate method on the main ezkl repo. 
+                const maxScale = 16;
+                for(let j = 0; j <= maxScale; j++) {
+                    const scale = j;
+                    // Convert floating point to fixed point integer valu 
+                    const integer = Math.round(floatingPoint*(1<<scale));
+
+                    const floatingPointRoundTrip = integer/(1<<scale);
+    
+                    const U64sSer = wasmFunctions.floatToVecU64(floatingPoint, scale);
+                    let U64sOutput = uint8ArrayToJsonObject(new Uint8Array(U64sSer.buffer));
+                    U64sOutput = U64sOutput.map((x: bigint) => x.toString());
+                    console.debug("U64 output", U64sOutput);
+                    expect(U64sSer).toBeInstanceOf(Uint8ClampedArray);
+
+                    const result2 = wasmFunctions.vecU64ToFloat(U64sSer, scale) + 0;
+                    console.debug("Vec u64s to float output", result2);
+                    expect(result2).toBeCloseTo(floatingPointRoundTrip);
+
+                    const result3 = wasmFunctions.vecU64ToInt(U64sSer);
+                    let integerOutput = uint8ArrayToJsonObject(new Uint8Array(result3.buffer));
+                    console.debug("Vec u64s to integer output",integerOutput);
+                    expect(integerOutput).toBeCloseTo(integer);
+
+                    let feltHexOutput = wasmFunctions.vecU64ToFelt(U64sSer);
+                    console.debug("Vec u64s to field element output",feltHexOutput);
+                    let referenceFelt = intToFieldElement(integerOutput);
+                    console.debug(referenceFelt);
+                    expect(BigInt(feltHexOutput)).toBe(referenceFelt);
+                }
+            }
         });
     });
 

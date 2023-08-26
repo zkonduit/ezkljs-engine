@@ -7,6 +7,7 @@ import {
   poseidonHash, 
   verify 
 } from '@ezkljs/engine/web'
+import localEVMVerify, { Hardfork } from '@ezkljs/verify'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import JSONBig from 'json-bigint'
@@ -259,6 +260,71 @@ export async function handleVerifyButton<T extends FileMapping>(
     result['vk'],
     result['circuitSettings'],
     result['srs'],
+  )
+
+  const end = performance.now();  // End the timer
+
+  return {
+    output: output,
+    executionTime: end - start
+  }
+}
+
+interface Snark {
+  instances: Array<Array<Array<string>>>
+  proof: string
+}
+
+function vecu64ToField(b: string[]): bigint {
+  if (b.length !== 4) {
+    throw new Error('Input should be an array of 4 big integers.')
+  }
+
+  let result = BigInt(0)
+  for (let i = 0; i < 4; i++) {
+    // Note the conversion to BigInt for the shift operation
+    result += BigInt(b[i]!) << (BigInt(i) * BigInt(64))
+  }
+  return result
+}
+
+function parseProof(proofBuffer: Uint8ClampedArray): [string[], string] {
+  let proofFileContent: string = new TextDecoder().decode(proofBuffer);
+  // Parse it into Snark object using JSONBig
+  const proof: Snark = JSONBig.parse(proofFileContent)
+  console.log(proof.instances)
+  // Parse instances to public inputs
+  const instances: string[][] = []
+
+  for (const val of proof.instances) {
+    const inner_array: string[] = []
+    for (const inner of val) {
+      let hexFieldElement = vecu64ToField(inner)
+      let fieldElement = BigInt(hexFieldElement)
+      inner_array.push(fieldElement.toString())
+    }
+    instances.push(inner_array)
+  }
+
+  const publicInputs = instances.flat()
+  return [publicInputs, '0x' + proof.proof]
+}
+
+export async function handleEvmVerifyButton<T extends FileMapping>(
+  files: T,
+  evmVersion: Hardfork
+): Promise<VerifyResult> {
+  const result = await convertFilesToFilesSer(files)
+  // Parse proof file into public inputs and proof (the types the evm verifier expects)
+  let [pubInputs, proof] = parseProof(result['proof']) 
+
+  const start = performance.now();  // Start the timer
+
+  let output = await localEVMVerify(
+    proof,
+    pubInputs,
+    new TextDecoder().decode(result['bytecodeVerifier']),
+    evmVersion
   )
 
   const end = performance.now();  // End the timer

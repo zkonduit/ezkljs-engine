@@ -8,6 +8,7 @@ import ElgamalEncrypt from './components/ElgamalEncrypt'
 import ElgamalDecrypt from './components/ElgamalDecrypt'
 import GenProof from './components/GenProof'
 import Verify from './components/Verify'
+import EvmVerify from './components/EvmVerify'
 import Hash from './components/Hash'
 
 interface Files {
@@ -109,7 +110,16 @@ export default function Home() {
     const messageHashResponse = await fetch('/data/message.txt');
     const messageHashBlob: Blob = await messageHashResponse.blob();
     sampleFiles['message_hash'] = new File([messageHashBlob], "message_hash.txt");
-  
+
+    // Fetch the proof_evm.txt file
+    const proofEvmResponse = await fetch('/data/test.pf');
+    const proofEvmBlob: Blob = await proofEvmResponse.blob();
+    sampleFiles['proof_evm'] = new File([proofEvmBlob], "proof_evm.txt");
+    
+    // Fetch the bytecode_verifier.txt file
+    const bytecodeVerifierResponse = await fetch('/data/bytecode.code');
+    const bytecodeVerifierBlob: Blob = await bytecodeVerifierResponse.blob();
+    sampleFiles['bytecode_verifier'] = new File([bytecodeVerifierBlob], "bytecode_verifier.txt");
     setFiles(sampleFiles);
   }
   
@@ -153,6 +163,13 @@ export default function Home() {
           vk: files['vk'],
           circuitSettings: files['circuit_settings_ser_verify'],
           srs: files['srs_ser_verify'],
+        }}
+        handleFileChange={handleFileChange}
+      />
+      <EvmVerify
+        files={{
+          proof: files['proof_evm'],
+          bytecodeVerifier: files['bytecode_verifier']
         }}
         handleFileChange={handleFileChange}
       />

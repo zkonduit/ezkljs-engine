@@ -9,8 +9,8 @@ dependencies:
     specifier: 0.0.5
     version: 0.0.5
   '@ezkljs/verify':
-    specifier: ^0.0.3
-    version: 0.0.3
+    specifier: ^0.0.4
+    version: 0.0.4
   '@types/file-saver':
     specifier: ^2.0.5
     version: 2.0.5
@@ -774,14 +774,15 @@ packages:
     resolution: {integrity: sha512-3w+KSLkwwa/aS6PZvna+tHGcHqCU1V7tPu55M0hq+7pc9xRqQoch6zfOiuEKAFWOcSe3oTSR7Myhz90uE9DW9Q==}
     dev: false
 
-  /@ezkljs/verify@0.0.3:
-    resolution: {integrity: sha512-73kLuBu1gIUnFg0Q/tlEt8aJs8O9XXoYRNgeydY9VqlV2C2W2JLwgX1KSb9mhM+UUnfbXxxA6Pu+aDDU8+ajzA==}
+  /@ezkljs/verify@0.0.4:
+    resolution: {integrity: sha512-bnh0wStiUNYL/SatCVWKdGwERFGABFeLUf0zYgct/ogCGP2taoV9dtcAn0XKuqgLR3eHQufIUtvmP8cW3d4Ejg==}
     dependencies:
       '@ethereumjs/common': 4.0.0
       '@ethereumjs/tx': 5.0.0
       '@ethereumjs/util': 9.0.0
       '@ethereumjs/vm': 7.0.0
       '@ethersproject/abi': 5.7.0
+      '@ezkljs/engine': 0.0.5
       ethers: 6.7.1
       json-bigint: 1.0.0
     transitivePeerDependencies:

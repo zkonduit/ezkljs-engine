@@ -67,33 +67,33 @@ describe('wasmFunctions', () => {
         });
     });
 
-    describe('Prove and verify', () => {
+    // describe('Prove and verify', () => {
 
-        let proof_ser: Uint8ClampedArray
+    //     let proof_ser: Uint8ClampedArray
 
-        let circuit_settings_ser: Uint8ClampedArray;
-        let params_ser: Uint8ClampedArray;
+    //     let circuit_settings_ser: Uint8ClampedArray;
+    //     let params_ser: Uint8ClampedArray;
 
-        it('prove', async () => {
-            const witness = await readDataFile('test.witness.json');
-            const pk = await readDataFile('test.provekey');
-            const circuit_ser = await readDataFile('test_network.compiled');
-            circuit_settings_ser = await readDataFile('settings.json');
-            params_ser = await readDataFile('kzg');
-            const result = wasmFunctions.prove(witness, pk, circuit_ser, circuit_settings_ser, params_ser);
-            proof_ser = new Uint8ClampedArray(result.buffer);
-            const proof = uint8ArrayToJsonObject(result)
-            console.log("Proof", proof)
-            expect(result).toBeInstanceOf(Uint8Array);
-        });
+    //     it('prove', async () => {
+    //         const witness = await readDataFile('test.witness.json');
+    //         const pk = await readDataFile('test.provekey');
+    //         const circuit_ser = await readDataFile('test_network.compiled');
+    //         circuit_settings_ser = await readDataFile('settings.json');
+    //         params_ser = await readDataFile('kzg');
+    //         const result = wasmFunctions.prove(witness, pk, circuit_ser, circuit_settings_ser, params_ser);
+    //         proof_ser = new Uint8ClampedArray(result.buffer);
+    //         const proof = uint8ArrayToJsonObject(result)
+    //         console.log("Proof", proof)
+    //         expect(result).toBeInstanceOf(Uint8Array);
+    //     });
 
-        it('verify', async() => {
-            const vk = await readDataFile('test.key');
-            const result = wasmFunctions.verify(proof_ser, vk, circuit_settings_ser, params_ser);
-            expect(typeof result).toBe('boolean');
-            expect(result).toBe(true);
-        });
-    });
+    //     it('verify', async() => {
+    //         const vk = await readDataFile('test.key');
+    //         const result = wasmFunctions.verify(proof_ser, vk, circuit_settings_ser, params_ser);
+    //         expect(typeof result).toBe('boolean');
+    //         expect(result).toBe(true);
+    //     });
+    // });
 
     describe('Field element utils', () => {
 

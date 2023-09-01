@@ -3,7 +3,7 @@ const nextConfig = {
     async headers() {
         return [
             {
-                source: '/(.*)',
+                source: '_next/static/chunks/455.c91905ae5809d28a.js',
                 headers: [
                     {
                         key: 'Cross-Origin-Embedder-Policy',

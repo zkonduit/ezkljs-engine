@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
-import init from '@ezkljs/engine/mobile/ezkl.js'
+import init from '@ezkljs/engine/web/ezkl.js'
 
 import ElgamalRandomVar from './components/ElgamalRandomVar'
 import ElgamalEncrypt from './components/ElgamalEncrypt'

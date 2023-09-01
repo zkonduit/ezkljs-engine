@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
-import init from '@ezkljs/engine/web/ezkl.js'
+
 
 import ElgamalRandomVar from './components/ElgamalRandomVar'
 import ElgamalEncrypt from './components/ElgamalEncrypt'
@@ -18,13 +18,6 @@ interface Files {
 export default function Home() {
   const [files, setFiles] = useState<Files>({})
 
-  useEffect(() => {
-    async function run() {
-      // Initialize the WASM module
-      await init()
-    }
-    run()
-  })
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id

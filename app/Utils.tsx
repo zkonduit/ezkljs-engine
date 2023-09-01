@@ -7,7 +7,7 @@ import {
   poseidonHash, 
   verify,
   vecU64ToFelt 
-} from '@ezkljs/engine/web'
+} from '@ezkljs/engine/mobile'
 import localEVMVerify, { Hardfork } from '@ezkljs/verify'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'

@@ -2,12 +2,11 @@
     "run_args": {
         "tolerance": {
             "val": 0.0,
-            "scales": [
-                1,
-                1
-            ]
+            "scale": 1.0
         },
-        "scale": 0,
+        "input_scale": 0,
+        "param_scale": 0,
+        "scale_rebase_multiplier": 2,
         "bits": 5,
         "logrows": 7,
         "variables": [
@@ -49,11 +48,7 @@
         ]
     },
     "required_lookups": [
-        {
-            "ReLU": {
-                "scale": 1
-            }
-        }
+        "ReLU"
     ],
     "check_mode": "SAFE"
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import init from '@ezkljs/engine/web/ezkl.js'
 
+import GenWitness from './components/GenWitness'
 import ElgamalRandomVar from './components/ElgamalRandomVar'
 import ElgamalEncrypt from './components/ElgamalEncrypt'
 import ElgamalDecrypt from './components/ElgamalDecrypt'
@@ -121,6 +122,21 @@ export default function Home() {
     const bytecodeVerifierResponse = await fetch('/data/bytecode.code');
     const bytecodeVerifierBlob: Blob = await bytecodeVerifierResponse.blob();
     sampleFiles['bytecode_verifier'] = new File([bytecodeVerifierBlob], "bytecode_verifier.txt");
+
+    // Fetch the model_ser_witness.txt file
+    const modelSerWitnessResponse = await fetch('/data/test_network.compiled');
+    const modelSerWitnessBlob: Blob = await modelSerWitnessResponse.blob();
+    sampleFiles['model_ser_witness'] = new File([modelSerWitnessBlob], "model_ser_witness.txt");
+
+    // Fetch the input_witness.txt file
+    const inputWitnessResponse = await fetch('/data/input.json');
+    const inputWitnessBlob: Blob = await inputWitnessResponse.blob();
+    sampleFiles['input_witness'] = new File([inputWitnessBlob], "input_witness.txt");
+
+    // Fetch the circuit_settings_ser_witness.txt file
+    const circuitSettingsSerWitnessResponse = await fetch('/data/settings.json');
+    const circuitSettingsSerWitnessBlob: Blob = await circuitSettingsSerWitnessResponse.blob();
+    sampleFiles['circuit_settings_ser_witness'] = new File([circuitSettingsSerWitnessBlob], "circuit_settings_ser_witness.txt");
     setFiles(sampleFiles);
   }
   
@@ -128,6 +144,16 @@ export default function Home() {
   return (
     <div className='App'>
       <button onClick={populateWithSampleFiles}>Populate with sample files</button>
+
+      <GenWitness
+        files={{
+          compiled_model: files['model_ser_witness'],
+          input: files['input_witness'],
+          settings: files['circuit_settings_ser_witness'],
+        }}
+        handleFileChange={handleFileChange}
+      />
+
       <ElgamalRandomVar/>  
 
       <ElgamalEncrypt

@@ -6,7 +6,8 @@ import {
   prove, 
   poseidonHash, 
   verify,
-  vecU64ToFelt 
+  vecU64ToFelt,
+  genWitness 
 } from '@ezkljs/engine/web'
 import localEVMVerify, { Hardfork } from '@ezkljs/verify'
 import JSZip from 'jszip'
@@ -226,6 +227,26 @@ export async function handleGenElgamalDecryptionButton<T extends FileMapping>(
     executionTime: end - start
   }
 }
+export async function handleGenWitnessButton<T extends FileMapping>(
+  files: T,
+): Promise<Uint8ArrayResult> {
+  const result = await convertFilesToFilesSer(files)
+  const start = performance.now();  // Start the timer
+
+  let output = genWitness(
+    result['compiled_model'],
+    result['input'],
+    result['settings']
+  )
+
+  const end = performance.now();  // End the timer
+
+  return {
+    output: output,
+    executionTime: end - start
+  }
+}
+
 
 interface HashResult {
   output: Uint8ClampedArray;

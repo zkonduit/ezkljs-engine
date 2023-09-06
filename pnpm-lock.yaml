@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@ezkljs/engine':
-    specifier: 1.13.3
-    version: 1.13.3
+    specifier: ^1.18.0
+    version: 1.18.0
   '@ezkljs/verify':
     specifier: ^0.0.4
     version: 0.0.4
@@ -774,8 +774,8 @@ packages:
     resolution: {integrity: sha512-3w+KSLkwwa/aS6PZvna+tHGcHqCU1V7tPu55M0hq+7pc9xRqQoch6zfOiuEKAFWOcSe3oTSR7Myhz90uE9DW9Q==}
     dev: false
 
-  /@ezkljs/engine@1.13.3:
-    resolution: {integrity: sha512-y2/mr0LOP/DEUqn0LGf1P6dqdUuEzTURD3Vj1p3J47SHQODtamT9ZloWC6PuFDxah0YMwaORcFzetQVkwehKkQ==}
+  /@ezkljs/engine@1.18.0:
+    resolution: {integrity: sha512-RxN2aq3kTkn/kA6xk6Z6N+C+u6ETHYB6EB0dfXhxcAaIhTd0IsO7SEC9ZYPK0rNGuG+rIa81D/gjakIJIxIrNA==}
     dev: false
 
   /@ezkljs/verify@0.0.4:

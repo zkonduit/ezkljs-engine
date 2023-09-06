@@ -67,15 +67,30 @@ describe('wasmFunctions', () => {
         });
     });
 
-    describe('Prove and verify', () => {
+    describe('Generate witness, prove and verify', () => {
 
         let proof_ser: Uint8ClampedArray
 
         let circuit_settings_ser: Uint8ClampedArray;
+        let circuit_ser: Uint8ClampedArray;
         let params_ser: Uint8ClampedArray;
+        let witness_ser: Uint8Array;
+
+        it('genWitness', async () => {
+            const input_ser = await readDataFile('input.json');
+            circuit_ser = await readDataFile('test_network.compiled');
+            circuit_settings_ser = await readDataFile('settings.json');
+            witness_ser = wasmFunctions.genWitness(circuit_ser, input_ser, circuit_settings_ser);
+            const witness = uint8ArrayToJsonObject(witness_ser)
+            expect(witness_ser).toBeInstanceOf(Uint8Array);
+            const ref_witness_ser = await readDataFile('test.witness.json');
+            const ref_witness = uint8ArrayToJsonObject(new Uint8Array(ref_witness_ser.buffer))
+            expect(witness).toEqual(ref_witness);
+            console.log("Witness", witness)
+        });
 
         it('prove', async () => {
-            const witness = await readDataFile('test.witness.json');
+            const witness = new Uint8ClampedArray(witness_ser.buffer);
             const pk = await readDataFile('test.provekey');
             const circuit_ser = await readDataFile('test_network.compiled');
             circuit_settings_ser = await readDataFile('settings.json');

@@ -22,7 +22,7 @@ export default function Home() {
   useEffect(() => {
     async function run() {
       // Initialize the WASM module
-      await init(undefined, new WebAssembly.Memory({initial:20,maximum:1024,shared:true}))
+      await init(undefined, new WebAssembly.Memory({initial:20,maximum:4096,shared:true}))
     }
     run()
   })
@@ -34,7 +34,7 @@ export default function Home() {
     setFiles((prevFiles) => ({ ...prevFiles, [id]: file }))
   }
 
-  async function populateWithSampleFiles() {
+  async function populateWithSampleFiles(MNIST: boolean = false) {
 
     const sampleFiles: Files = {};
 
@@ -63,50 +63,97 @@ export default function Home() {
     const rBlob: Blob = await rResponse.blob();
     sampleFiles['elgamal_r'] = new File([rBlob], "elgamal_r.txt");
 
-    // Fetch the data_prove.txt file
-    const dataProveResponse = await fetch('/data/test.witness.json');
-    const dataProveBlob: Blob = await dataProveResponse.blob();
-    sampleFiles['data_prove'] = new File([dataProveBlob], "data_prove.txt");
+    if(MNIST) {
+      // Fetch the data_prove.txt file
+      const dataProveResponse = await fetch('/data/mnist/witness.json');
+      const dataProveBlob: Blob = await dataProveResponse.blob();
+      sampleFiles['data_prove'] = new File([dataProveBlob], "data_prove.txt");
 
-    // Fetch the pk_prove.txt file
-    const pkProveResponse = await fetch('/data/test.provekey');
-    const pkProveBlob: Blob = await pkProveResponse.blob();
-    sampleFiles['pk_prove'] = new File([pkProveBlob], "pk_prove.txt");
+      // Fetch the pk_prove.txt file
+      const pkProveResponse = await fetch('/data/mnist/key.pk');
+      const pkProveBlob: Blob = await pkProveResponse.blob();
+      sampleFiles['pk_prove'] = new File([pkProveBlob], "pk_prove.txt");
 
-    // Fetch the model_ser_prove.txt file
-    const modelSerProveResponse = await fetch('/data/test_network.compiled');
-    const modelSerProveBlob: Blob = await modelSerProveResponse.blob();
-    sampleFiles['model_ser_prove'] = new File([modelSerProveBlob], "model_ser_prove.txt");
+      // Fetch the model_ser_prove.txt file
+      const modelSerProveResponse = await fetch('/data/mnist/compiled_net.onnx');
+      const modelSerProveBlob: Blob = await modelSerProveResponse.blob();
+      sampleFiles['model_ser_prove'] = new File([modelSerProveBlob], "model_ser_prove.txt");
 
-    // Fetch the circuit_settings_ser_prove.txt file
-    const circuitSettingsSerProveResponse = await fetch('/data/settings.json');
-    const circuitSettingsSerProveBlob: Blob = await circuitSettingsSerProveResponse.blob();
-    sampleFiles['circuit_settings_ser_prove'] = new File([circuitSettingsSerProveBlob], "circuit_settings_ser_prove.txt");
-    
-    // Fetch the srs_ser_prove.txt file
-    const srsSerProveResponse = await fetch('/data/kzg');
-    const srsSerProveBlob: Blob = await srsSerProveResponse.blob();
-    sampleFiles['srs_ser_prove'] = new File([srsSerProveBlob], "srs_ser_prove.txt");
+      // Fetch the circuit_settings_ser_prove.txt file
+      const circuitSettingsSerProveResponse = await fetch('/data/mnist/settings.json');
+      const circuitSettingsSerProveBlob: Blob = await circuitSettingsSerProveResponse.blob();
+      sampleFiles['circuit_settings_ser_prove'] = new File([circuitSettingsSerProveBlob], "circuit_settings_ser_prove.txt");
 
-    // Fetch the proof_js.txt file
-    const proofJsResponse = await fetch('/data/test.proof');
-    const proofJsBlob: Blob = await proofJsResponse.blob();
-    sampleFiles['proof_js'] = new File([proofJsBlob], "proof_js.txt");
+      // Fetch the srs_ser_prove.txt file
+      const srsSerProveResponse = await fetch('/data/mnist/srs-10');
+      const srsSerProveBlob: Blob = await srsSerProveResponse.blob();
+      sampleFiles['srs_ser_prove'] = new File([srsSerProveBlob], "srs_ser_prove.txt");
 
-    // Fetch the vk.txt file
-    const vkResponse = await fetch('/data/test.key');
-    const vkBlob: Blob = await vkResponse.blob();
-    sampleFiles['vk'] = new File([vkBlob], "vk.txt");
+      // Fetch the proof_js.txt file
+      const proofJsResponse = await fetch('/data/mnist/proof.pf');
+      const proofJsBlob: Blob = await proofJsResponse.blob();
+      sampleFiles['proof_js'] = new File([proofJsBlob], "proof_js.txt");
 
-    // Fetch the circuit_settings_ser_verify.txt file
-    const circuitSettingsSerVerifyResponse = await fetch('/data/settings.json');
-    const circuitSettingsSerVerifyBlob: Blob = await circuitSettingsSerVerifyResponse.blob();
-    sampleFiles['circuit_settings_ser_verify'] = new File([circuitSettingsSerVerifyBlob], "circuit_settings_ser_verify.txt");
+      // Fetch the vk.txt file
+      const vkResponse = await fetch('/data/mnist/key.vk');
+      const vkBlob: Blob = await vkResponse.blob();
+      sampleFiles['vk'] = new File([vkBlob], "vk.txt");
 
-    // Fetch the srs_ser_verify.txt file
-    const srsSerVerifyResponse = await fetch('/data/kzg');
-    const srsSerVerifyBlob: Blob = await srsSerVerifyResponse.blob();
-    sampleFiles['srs_ser_verify'] = new File([srsSerVerifyBlob], "srs_ser_verify.txt");
+      // Fetch the circuit_settings_ser_verify.txt file
+      const circuitSettingsSerVerifyResponse = await fetch('/data/mnist/settings.json');
+      const circuitSettingsSerVerifyBlob: Blob = await circuitSettingsSerVerifyResponse.blob();
+      sampleFiles['circuit_settings_ser_verify'] = new File([circuitSettingsSerVerifyBlob], "circuit_settings_ser_verify.txt");
+
+      // Fetch the srs_ser_verify.txt file
+      const srsSerVerifyResponse = await fetch('/data/mnist/srs-10');
+      const srsSerVerifyBlob: Blob = await srsSerVerifyResponse.blob();
+      sampleFiles['srs_ser_verify'] = new File([srsSerVerifyBlob], "srs_ser_verify.txt");
+    } else {
+      // Fetch the data_prove.txt file
+      const dataProveResponse = await fetch('/data/test.witness.json');
+      const dataProveBlob: Blob = await dataProveResponse.blob();
+      sampleFiles['data_prove'] = new File([dataProveBlob], "data_prove.txt");
+  
+      // Fetch the pk_prove.txt file
+      const pkProveResponse = await fetch('/data/test.provekey');
+      const pkProveBlob: Blob = await pkProveResponse.blob();
+      sampleFiles['pk_prove'] = new File([pkProveBlob], "pk_prove.txt");
+  
+      // Fetch the model_ser_prove.txt file
+      const modelSerProveResponse = await fetch('/data/test_network.compiled');
+      const modelSerProveBlob: Blob = await modelSerProveResponse.blob();
+      sampleFiles['model_ser_prove'] = new File([modelSerProveBlob], "model_ser_prove.txt");
+  
+      // Fetch the circuit_settings_ser_prove.txt file
+      const circuitSettingsSerProveResponse = await fetch('/data/settings.json');
+      const circuitSettingsSerProveBlob: Blob = await circuitSettingsSerProveResponse.blob();
+      sampleFiles['circuit_settings_ser_prove'] = new File([circuitSettingsSerProveBlob], "circuit_settings_ser_prove.txt");
+      
+      // Fetch the srs_ser_prove.txt file
+      const srsSerProveResponse = await fetch('/data/kzg');
+      const srsSerProveBlob: Blob = await srsSerProveResponse.blob();
+      sampleFiles['srs_ser_prove'] = new File([srsSerProveBlob], "srs_ser_prove.txt");
+  
+      // Fetch the proof_js.txt file
+      const proofJsResponse = await fetch('/data/test.proof');
+      const proofJsBlob: Blob = await proofJsResponse.blob();
+      sampleFiles['proof_js'] = new File([proofJsBlob], "proof_js.txt");
+  
+      // Fetch the vk.txt file
+      const vkResponse = await fetch('/data/test.key');
+      const vkBlob: Blob = await vkResponse.blob();
+      sampleFiles['vk'] = new File([vkBlob], "vk.txt");
+  
+      // Fetch the circuit_settings_ser_verify.txt file
+      const circuitSettingsSerVerifyResponse = await fetch('/data/settings.json');
+      const circuitSettingsSerVerifyBlob: Blob = await circuitSettingsSerVerifyResponse.blob();
+      sampleFiles['circuit_settings_ser_verify'] = new File([circuitSettingsSerVerifyBlob], "circuit_settings_ser_verify.txt");
+  
+      // Fetch the srs_ser_verify.txt file
+      const srsSerVerifyResponse = await fetch('/data/kzg');
+      const srsSerVerifyBlob: Blob = await srsSerVerifyResponse.blob();
+      sampleFiles['srs_ser_verify'] = new File([srsSerVerifyBlob], "srs_ser_verify.txt");
+    }
 
     // Fetch the message_hash.txt file
     const messageHashResponse = await fetch('/data/message.txt');
@@ -143,7 +190,8 @@ export default function Home() {
 
   return (
     <div className='App'>
-      <button onClick={populateWithSampleFiles}>Populate with sample files</button>
+      <button onClick={() => populateWithSampleFiles()}>Populate with sample files</button>
+      <button onClick={() => populateWithSampleFiles(true)}>Populate with sample MNIST files</button>
 
       <GenWitness
         files={{

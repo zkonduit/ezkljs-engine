@@ -73,7 +73,7 @@ const nextConfig = {
 
 ### Instantiating a new web assembly instance.
 
-If you are using the web bundle, you will first need to initialize a web assembly module before you can use any of the methods exposed by the engine. To do this import the default export from `@ezkljs/engine/web/ezkl.js` and then call it. If you want to overide the default WASM memory size, you can pass in a WebAssembly.Memory object as the second argument. We highly recommend doing this if you want your application to be compatible with mobile browsers, as the default memory allocation is too large for iOS browsers. From our experimentation, we have found that the maximum memory allocation that iOS browsers can handle is 1024 mb (default is 65536 mb). 
+If you are using the web bundle, you will first need to initialize a web assembly module before you can use any of the methods exposed by the engine. To do this import the default export from `@ezkljs/engine/web/ezkl.js` and then call it. If you want to overide the default WASM memory size, you can pass in a WebAssembly.Memory object as the second argument. We highly recommend doing this if you want your application to be compatible with mobile browsers, as the default memory allocation is too large for iOS browsers. From our experimentation, we have found that the maximum memory allocation that iOS browsers can handle is 4096 mb (default is 65536 mb). 
 
 ```typescript
 
@@ -84,7 +84,7 @@ export default function Home() {
   useEffect(() => {
     async function run() {
       // Initialize the WASM module. Here we are overiding the default memory allocation with the recommend allocation for the best performance across all mobile browsers.
-      await init(undefined, new WebAssembly.Memory({initial:20,maximum:1024,shared:true}))
+      await init(undefined, new WebAssembly.Memory({initial:20,maximum:4096,shared:true}))
     }
     run()
   })

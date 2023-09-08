@@ -22,7 +22,7 @@ export default function Home() {
   useEffect(() => {
     async function run() {
       // Initialize the WASM module
-      await init(undefined, new WebAssembly.Memory({initial:20,maximum:1024,shared:true}))
+      await init(undefined, new WebAssembly.Memory({initial:20,maximum:4096,shared:true}))
     }
     run()
   })

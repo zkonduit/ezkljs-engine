@@ -19,6 +19,22 @@ export async function readDataFile(filename: string): Promise<Uint8ClampedArray>
     return new Uint8ClampedArray(buffer.buffer);
 }
 
+export async function readEzklArtifactsFile(example: string, filename: string): Promise<Uint8ClampedArray> {
+    const filePath = path.join(__dirname, 'examples', example, filename);
+    const buffer = await fs.readFile(filePath);
+    return new Uint8ClampedArray(buffer.buffer);
+}
+
+export async function readEzklSrsFile(example: string): Promise<Uint8ClampedArray> {
+    const settingsPath = path.join(__dirname, 'examples', example, 'settings.json');
+    const settingsBuffer = await fs.readFile(settingsPath, { encoding: 'utf-8' });
+    const settings = JSONBig.parse(settingsBuffer);
+    const logrows = settings.run_args.logrows;
+    const filePath = path.join(__dirname, 'examples', `kzg${logrows}.srs`);
+    const buffer = await fs.readFile(filePath);
+    return new Uint8ClampedArray(buffer.buffer);
+}
+
 export function deserialize(filename: string): any {
     return readDataFile(filename).then((uint8Array) => {
         const string = new TextDecoder().decode(uint8Array);

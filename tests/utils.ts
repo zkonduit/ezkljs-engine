@@ -19,6 +19,7 @@ export async function readDataFile(filename: string): Promise<Uint8ClampedArray>
     return new Uint8ClampedArray(buffer.buffer);
 }
 
+
 export function deserialize(filename: string): any {
     return readDataFile(filename).then((uint8Array) => {
         const string = new TextDecoder().decode(uint8Array);

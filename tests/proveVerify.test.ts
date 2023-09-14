@@ -1,5 +1,4 @@
-import { verify } from 'crypto';
-import * as wasmFunctions from '../nodejs/ezkl'
+import * as wasmFunctions from '@ezkljs/engine/nodejs';
 import { 
     readDataFile,
  } from './utils';

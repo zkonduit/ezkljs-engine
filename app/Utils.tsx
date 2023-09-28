@@ -171,7 +171,6 @@ export async function handleGenProofButton<T extends FileMapping>(
     result['data'],
     result['pk'],
     result['model'],
-    result['circuitSettings'],
     result['srs'],
   )
   
@@ -236,7 +235,6 @@ export async function handleGenWitnessButton<T extends FileMapping>(
   let output = genWitness(
     result['compiled_model'],
     result['input'],
-    result['settings']
   )
 
   const end = performance.now();  // End the timer

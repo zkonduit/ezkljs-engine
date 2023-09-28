@@ -1,9 +1,6 @@
 import * as wasmFunctions from '@ezkljs/engine/nodejs';
-import { 
-    uint8ArrayToJsonObject,
-    readDataFile,
-    deserialize,
-    serialize
+import {
+    readDataFile
  } from './utils';
 
 describe('Elgamal Encryption', () => {
@@ -26,28 +23,29 @@ describe('Elgamal Encryption', () => {
         }
         const rng_buffer = new Uint8ClampedArray(uint8Array.buffer);
         const result = wasmFunctions.elgamalGenRandom(rng_buffer);
-        elgamalVariables = uint8ArrayToJsonObject(result)
+        elgamalVariables = wasmFunctions.deserialize(result)
         console.log("Elgamal variables", elgamalVariables);
         expect(result).toBeInstanceOf(Uint8Array);
     });
 
     it('elgamalEncrypt', async () => {
         const message_ser = await readDataFile('message.txt');
-        const pk = serialize(elgamalVariables.pk);
-        const r = serialize(elgamalVariables.r);
+        const pk = wasmFunctions.serialize(elgamalVariables.pk);
+        const r = wasmFunctions.serialize(elgamalVariables.r);
         const result = wasmFunctions.elgamalEncrypt(pk, message_ser, r);
-        cipherText = uint8ArrayToJsonObject(result)
+        cipherText = wasmFunctions.deserialize(result)
         console.log("Elgamal cipher text", cipherText)
         expect(result).toBeInstanceOf(Uint8Array);
     });
 
     it('elgamalDecrypt', async () => {
-        const cipher_ser = serialize(cipherText);
-        const sk = serialize(elgamalVariables.sk);
+        const cipher_ser = wasmFunctions.serialize(cipherText);
+        const sk = wasmFunctions.serialize(elgamalVariables.sk);
         const result = wasmFunctions.elgamalDecrypt(cipher_ser, sk);
-        const message = uint8ArrayToJsonObject(result)
+        const message = wasmFunctions.deserialize(result)
         console.log("Elgamal decrypted message", message)
-        let originalMessage = await deserialize('message.txt');
+        let message_ser_original = await readDataFile('message.txt');
+        let originalMessage = wasmFunctions.deserialize(message_ser_original);
         console.log("Original message", originalMessage)
         expect(message).toEqual(originalMessage);
         expect(result).toBeInstanceOf(Uint8Array);

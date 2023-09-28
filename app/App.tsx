@@ -179,12 +179,6 @@ export default function Home() {
     const inputWitnessResponse = await fetch('/data/input.json');
     const inputWitnessBlob: Blob = await inputWitnessResponse.blob();
     sampleFiles['input_witness'] = new File([inputWitnessBlob], "input_witness.txt");
-
-    // Fetch the circuit_settings_ser_witness.txt file
-    const circuitSettingsSerWitnessResponse = await fetch('/data/settings.json');
-    const circuitSettingsSerWitnessBlob: Blob = await circuitSettingsSerWitnessResponse.blob();
-    sampleFiles['circuit_settings_ser_witness'] = new File([circuitSettingsSerWitnessBlob], "circuit_settings_ser_witness.txt");
-    setFiles(sampleFiles);
   }
   
 
@@ -196,8 +190,7 @@ export default function Home() {
       <GenWitness
         files={{
           compiled_model: files['model_ser_witness'],
-          input: files['input_witness'],
-          settings: files['circuit_settings_ser_witness'],
+          input: files['input_witness']
         }}
         handleFileChange={handleFileChange}
       />
@@ -226,7 +219,6 @@ export default function Home() {
           data: files['data_prove'],
           pk: files['pk_prove'],
           model: files['model_ser_prove'],
-          circuitSettings: files['circuit_settings_ser_prove'],
           srs: files['srs_ser_prove'],
         }}
         handleFileChange={handleFileChange}

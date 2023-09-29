@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
-import init from '@ezkljs/engine/web/ezkl.js'
+import init, {init_panic_hook} from '@ezkljs/engine/web/ezkl.js'
 
 import GenWitness from './components/GenWitness'
 import ElgamalRandomVar from './components/ElgamalRandomVar'
@@ -23,6 +23,7 @@ export default function Home() {
     async function run() {
       // Initialize the WASM module
       await init(undefined, new WebAssembly.Memory({initial:20,maximum:4096,shared:true}))
+      init_panic_hook()
     }
     run()
   })
@@ -179,6 +180,7 @@ export default function Home() {
     const inputWitnessResponse = await fetch('/data/input.json');
     const inputWitnessBlob: Blob = await inputWitnessResponse.blob();
     sampleFiles['input_witness'] = new File([inputWitnessBlob], "input_witness.txt");
+    setFiles(sampleFiles);
   }
   
 

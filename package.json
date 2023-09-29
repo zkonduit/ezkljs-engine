@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ezkljs/engine": "^1.27.4",
+    "@ezkljs/engine": "^1.27.6",
     "@ezkljs/verify": "^0.0.4",
     "@types/file-saver": "^2.0.5",
     "@types/json-bigint": "^1.0.1",

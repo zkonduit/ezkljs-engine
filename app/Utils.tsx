@@ -7,7 +7,8 @@ import {
   poseidonHash, 
   verify,
   vecU64ToFelt,
-  genWitness 
+  genWitness ,
+  deserialize
 } from '@ezkljs/engine/web'
 import localEVMVerify, { Hardfork } from '@ezkljs/verify'
 import JSZip from 'jszip'
@@ -171,7 +172,6 @@ export async function handleGenProofButton<T extends FileMapping>(
     result['data'],
     result['pk'],
     result['model'],
-    result['circuitSettings'],
     result['srs'],
   )
   
@@ -236,8 +236,11 @@ export async function handleGenWitnessButton<T extends FileMapping>(
   let output = genWitness(
     result['compiled_model'],
     result['input'],
-    result['settings']
   )
+
+  let witness = deserialize(output)
+
+  console.log(JSON.stringify(witness, null, 2))  
 
   const end = performance.now();  // End the timer
 
@@ -295,19 +298,6 @@ export async function handleVerifyButton<T extends FileMapping>(
 interface Snark {
   instances: Array<Array<Array<string>>>
   proof: Uint8Array
-}
-
-function vecu64ToField(b: string[]): string {
-  if (b.length !== 4) {
-    throw new Error('Input should be an array of 4 big integers.')
-  }
-
-  let result = BigInt(0)
-  for (let i = 0; i < 4; i++) {
-    // Note the conversion to BigInt for the shift operation
-    result += BigInt(b[i]!) << (BigInt(i) * BigInt(64))
-  }
-  return result.toString()
 }
 
 function byteToHex(byte: number) {

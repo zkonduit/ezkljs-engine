@@ -5,7 +5,6 @@ interface GenWitnessProps {
     files: {
         compiled_model: File | null
         input: File | null
-        settings: File | null
     }
     handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
@@ -29,13 +28,6 @@ export default function GenWitness({ files, handleFileChange }: GenWitnessProps)
             type='file'
             onChange={handleFileChange}
             placeholder='input_witness'
-          />
-          <label htmlFor='circuit_settings_ser_witness'>Circuit settings:</label>
-          <input
-            id='circuit_settings_ser_witness'
-            type='file'
-            onChange={handleFileChange}
-            placeholder='circuit_settings_ser_witness'
           />
           <button
             id='genWitnessButton'

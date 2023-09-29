@@ -15,15 +15,7 @@ pnpm add @ezkljs/engine
 
 ---
 
-## Engine example usage in Next.js
-
-To get started using EZKL Engine in your appplication you'll want to use the `engine` submodule.
-
-```typescript
-import engine from '@ezkljs/engine'
-```
-
-The engine exposes useful JS bindings to the main ezkl repo that make hashing, encrypting, decrypting, proving and verifying in the browser seemless:
+The engine exposes useful JS bindings to the main ezkl repo that make hashing, encrypting, decrypting, proving and verifying in the browser/nodejs context seemless:
 
 - [genWitness](#genWitness): Generate a witness from a given input.
 - [elgamalGenRandom](#elgamal-variables): Generate an ElGamal keypair from a random seed.
@@ -33,17 +25,34 @@ The engine exposes useful JS bindings to the main ezkl repo that make hashing, e
 - [verify](#verify): Verify a given proof
 - [poseidonHash](#hash): Hash a given message using the Poseidon hash function
 
+As well as some helper functions that make it easier to work with the engine:
+
+- [vecU64ToFelt](#vecU64ToFelt): Converts 4 u64s to a field element (hex string)
+- [vecU64ToInt](#vecU64ToInt): Converts 4 u64s representing a field element directly to an integer
+- [vecU64ToFloat](#vecU64ToFloat): Converts 4 u64s representing a field element directly to a (rescaled from fixed point scaling) floating point
+- [floatToVecU64](#floatToVecU64): Converts a floating point element to 4 u64s representing a fixed point field element
+- [bufferToVecOfVecU64](#bufferToVecOfVecU64): Converts a buffer to vector of vector of 4 u64s
+
+To learn more about how to use these helper methods, check out the tests we wrote for them [here](https://github.com/zkonduit/ezkljs-engine/tree/main/tests/fieldElementUtils.test.ts)
+
+The engine methods use web assembly in the backend to support running rust code in a browser/JS context. 
+Non primitive data types passed to and returned from WASM bindings must come in a serialized (buffer) format.
+These serialize and deserialize methods make it easier to convert JS objects to and from a format that can be accepted by the engine methods.
+
+- [serialize](#serialize): Convert the JS object representation of a given artifact into a format that can be accepted by the engine methods. 
+- [deserialize](#deserialize): Convert the serialized representation of a given artifact into a JS object. 
+
 ---
 
 ### Nodejs vs Web targets
 
-The engine has two targets: `nodejs` and `web`. The `nodejs` target is used for nodejs applications (e.i. nodejs serverside data processing) and the `web` target is used for browser applications (e.i. React front ends). From a perforamnce standpoint, the only 
+The engine has two targets: `nodejs` and `web`. The `nodejs` target is used for nodejs applications (e.i. nodejs serverside data processing) and the `web` target is used for browser applications (e.i. React front ends). From a peformance standpoint, the only 
 difference between the two is that the web bundle supports multithreading via a web worker instance and nodejs does not.
 
 This readme will focus on documenting the web target. If you are interested in using the nodejs target, please refer to the unit tests
-we wrote for [them](https://github.com/zkonduit/ezkljs-engine/tree/main/tests/wasmFunctions.test.ts). 
+we wrote for [them](https://github.com/zkonduit/ezkljs-engine/tree/main/tests). 
 
-If you just want to jump right into viewing an example application that demonstrates how to use all of the engine bindings check out [this app](https://ezkljs-engine.vercel.app/). The code for which can be found [here](https://github.com/zkonduit/ezkljs-engine/tree/main/app)
+If you just want to jump right into viewing an example application that demonstrates how to use all of the core engine bindings check out [this app](https://ezkljs-engine.vercel.app/). The code for which can be found [here](https://github.com/zkonduit/ezkljs-engine/tree/main/app)
 
 ### Cross Origin Isolation.
 
@@ -71,13 +80,20 @@ const nextConfig = {
   };
 ```
 
+### Engine Debugging
+
+To make the errors returned by the engine comprehenadble, we recommend calling the `init_panic_hook` method before calling any of the other engine methods. 
+This will ensure that the engine errors are logged to the console in a readable format, otherwise if an error does throw it will be logged to the console as `RuntimeError: unreachable` 
+
+If you also want to print debug statments from the engine, you can call the `init_logger` method. This will print all debug statments to the console. 
+
 ### Instantiating a new web assembly instance.
 
 If you are using the web bundle, you will first need to initialize a web assembly module before you can use any of the methods exposed by the engine. To do this import the default export from `@ezkljs/engine/web/ezkl.js` and then call it. If you want to overide the default WASM memory size, you can pass in a WebAssembly.Memory object as the second argument. We highly recommend doing this if you want your application to be compatible with mobile browsers, as the default memory allocation is too large for iOS browsers. From our experimentation, we have found that the maximum memory allocation that iOS browsers can handle is 4096 mb (default is 65536 mb). 
 
 ```typescript
 
-import init from '@ezkljs/engine/web/ezkl.js'
+import init, { init_panic_hook, init_logger } from '@ezkljs/engine/web/ezkl.js'
 
 export default function Home() {
 
@@ -85,6 +101,9 @@ export default function Home() {
     async function run() {
       // Initialize the WASM module. Here we are overiding the default memory allocation with the recommend allocation for the best performance across all mobile browsers.
       await init(undefined, new WebAssembly.Memory({initial:20,maximum:4096,shared:true}))
+      // Initialize the panic hook and logger
+      init_panic_hook()
+      init_logger()
     }
     run()
   })
@@ -95,10 +114,10 @@ export default function Home() {
 
 ### Generating a witness
 
-To generate a witness from a given input, you can use the `genWitness` method. You can think of the witness as the input output pair that gets generated by quantizing the input, running it through the quantized model and performing any hashing or encryption. This witness file contains the input and output pair needed to prove statements such as "I ran my neural network on this data and it produced this output". 
+To generate a witness from a given input, you can use the `genWitness` method. You can think of the witness as the input output pair that gets generated by quantizing the input, running it through the quantized model and performing any hashing or encryption. This witness file contains the input and output pair needed to prove statements such as "I ran my neural network on this data and it produced this output". Link to the method used here in the example app: [handleGenWitnessButton](https://github.com/zkonduit/ezkljs-engine/blob/main/app/Utils.tsx#L229)
 
 ```typescript
-import { genWitness } from '@ezkljs/engine/web'
+import { genWitness, deserialize } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // witness generation that we used in the example app. 
@@ -111,9 +130,12 @@ export async function handleGenWitnessButton<T extends FileMapping>(
 
   let output = genWitness(
     result['compiled_model'],
-    result['input'],
-    result['settings']
+    result['input']
   )
+
+  let witness = deserialize(output)
+
+  console.log(JSON.stringify(witness, null, 2))  
 
   const end = performance.now();  // End the timer
 
@@ -124,29 +146,80 @@ export async function handleGenWitnessButton<T extends FileMapping>(
 }
 ```
 
+Output:
+
+```json
+{
+  "inputs": [
+    [
+      [
+        "14385415396251402209",
+        "2429374486035521128",
+        "12558163205804149944",
+        "2583518171365219058"
+      ],
+      [
+        "6425625360762666998",
+        "7924344314350639699",
+        "14762033076929465436",
+        "2023505479389396574"
+      ],
+      [
+        "1949230679015292902",
+        "16913946402569752895",
+        "5177146667339417225",
+        "1571765431670520771"
+      ]
+    ]
+  ],
+  "outputs": [
+    [
+      [
+        "415066004289224689",
+        "11886516471525959549",
+        "3696305541684646538",
+        "3035258219084094862"
+      ],
+      [
+        "956231351009279921",
+        "10951436676983309100",
+        "2250248050743556928",
+        "1228298028208591648"
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  ],
+  "processed_inputs": null,
+  "processed_params": null,
+  "processed_outputs": null,
+  "max_lookup_inputs": 22
+}
+```
+
 ### Elgamal Variables
 
 You can generate a random ElGamal keypair from a random seed to use for encryption and decryption by using the `elgamalGenRandom` method.
 
 ```typescript
-import { elgamalGenRandom } from '@ezkljs/engine/web'
-// Import the JSONBig library for parsing the Uint8Array response from elgamalGenRandom
-// We use JSONBig since some of the u64s returned by elgamalGenRandom
-// are too large for JSON to parse. 
-import JSONBig from 'json-bigint'
-
-function stringToUint8Array(str: string): Uint8Array {
-  const encoder = new TextEncoder(); 
-  const uint8Array = encoder.encode(str);
-  return uint8Array;
-}
+import { elgamalGenRandom, deserialize } from '@ezkljs/engine/web'
 
 // Function to generate a 256 bit seed in the browser 
 // using a cryptographically secure source of randomness. 
 // DO NOT USE MATH.RANDOM AS ITS NOT A SECURE SOURCE OF RANDOMNESS
 function generate256BitSeed(): Uint8ClampedArray {
   const uuid = self.crypto.randomUUID();
-  const buffer = stringToUint8Array(uuid);
+  const buffer = new TextEncoder().encode(uuid)
   let seed = self.crypto.getRandomValues(buffer);
   seed = seed.slice(0, 32);
   return new Uint8ClampedArray(seed.buffer);
@@ -164,7 +237,7 @@ const buffer = elgamalGenRandom(generate256BitSeed())
 // We can take a look at the serialized contents of the 
 // buffer returned by elgamalGenRandom by converting 
 // the Uint8Array to a JSON object
-let elgamalVariables = uint8ArrayToJsonObject(buffer)
+let elgamalVariables = deserialize(buffer)
 
 console.log(JSON.stringify(elgamalVariables, null, 2))
 ```
@@ -230,14 +303,14 @@ you can unzip the "elgamal_var" file in your download folder.
 
 After which you need to create a text file that contains a message you wish to encrypt.  
 Since elgamal encrypt is a ZKP operation, we need to convert the message into
-serialized field elements represented as u254s. We serialize the field elemnents 
+serialized field elements represented as u254s. We serialize the field elements 
 by breaking up each u254 field element into 4 u64s. 
 
 For reference, check out the example message file [here](https://github.com/zkonduit/ezkljs-engine/tree/main/public/data/message.txt)
 
 
 ```typescript
-import { elgamalEncrypt } from '@ezkljs/engine/web'
+import { elgamalEncrypt, deserialize } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // generation of the elgamal encyrption ciphertext. 
@@ -257,7 +330,7 @@ export async function handleGenElgamalEncryptionButton<T extends FileMapping>(
 
   const end = performance.now();  // End the timer
 
-  let cipherText = uint8ArrayToJsonObject(output)
+  let cipherText = deserialize(output)
 
   console.log(JSON.stringify(cipherText, null, 2))    
 
@@ -314,9 +387,10 @@ Output:
 ### Elgamal Decrypt
 
 Using the secret key (sk) and ciphertext from the previous step, you can decrypt the ciphertext using the `elgamalDecrypt` method.
+Method used in the example app: [handleGenElgamalDecryptionButton](https://github.com/zkonduit/ezkljs-engine/blob/main/app/Utils.tsx#L212)
 
 ```typescript
-import { elgamalDecrypt } from '@ezkljs/engine/web'
+import { elgamalDecrypt, deserialize } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // generation of the elgamal decryption of the ciphertext. 
@@ -333,7 +407,7 @@ export async function handleGenElgamalDecryptionButton<T extends FileMapping>(
 
   const end = performance.now();  // End the timer
 
-  let message = uint8ArrayToJsonObject(output)
+  let message = deserialize(output)
 
   console.log(JSON.stringify(message, null, 2))   
 
@@ -369,11 +443,11 @@ And as you can see, the output matches the original message inside of message.tx
 
 ### Prove
 
-Once you have all the necessary artifacts needed to prove (Witness, Proving Key, Compiled Onnx Model, Circuit settings and SRS) you can generate a proof using the `prove` method.
-
+Once you have all the necessary artifacts needed to prove (Witness, Proving Key, Compiled Onnx Model and SRS) you can generate a proof using the `prove` method.
+Method use in the example app [handleGenProofButton](https://github.com/zkonduit/ezkljs-engine/blob/main/app/Utils.tsx#164)
 
 ```typescript
-import { prove } from '@ezkljs/engine/web'
+import { prove, deserialize } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the 
 // generation of a proof.
@@ -388,13 +462,12 @@ export async function handleGenProofButton<T extends FileMapping>(
     result['data'],
     result['pk'],
     result['model'],
-    result['circuitSettings'],
     result['srs'],
   )
   
   const end = performance.now();  // End the timer
 
-  let proof = uint8ArrayToJsonObject(output)
+  let proof = deserialize(output)
 
   console.log(JSON.stringify(proof.proof, null, 2))
   console.log(JSON.stringify(proof.instances, null, 2))
@@ -445,8 +518,9 @@ Output:
 
 ### Verify
 
-When the proof has generated, you can verify it using the `verify` method. In addition to the proof, you will need to pass the file contents of the 
-verification key, circuit settings and srs files. If all the artifacts are  correct, the verify method will return true.
+When the proof has been generated, you can verify it using the `verify` method. In addition to the proof, you will need to pass the file contents of the 
+verification key, circuit settings and srs files. If all the artifacts are correct, the verify method will return true.
+The method used in the example app: [handleVerifyButton](https://github.com/zkonduit/ezkljs-engine/blob/main/app/Utils.tsx#276)
 
 ```typescript
 import { verify } from '@ezkljs/engine/web'
@@ -492,14 +566,14 @@ serialized field elements.
 
 
 ```typescript
-import { hash } from '@ezkljs/engine/web'
+import { hash, deserialize } from '@ezkljs/engine/web'
 
 // This is the code for the button that triggers the
 // posiedon hashing of a message.
 export async function handleGenHashButton(message: File): Promise<Uint8Array> {
   const message_hash = await readUploadedFileAsBuffer(message)
   let output = poseidonHash(message_hash)
-  let hash = uint8ArrayToJsonObject(output)
+  let hash = deserialize(output)
   console.log(JSON.stringify(hash, null, 2))
   return output
 }

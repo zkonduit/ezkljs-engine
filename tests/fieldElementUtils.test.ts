@@ -45,4 +45,10 @@ describe('Field element utils', () => {
             }
         }
     });
+    it('buffer to vec of vec u64', async() => {
+        const testString = "test";
+        const serializedString = wasmFunctions.serialize(testString);
+        const result = wasmFunctions.bufferToVecOfVecU64(serializedString);
+        expect(result).toBeInstanceOf(Uint8ClampedArray);
+    })
 });

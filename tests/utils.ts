@@ -19,26 +19,6 @@ export async function readDataFile(filename: string): Promise<Uint8ClampedArray>
     return new Uint8ClampedArray(buffer.buffer);
 }
 
-
-export function deserialize(filename: string): any {
-    return readDataFile(filename).then((uint8Array) => {
-        const string = new TextDecoder().decode(uint8Array);
-        const jsonObject = JSONBig.parse(string);
-        return jsonObject;
-    });
-}
-
-export function serialize(data: any): Uint8ClampedArray {
-    // Step 1: Stringify the Object with BigInt support
-    const jsonString = JSONBig.stringify(data);
-
-    // Step 2: Encode the JSON String
-    const uint8Array = new TextEncoder().encode(jsonString);
-
-    // Step 3: Convert to Uint8ClampedArray
-    return new Uint8ClampedArray(uint8Array.buffer);
-}
-
 /// HELPERS FOR FIELD ELEMENT UTILS TESTS
 
 // Convert an integer value in a field element

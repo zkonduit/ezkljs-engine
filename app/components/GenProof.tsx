@@ -6,7 +6,6 @@ interface GenProofProps {
     data: File | null
     pk: File | null
     model: File | null
-    circuitSettings: File | null
     srs: File | null
   }
   handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void
@@ -38,13 +37,6 @@ export default function GenProof({ files, handleFileChange }: GenProofProps) {
         type='file'
         onChange={handleFileChange}
         placeholder='model_ser'
-      />
-      <label htmlFor='circuit_settings_ser_prove'>Circuit settings:</label>
-      <input
-        id='circuit_settings_ser_prove'
-        type='file'
-        onChange={handleFileChange}
-        placeholder='circuit_settings_ser_prove'
       />
       <label htmlFor='srs_ser_prove'>SRS:</label>
       <input

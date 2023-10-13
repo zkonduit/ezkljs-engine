@@ -10,15 +10,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ezkljs/engine": "^1.27.6",
-    "@ezkljs/verify": "^0.0.4",
+    "@ezkljs/engine": "^3.0.1",
+    "@ezkljs/verify": "^0.0.7",
     "@types/file-saver": "^2.0.5",
-    "@types/json-bigint": "^1.0.1",
+    "@types/json-bigint": "^1.0.2",
     "@types/node": "20.4.5",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
-    "axios": "^1.5.0",
+    "axios": "^1.5.1",
     "env": "^0.0.2",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
@@ -36,7 +36,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.3",
-    "jest": "^29.6.3"
+    "@types/jest": "^29.5.5",
+    "jest": "^29.7.0"
   }
 }

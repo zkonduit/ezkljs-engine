@@ -13,6 +13,7 @@ describe('Generate witness, prove and verify', () => {
     let verifyTime = 0;
         
     it('prove', async () => {
+        wasmFunctions.init_panic_hook();
         let result
         let witness = await readDataFile('test.witness.json');
         let pk = await readDataFile('test.provekey');

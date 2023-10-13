@@ -55,7 +55,7 @@ export default function GenWitness({ files, handleFileChange }: GenWitnessProps)
             }}
             disabled={!Object.values(files).every((file) => file instanceof File)}
           >
-            Prove
+            Generate
           </button>
           {buffer && (
             <FileDownload

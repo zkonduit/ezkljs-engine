@@ -86,7 +86,7 @@ export default function Home() {
       sampleFiles['circuit_settings_ser_prove'] = new File([circuitSettingsSerProveBlob], "circuit_settings_ser_prove.txt");
 
       // Fetch the srs_ser_prove.txt file
-      const srsSerProveResponse = await fetch('/data/mnist/srs-10');
+      const srsSerProveResponse = await fetch('/data/mnist/srs-5');
       const srsSerProveBlob: Blob = await srsSerProveResponse.blob();
       sampleFiles['srs_ser_prove'] = new File([srsSerProveBlob], "srs_ser_prove.txt");
 
@@ -106,7 +106,7 @@ export default function Home() {
       sampleFiles['circuit_settings_ser_verify'] = new File([circuitSettingsSerVerifyBlob], "circuit_settings_ser_verify.txt");
 
       // Fetch the srs_ser_verify.txt file
-      const srsSerVerifyResponse = await fetch('/data/mnist/srs-10');
+      const srsSerVerifyResponse = await fetch('/data/mnist/srs-5');
       const srsSerVerifyBlob: Blob = await srsSerVerifyResponse.blob();
       sampleFiles['srs_ser_verify'] = new File([srsSerVerifyBlob], "srs_ser_verify.txt");
     } else {
@@ -136,7 +136,7 @@ export default function Home() {
       sampleFiles['srs_ser_prove'] = new File([srsSerProveBlob], "srs_ser_prove.txt");
   
       // Fetch the proof_js.txt file
-      const proofJsResponse = await fetch('/data/test.proof');
+      const proofJsResponse = await fetch('/data/proof.pf');
       const proofJsBlob: Blob = await proofJsResponse.blob();
       sampleFiles['proof_js'] = new File([proofJsBlob], "proof_js.txt");
   
@@ -162,7 +162,7 @@ export default function Home() {
     sampleFiles['message_hash'] = new File([messageHashBlob], "message_hash.txt");
 
     // Fetch the proof_evm.txt file
-    const proofEvmResponse = await fetch('/data/test.pf');
+    const proofEvmResponse = await fetch('/data/proof.pf');
     const proofEvmBlob: Blob = await proofEvmResponse.blob();
     sampleFiles['proof_evm'] = new File([proofEvmBlob], "proof_evm.txt");
     

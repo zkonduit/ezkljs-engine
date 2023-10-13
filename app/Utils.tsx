@@ -295,75 +295,17 @@ export async function handleVerifyButton<T extends FileMapping>(
   }
 }
 
-interface Snark {
-  instances: Array<Array<Array<string>>>
-  proof: Uint8Array
-}
-
-function byteToHex(byte: number) {
-  // convert the possibly signed byte (-128 to 127) to an unsigned byte (0 to 255).
-  // if you know, that you only deal with unsigned bytes (Uint8Array), you can omit this line
-  const unsignedByte = byte & 0xff;
-
-  // If the number can be represented with only 4 bits (0-15), 
-  // the hexadecimal representation of this number is only one char (0-9, a-f). 
-  if (unsignedByte < 16) {
-    return '0' + unsignedByte.toString(16);
-  } else {
-    return unsignedByte.toString(16);
-  }
-}
-
-// bytes is an typed array (Int8Array or Uint8Array)
-function toHexString(bytes: Uint8Array | Int8Array): string {
-  // Since the .map() method is not available for typed arrays, 
-  // we will convert the typed array to an array using Array.from().
-  return Array.from(bytes)
-    .map(byte => byteToHex(byte))
-    .join('');
-}
-
-function parseProof(proofBuffer: Uint8ClampedArray): [string[], string] {
-  let proofFileContent: string = new TextDecoder().decode(proofBuffer);
-  // Parse it into Snark object using JSONBig
-  const proof: Snark = JSONBig.parse(proofFileContent)
-  console.log(proof.instances)
-  // Parse instances to public inputs
-  const instances: string[][] = []
-
-  for (const val of proof.instances) {
-    const inner_array: string[] = []
-    for (const inner of val) {
-      const u64sString = JSONBig.stringify(inner);
-      console.log('u64String', u64sString);
-      const u64sSer = new TextEncoder().encode(u64sString);
-      const u64sSerClamped = new Uint8ClampedArray(u64sSer.buffer);
-      let hexFieldElement = vecU64ToFelt(u64sSerClamped)
-      inner_array.push(hexFieldElement)
-    }
-    instances.push(inner_array)
-  }
-
-  const publicInputs = instances.flat()
-  const proofString = toHexString(proof.proof)
-  return [publicInputs, '0x' + proofString]
-}
-
-
 export async function handleEvmVerifyButton<T extends FileMapping>(
   files: T,
   evmVersion: Hardfork
 ): Promise<VerifyResult> {
   const result = await convertFilesToFilesSer(files)
   console.log("evmVersion", evmVersion)
-  // Parse proof file into public inputs and proof (the types the evm verifier expects)
-  let [pubInputs, proof] = parseProof(result['proof']) 
 
   const start = performance.now();  // Start the timer
 
   let output = await localEVMVerify(
-    proof,
-    pubInputs,
+    result['proof'],
     new TextDecoder().decode(result['bytecodeVerifier']),
     evmVersion
   )

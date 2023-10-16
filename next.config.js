@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // webpack: (config) => {
+    //   config.resolve.alias['@ezkljs/verify'] = '@ezkljs/verify/dist/esm/index.js';
+    //   return config;
+    // },
     async headers() {
       return [
         {

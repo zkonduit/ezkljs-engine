@@ -1,5 +1,8 @@
 import { useState, ChangeEvent } from 'react'
-import { handleGenProofButton, FileDownload } from '../Utils'
+import { 
+    handleGenProofButton, 
+    FileDownload 
+} from '../Utils'
 
 interface GenProofProps {
   files: {

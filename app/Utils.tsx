@@ -6,11 +6,11 @@ import {
   prove, 
   poseidonHash, 
   verify,
-  vecU64ToFelt,
   genWitness ,
   deserialize
 } from '@ezkljs/engine/web'
-import localEVMVerify, { Hardfork } from '@ezkljs/verify'
+import localEVMVerify from '@ezkljs/verify'
+import { Hardfork } from '@ezkljs/verify'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import JSONBig from 'json-bigint'
@@ -83,6 +83,29 @@ export function FileDownload({
   }, [buffer, fileName, handleDownloadCompleted])
 
   return <a ref={linkRef} style={{ display: 'none' }} />
+}
+
+export function handleFileDownload(fileName: string, buffer: Uint8Array) {
+  // Create a blob from the buffer
+  const blob = new Blob([buffer], { type: 'application/octet-stream' });
+
+  // Create an Object URL from the blob
+  const url = window.URL.createObjectURL(blob);
+
+  // Create an anchor element for the download
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+
+  // Trigger the download by simulating a click on the anchor element
+  a.click();
+
+  // Remove the anchor element after download
+  document.body.removeChild(a);
+
+  // Free up the Object URL
+  window.URL.revokeObjectURL(url);
 }
 
 export function ElgamalZipFileDownload({
@@ -163,7 +186,7 @@ interface Uint8ArrayResult {
 
 export async function handleGenProofButton<T extends FileMapping>(
   files: T,
-): Promise<Uint8ArrayResult> {
+) {
   const result = await convertFilesToFilesSer(files)
 
   const start = performance.now();  // Start the timer
@@ -178,7 +201,7 @@ export async function handleGenProofButton<T extends FileMapping>(
   const end = performance.now();  // End the timer
 
   return {
-    output: output,
+    output,
     executionTime: end - start
   }
 }

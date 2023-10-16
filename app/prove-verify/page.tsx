@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { formDataSchema } from './parsers'
 import { parse, stringify } from "json-bigint";
 
-type Utils = typeof import("/Users/ethancemer/Documents/development/ezkljs-engine/app/Utils")
+type Utils = typeof import("../Utils")
 type Engine = typeof import("@ezkljs/engine/web/ezkl")
 
 interface Proof {

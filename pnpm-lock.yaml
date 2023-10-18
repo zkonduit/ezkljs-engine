@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@ezkljs/engine':
-    specifier: ^3.0.1
-    version: 3.0.1
+    specifier: ^3.2.1
+    version: 3.2.1
   '@ezkljs/verify':
     specifier: ^0.0.7
     version: 0.0.7
@@ -775,6 +775,13 @@ packages:
 
   /@ezkljs/engine@3.0.1:
     resolution: {integrity: sha512-r7W5m0hNAi3papK/YaRJvXDBLZhnzs6L3bVV388kmliwQg/6Hi1FgP10OQvgK5tbYwD8vc29YjWmhcZD7Y2+gA==}
+    dependencies:
+      '@types/json-bigint': 1.0.2
+      json-bigint: 1.0.0
+    dev: false
+
+  /@ezkljs/engine@3.2.1:
+    resolution: {integrity: sha512-3gjjVz/D9JT8f4gqvk5JGJp4vm6DZvyGtB+xFmhxeJyFL2gRnVICrvnCGE/yHCWW4lSVtzvkvYaRikEYgDoZeA==}
     dependencies:
       '@types/json-bigint': 1.0.2
       json-bigint: 1.0.0

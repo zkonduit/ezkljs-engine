@@ -11,36 +11,40 @@ describe('Field element utils', () => {
     it('field serialization round trip fuzzing', async() => {
         const numRuns = 10; 
         for(let i = 0; i < numRuns; i++) {
-            // Get a randome z-score value for testing 
+            // Get a random z-score value for testing 
             const floatingPoint = randomZScore();
             // Max scale used in the calibrate method on the main ezkl repo. 
             const maxScale = 16;
             for(let j = 0; j <= maxScale; j++) {
                 const scale = j;
-                // Convert floating point to fixed point integer valu 
+                // Convert floating point to fixed point integer value
                 const integer = Math.round(floatingPoint*(1<<scale));
 
                 const floatingPointRoundTrip = integer/(1<<scale);
 
+                console.debug("Test floating point value", floatingPoint)
+                console.debug("Test scale (multiply floating point by 2^scale then rounding to get integer fixed point)", scale)
+                console.debug("Test integer (fixed point) value", integer);
+
                 const U64sSer = wasmFunctions.floatToVecU64(floatingPoint, scale);
                 let U64sOutput = uint8ArrayToJsonObject(new Uint8Array(U64sSer.buffer));
                 U64sOutput = U64sOutput.map((x: bigint) => x.toString());
-                console.debug("U64 output", U64sOutput);
-                expect(U64sSer).toBeInstanceOf(Uint8ClampedArray);
+                if (i == 0 && j == 0) console.debug("Float to U64 output", U64sOutput);
 
                 const result2 = wasmFunctions.vecU64ToFloat(U64sSer, scale) + 0;
-                console.debug("Vec u64s to float output", result2);
+                if (i == 0 && j == 0) console.debug("Vec u64s to float output", result2);
+                // Using toBeCloseTo instead of toBe because of floating point precision loss
                 expect(result2).toBeCloseTo(floatingPointRoundTrip);
 
                 const result3 = wasmFunctions.vecU64ToInt(U64sSer);
                 let integerOutput = uint8ArrayToJsonObject(new Uint8Array(result3.buffer));
-                console.debug("Vec u64s to integer output",integerOutput);
+                if (i == 0 && j == 0) console.debug("Vec u64s to integer output",integerOutput);
                 expect(integerOutput).toBeCloseTo(integer);
 
                 let feltHexOutput = wasmFunctions.vecU64ToFelt(U64sSer);
-                console.debug("Vec u64s to field element output",feltHexOutput);
+                if (i == 0 && j == 0) console.debug("Vec u64s to field element output (hex)",feltHexOutput);
                 let referenceFelt = intToFieldElement(integerOutput);
-                console.debug(referenceFelt);
+                if (i == 0 && j == 0) console.debug("Reference field element (decimal)", referenceFelt);
                 expect(BigInt(feltHexOutput)).toBe(referenceFelt);
             }
         }

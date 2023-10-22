@@ -6,11 +6,8 @@ settings:
 
 dependencies:
   '@ezkljs/engine':
-    specifier: ^3.0.1
-    version: 3.0.1
-  '@ezkljs/hub':
-    specifier: 0.0.5
-    version: 0.0.5
+    specifier: ^3.2.1
+    version: 3.2.1
   '@ezkljs/verify':
     specifier: ^0.0.7
     version: 0.0.7(bufferutil@4.0.7)(utf-8-validate@6.0.3)
@@ -1917,14 +1914,14 @@ packages:
       json-bigint: 1.0.0
     dev: false
 
-  /@ezkljs/hub@0.0.5:
-    resolution: {integrity: sha512-3/b6phIcw5NizeKbRYP8JvvFwVR+BFGRRfoCF42xhGsSkDIb8xZrG7Y5icqeeyK89VzoV6vH9kNmWKFalyPqFA==}
+  /@ezkljs/engine@3.2.1:
+    resolution: {integrity: sha512-3gjjVz/D9JT8f4gqvk5JGJp4vm6DZvyGtB+xFmhxeJyFL2gRnVICrvnCGE/yHCWW4lSVtzvkvYaRikEYgDoZeA==}
     dependencies:
+      '@types/json-bigint': 1.0.2
       json-bigint: 1.0.0
-      zod: 3.21.4
     dev: false
 
-  /@ezkljs/verify@0.0.7(bufferutil@4.0.7)(utf-8-validate@6.0.3):
+  /@ezkljs/verify@0.0.7:
     resolution: {integrity: sha512-Y93w+/BqUc13wY/c3CYirIEwQI6lregqpF5dkTLT3rbIn/vkjIEfaS2XvQhmYoyAi2LNd5TaLeZA8iC4u3bARg==}
     dependencies:
       '@ethereumjs/common': 4.0.0

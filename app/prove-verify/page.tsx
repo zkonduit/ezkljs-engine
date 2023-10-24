@@ -8,7 +8,7 @@ import {
   Spinner as _Spinner,
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { formDataSchema } from './parsers'
+import { formDataSchemaProve, formDataSchemaVerify } from './parsers'
 import { parse, stringify } from "json-bigint";
 
 type Utils = typeof import("../Utils")
@@ -26,14 +26,17 @@ function showFirstAndLast(str: string, show: number): string {
 }
 
 export default function ProveVerify() {
-  const [alert, setAlert] = useState<string>('')
-  const [warning, setWarning] = useState<string>('')
+  const [alertProof, setAlertProof] = useState<string>('')
+  const [warningProof, setWarningProof] = useState<string>('')
+  const [alertVerify, setAlertVerify] = useState<string>('')
+  const [warningVerify, setWarningVerify] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [proofResult, setProofResult] = useState('')
   const [proof, setProof] = useState<Proof>({} as Proof)
   const [buffer, setBuffer] = useState<Uint8Array | null>(null)
   const [utils, setUtils] = useState<Utils>({} as Utils)
   const [engine, setEngine] = useState<Engine>({} as Engine)
+  const [verifyResult, setVerifyResult] = useState<string>('');
 
   useEffect(() => {
     async function run() {
@@ -50,7 +53,7 @@ export default function ProveVerify() {
     run()
   })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitProve = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
 
@@ -61,17 +64,17 @@ export default function ProveVerify() {
       srs: formData.get('srs'),
     }
     // Validate form has valid inputs (zod)
-    const validatedFormInputs = formDataSchema.safeParse(formInputs)
+    const validatedFormInputs = formDataSchemaProve.safeParse(formInputs)
 
-    if (warning) setWarning('')
+    if (warningProof) setWarningProof('')
 
     if (!validatedFormInputs.success) {
-      setAlert('Please upload all files')
+      setAlertProof('Please upload all files')
       return
     }
 
     // Clear alert and warning
-    if (alert) setAlert('')
+    if (alertProof) setAlertProof('')
 
     // Missing data
     if (
@@ -80,7 +83,7 @@ export default function ProveVerify() {
       validatedFormInputs.data.compiled_onnx === null ||
       validatedFormInputs.data.srs === null
     ) {
-      setAlert('Please upload all files')
+      setAlertProof('Please upload all files')
       return
     }
 
@@ -109,9 +112,7 @@ export default function ProveVerify() {
         // Deseralize proof buffer
         // TODO - uncomment this line once a new engine bundle is relased
         // with patch to web based serialize/deserialize methods.
-        // const proof = engine.deserialize(output)
-        const string = new TextDecoder().decode(output);
-        const proof = parse(string);
+        const proof = engine.deserialize(output)
         console.log("proof", proof)
         let prooObj: Proof = {
           proof: proof.proof.toString(),
@@ -121,7 +122,67 @@ export default function ProveVerify() {
       })
       .catch((error) => {
         console.error('An error occurred:', error)
-        setWarning(`Proof generation failed: ${error}`)
+        setWarningProof(`Proof generation failed: ${error}`)
+      })
+
+    setLoading(false)
+  }
+  const handleSubmitVerify = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+
+    const formInputs = {
+      proof: formData.get('proof'),
+      vk: formData.get('vk'),
+      settings: formData.get('settings'),
+      srs: formData.get('srs'),
+    }
+    // Validate form has valid inputs (zod)
+    const validatedFormInputs = formDataSchemaVerify.safeParse(formInputs)
+
+    if (warningProof) setWarningVerify('')
+
+    if (!validatedFormInputs.success) {
+      setAlertVerify('Please upload all files')
+      return
+    }
+
+    // Clear alert and warning
+    if (alertProof) setAlertVerify('')
+
+    // Missing data
+    if (
+      validatedFormInputs.data.proof === null ||
+      validatedFormInputs.data.vk === null ||
+      validatedFormInputs.data.settings === null ||
+      validatedFormInputs.data.srs === null
+    ) {
+      setAlertVerify('Please upload all files')
+      return
+    }
+
+    setLoading(true)
+
+    // create file object
+    const files = {
+      proof: validatedFormInputs.data.proof,
+      vk: validatedFormInputs.data.vk,
+      settings: validatedFormInputs.data.settings,
+      srs: validatedFormInputs.data.srs
+    }
+    /* ================== ENGINE API ====================== */
+    utils.handleVerifyButton(files as { [key: string]: File })
+      .then(({ output, executionTime }) => {
+        // Update result based on the outcome
+        setVerifyResult(
+          output
+            ? 'Verification successful. Execution time: ' + executionTime + ' ms'
+            : 'Verification failed'
+        )
+      })
+      .catch((error) => {
+        console.error('An error occurred:', error)
+        setWarningVerify(`Verification process failed with an error: ${error}`)
       })
 
     setLoading(false)
@@ -129,8 +190,8 @@ export default function ProveVerify() {
 
 
   return (
-    <div className='flex justify-center h-5/6 pb-20'>
-      {buffer && !warning ? (
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+      {buffer && !warningProof ? (
         <div className='w-10/12 flex flex-col'>
           <h1 className='text-2xl mb-6 '>{proofResult}</h1>
           <p className='break-words'>
@@ -151,19 +212,34 @@ export default function ProveVerify() {
               className="w-1/2"
               onClick={() => setBuffer(null)}
             >
-              Generate a new proof
+              Go back
+            </Button>
+          </div>
+        </div>
+      ) : verifyResult && !warningVerify ? (
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{verifyResult}</h1>
+          <div className="flex w-full justify-center">
+            <Button
+              className="w-1/2"
+              onClick={() => setVerifyResult("")}
+            >
+              Go back
             </Button>
           </div>
         </div>
       ) : loading ? (
         <Spinner />
       ) : (
-        <ProvingArtifactForm handleSubmit={handleSubmit} alert={alert} warning={warning} />
+        <div className='flex justify-between w-full items-stretch space-x-8'>
+          <ProvingArtifactForm handleSubmit={handleSubmitProve} alert={alertProof} warning={warningProof} />
+          <VerifyingArtifactForm handleSubmit={handleSubmitVerify} alert={alertVerify} warning={warningVerify} />
+        </div>
+
       )}
     </div>
   );
 }
-
 // UI Component
 function Spinner() {
   return (
@@ -184,7 +260,7 @@ function ProvingArtifactForm({
 }) {
   return (
     <div className='flex flex-col'>
-      <h1 className='text-2xl mb-6 '>Submit Proving Artifacts</h1>
+      <h1 className='text-2xl mb-6 '>Proving</h1>
       {alert && (
         <Alert color='info' className='mb-6'>
           {alert}
@@ -237,6 +313,75 @@ function ProvingArtifactForm({
         </div>
         <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Proof
+        </Button>
+      </form>
+    </div>
+  )
+}
+function VerifyingArtifactForm({
+  handleSubmit,
+  alert,
+  warning
+}: {
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  alert: string
+  warning: string
+}) {
+  return (
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Verifying</h1>
+      {alert && (
+        <Alert color='info' className='mb-6'>
+          {alert}
+        </Alert>
+      )}
+      {warning && (
+        <Alert color='warning' className='mb-6'>
+          {warning}
+        </Alert>
+      )}
+      <form
+        onSubmit={handleSubmit}
+        className='flex flex-col flex-grow  justify-between'
+      >
+        {/* PROOF */}
+        <div>
+          <Label color="white" htmlFor='proof' value='Select Proof File' />
+          <FileInput
+            id='proof'
+            name='proof'
+            className='my-4'
+          />
+        </div>
+        {/* SETTINGS */}
+        <div>
+          <Label color="white" htmlFor='settings' value='Select Settings File' />
+          <FileInput
+            id='settings'
+            name='settings'
+            className='my-4'
+          />
+        </div>
+        {/* VK */}
+        <div>
+          <Label color="white" htmlFor='vk' value='Select VK File' />
+          <FileInput
+            id='vk'
+            name='vk'
+            className='my-4'
+          />
+        </div>
+        {/* SRS */}
+        <div>
+          <Label color="white" htmlFor='srs' value='Select SRS File' />
+          <FileInput
+            id='srs'
+            name='srs'
+            className='my-4'
+          />
+        </div>
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
+          Verify
         </Button>
       </form>
     </div>

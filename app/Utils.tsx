@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react'
-import { 
+import {
   elgamalGenRandom,
   elgamalEncrypt,
   elgamalDecrypt,
-  prove, 
-  poseidonHash, 
+  prove,
+  poseidonHash,
   verify,
-  genWitness ,
+  genWitness,
   deserialize
 } from '@ezkljs/engine/web'
 import localEVMVerify from '@ezkljs/verify'
@@ -136,8 +136,8 @@ export function ElgamalZipFileDownload({
         zip.file('sk.txt', JSONBig.stringify(elgamalVar.sk))
 
         // Generate the zip file asynchronously
-        const content = await zip.generateAsync({type:"blob"})
-        
+        const content = await zip.generateAsync({ type: "blob" })
+
         saveAs(content, fileName)
 
         // Notify the parent component that the download operation is complete
@@ -197,7 +197,7 @@ export async function handleGenProofButton<T extends FileMapping>(
     result['model'],
     result['srs'],
   )
-  
+
   const end = performance.now();  // End the timer
 
   return {
@@ -263,7 +263,7 @@ export async function handleGenWitnessButton<T extends FileMapping>(
 
   let witness = deserialize(output)
 
-  console.log(JSON.stringify(witness, null, 2))  
+  console.log(JSON.stringify(witness, null, 2))
 
   const end = performance.now();  // End the timer
 
@@ -283,7 +283,7 @@ interface HashResult {
 export async function handleGenHashButton(message: File): Promise<HashResult> {
   const message_hash = await readUploadedFileAsBuffer(message)
   const start = performance.now();  // Start the timer
-  const output =  poseidonHash(message_hash)
+  const output = poseidonHash(message_hash)
   const end = performance.now();  // End the timer
   return {
     output: output,
@@ -306,7 +306,7 @@ export async function handleVerifyButton<T extends FileMapping>(
   let output = verify(
     result['proof'],
     result['vk'],
-    result['circuitSettings'],
+    result['settings'],
     result['srs'],
   )
 
@@ -342,7 +342,7 @@ export async function handleEvmVerifyButton<T extends FileMapping>(
 }
 
 function stringToUint8Array(str: string): Uint8Array {
-  const encoder = new TextEncoder(); 
+  const encoder = new TextEncoder();
   const uint8Array = encoder.encode(str);
   return uint8Array;
 }

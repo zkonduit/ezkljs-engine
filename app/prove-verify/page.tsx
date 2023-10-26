@@ -9,11 +9,8 @@ import {
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchemaProve, formDataSchemaVerify } from './parsers'
-import { parse, stringify } from "json-bigint";
-
-type Utils = typeof import("../Utils")
-type Engine = typeof import("@ezkljs/engine/web/ezkl")
-
+import { stringify } from "json-bigint";
+import { useSharedResources } from '../EngineContext';
 interface Proof {
   proof: string;
   instances: string;
@@ -26,6 +23,7 @@ function showFirstAndLast(str: string, show: number): string {
 }
 
 export default function ProveVerify() {
+  const { engine, utils } = useSharedResources();
   const [alertProof, setAlertProof] = useState<string>('')
   const [warningProof, setWarningProof] = useState<string>('')
   const [alertVerify, setAlertVerify] = useState<string>('')
@@ -34,24 +32,7 @@ export default function ProveVerify() {
   const [proofResult, setProofResult] = useState('')
   const [proof, setProof] = useState<Proof>({} as Proof)
   const [buffer, setBuffer] = useState<Uint8Array | null>(null)
-  const [utils, setUtils] = useState<Utils>({} as Utils)
-  const [engine, setEngine] = useState<Engine>({} as Engine)
   const [verifyResult, setVerifyResult] = useState<string>('');
-
-  useEffect(() => {
-    async function run() {
-      // Initialize the WASM module
-      const engine = await import("@ezkljs/engine/web/ezkl");
-      setEngine(engine)
-      await engine.default(undefined, new WebAssembly.Memory({ initial: 20, maximum: 4096, shared: true }))
-      // For human readable wasm debug errors call this function
-      engine.init_panic_hook()
-      // Initialize the utils module
-      const utils = await import("../Utils");
-      setUtils(utils)
-    }
-    run()
-  })
 
   const handleSubmitProve = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

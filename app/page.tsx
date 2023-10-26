@@ -11,7 +11,7 @@ export default function Home() {
         making it easy to integrate ZKML in any javascript project.
       </p>
       <p>
-        Our simple, yet powerful APIs allow you to encyrpt, hash, prove and 
+        Our simple, yet powerful APIs allow you to encyrpt, hash, prove and
         verify ML inferences in a variety of ways.
       </p>
     </main>

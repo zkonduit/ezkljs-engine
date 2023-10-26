@@ -9,15 +9,16 @@ import {
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchemaEncrypt, formDataSchemaDecrypt } from './parsers'
-import { parse, stringify } from "json-bigint";
+import { stringify } from "json-bigint";
+import { useSharedResources } from '../EngineContext';
 
 type Utils = typeof import("../Utils")
-type Engine = typeof import("@ezkljs/engine/web/ezkl")
 
 type Cipher = number[][][]
 type DecryptedCipher = number[][]
 
 export default function Encryption() {
+    const { engine, utils } = useSharedResources();
     const [alertEncrypt, setAlertEncrypt] = useState<string>('')
     const [warningEncrypt, setWarningEncrypt] = useState<string>('')
     const [alertDecrypt, setAlertDecrypt] = useState<string>('')
@@ -28,24 +29,7 @@ export default function Encryption() {
     const [bufferCipher, setBufferCipher] = useState<Uint8Array | null>(null)
     const [bufferDecrypt, setBufferDecrypt] = useState<Uint8Array | null>(null)
     const [decrypted, setDecrypted] = useState<DecryptedCipher>([] as DecryptedCipher)
-    const [utils, setUtils] = useState<Utils>({} as Utils)
-    const [engine, setEngine] = useState<Engine>({} as Engine)
     const [decryptResult, setDecryptResult] = useState('');
-
-    useEffect(() => {
-        async function run() {
-            // Initialize the WASM module
-            const engine = await import("@ezkljs/engine/web/ezkl");
-            setEngine(engine)
-            await engine.default(undefined, new WebAssembly.Memory({ initial: 20, maximum: 4096, shared: true }))
-            // For human readable wasm debug errors call this function
-            engine.init_panic_hook()
-            // Initialize the utils module
-            const utils = await import("../Utils");
-            setUtils(utils)
-        }
-        run()
-    })
 
     const handleSubmitEncryption = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

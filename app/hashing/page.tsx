@@ -9,38 +9,19 @@ import {
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchema } from './parsers'
-import { parse, stringify } from "json-bigint";
-import { number } from 'zod';
-
-type Utils = typeof import("../Utils")
-type Engine = typeof import("@ezkljs/engine/web/ezkl")
+import { stringify } from "json-bigint";
+import { useSharedResources } from '../EngineContext';
 
 type Hash = number[][][]
 
 export default function Hashing() {
+  const { engine, utils } = useSharedResources();
   const [alert, setAlert] = useState<string>('')
   const [warning, setWarning] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [hash, setHash] = useState<Hash>([] as Hash)
   const [hashResult, setHashResult] = useState<string>('')
   const [buffer, setBuffer] = useState<Uint8ClampedArray | null>(null)
-  const [utils, setUtils] = useState<Utils>({} as Utils)
-  const [engine, setEngine] = useState<Engine>({} as Engine)
-
-  useEffect(() => {
-    async function run() {
-      // Initialize the WASM module
-      const engine = await import("@ezkljs/engine/web/ezkl");
-      setEngine(engine)
-      await engine.default(undefined, new WebAssembly.Memory({ initial: 20, maximum: 4096, shared: true }))
-      // For human readable wasm debug errors call this function
-      engine.init_panic_hook()
-      // Initialize the utils module
-      const utils = await import("../Utils");
-      setUtils(utils)
-    }
-    run()
-  })
 
   const handleSubmitHashing = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

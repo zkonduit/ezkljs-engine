@@ -140,7 +140,7 @@ export default function ProveVerify() {
     // Validate form has valid inputs (zod)
     const validatedFormInputs = formDataSchemaVerify.safeParse(formInputs)
 
-    if (warningProof) setWarningVerify('')
+    if (warningVerify) setWarningVerify('')
 
     if (!validatedFormInputs.success) {
       setAlertVerify('Please upload all files')
@@ -148,7 +148,7 @@ export default function ProveVerify() {
     }
 
     // Clear alert and warning
-    if (alertProof) setAlertVerify('')
+    if (alertVerify) setAlertVerify('')
 
     // Missing data
     if (

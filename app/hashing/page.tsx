@@ -17,7 +17,7 @@ type Engine = typeof import("@ezkljs/engine/web/ezkl")
 
 type Hash = number[][][]
 
-export default function ProveVerify() {
+export default function Hashing() {
   const [alert, setAlert] = useState<string>('')
   const [warning, setWarning] = useState<string>('')
   const [loading, setLoading] = useState(false)
@@ -83,15 +83,9 @@ export default function ProveVerify() {
             ? `Hash generation successful. Execution time: ${executionTime} ms`
             : "Hash generation failed"
         )
-        // Deseralize proof buffer
-        // TODO - uncomment this line once a new engine bundle is relased
-        // with patch to web based serialize/deserialize methods.
-        // const proof = engine.deserialize(output)
-        const string = new TextDecoder().decode(output);
-        const hash = parse(string);
+        const hash = engine.deserialize(output)
         console.log("hash", hash)
         setHash(hash);
-        console.log("hashhah", hash)
       })
       .catch((error) => {
         console.error('An error occurred:', error)

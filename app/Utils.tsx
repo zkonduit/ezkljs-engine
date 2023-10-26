@@ -108,48 +108,33 @@ export function handleFileDownload(fileName: string, buffer: Uint8Array) {
   window.URL.revokeObjectURL(url);
 }
 
-export function ElgamalZipFileDownload({
-  fileName,
-  buffer,
-  handleDownloadCompleted,
-}: FileDownloadProps) {
-  const linkRef = useRef<HTMLAnchorElement | null>(null)
+export function ElgamalZipFileDownload(fileName: string, buffer: Uint8Array) {
 
-  useEffect(() => {
-    if (!buffer) {
-      return
+  const blob = new Blob([buffer], { type: 'application/octet-stream' })
+  const reader = new FileReader()
+
+  reader.onloadend = async () => {
+    const base64data = reader.result
+
+    if (typeof base64data === 'string') {
+      const elgamalVar = JSONBig.parse(atob(base64data.split(',')[1]))
+
+      // Create a new Zip file
+      var zip = new JSZip()
+      zip.file('pk.txt', JSONBig.stringify(elgamalVar.pk))
+      zip.file('r.txt', JSONBig.stringify(elgamalVar.r))
+      zip.file('sk.txt', JSONBig.stringify(elgamalVar.sk))
+
+      // Generate the zip file asynchronously
+      const content = await zip.generateAsync({ type: "blob" })
+
+      saveAs(content, fileName)
+
     }
+  }
 
-    const blob = new Blob([buffer], { type: 'application/octet-stream' })
-    const reader = new FileReader()
-
-    reader.onloadend = async () => {
-      const base64data = reader.result
-
-      if (typeof base64data === 'string') {
-        const elgamalVar = JSONBig.parse(atob(base64data.split(',')[1]))
-
-        // Create a new Zip file
-        var zip = new JSZip()
-        zip.file('pk.txt', JSONBig.stringify(elgamalVar.pk))
-        zip.file('r.txt', JSONBig.stringify(elgamalVar.r))
-        zip.file('sk.txt', JSONBig.stringify(elgamalVar.sk))
-
-        // Generate the zip file asynchronously
-        const content = await zip.generateAsync({ type: "blob" })
-
-        saveAs(content, fileName)
-
-        // Notify the parent component that the download operation is complete
-        handleDownloadCompleted()
-      }
-    }
-
-    // Convert the Blob to a Data URL
-    reader.readAsDataURL(blob)
-  }, [buffer, fileName, handleDownloadCompleted])
-
-  return <a ref={linkRef} style={{ display: 'none' }} />
+  // Convert the Blob to a Data URL
+  reader.readAsDataURL(blob)
 }
 
 type FileMapping = {

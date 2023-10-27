@@ -30,9 +30,9 @@ export const SharedResourcesProvider: React.FC<SharedResourcesProviderProps> = (
     useEffect(() => {
         async function initializeResources() {
             // Initialize the WASM module
-            const engine = await import("@ezkljs/engine/web/ezkl");
+            const engine = await import("@ezkljs/engine/web/ezkl.js");
             setEngine(engine)
-            await engine.default(undefined, new WebAssembly.Memory({ initial: 20, maximum: 4096, shared: true }))
+            await (engine as any).default(undefined, new WebAssembly.Memory({ initial: 20, maximum: 4096, shared: true }))
             // For human readable wasm debug errors call this function
             engine.init_panic_hook()
             // Initialize the utils module

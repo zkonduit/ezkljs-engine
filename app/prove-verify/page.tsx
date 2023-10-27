@@ -97,7 +97,7 @@ export default function ProveVerify() {
         console.log("proof", proof)
         let prooObj: Proof = {
           proof: proof.proof.toString(),
-          instances: stringify(proof.instances, null, 4)
+          instances: proof.instances.toString()
         }
         setProof(prooObj);
       })
@@ -176,14 +176,20 @@ export default function ProveVerify() {
         <div className='w-10/12 flex flex-col'>
           <h1 className='text-2xl mb-6 '>{proofResult}</h1>
           <p className='break-words'>
-            Proof string: {showFirstAndLast(proof.proof, 10)}
+            Proof string:
           </p>
-          <p className='break-words'>
-            Instances: {proof.instances}
+          <div className='mt-4 p-4 bg-black-100 rounded border'>
+            <pre className='whitespace-pre-wrap'>{showFirstAndLast(proof.proof, 10)}</pre>
+          </div>
+          <p className='break-words pt-5'>
+            Instances:
           </p>
-          <div className="flex w-full justify-center">
+          <div className='mt-4 p-4 bg-black-100 rounded border'>
+            <pre className='whitespace-pre-wrap'>{showFirstAndLast(proof.instances, 10)}</pre>
+          </div>
+          <div className="flex w-full justify-center pt-7">
             <Button
-              className="w-1/2 mr-2"
+              className="w-1/2 mr-6"
               type='submit'
               onClick={() => utils.handleFileDownload('test.pf', buffer)}
             >

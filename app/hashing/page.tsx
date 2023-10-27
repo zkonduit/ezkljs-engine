@@ -83,11 +83,14 @@ export default function Hashing() {
         <div className='w-10/12 flex flex-col'>
           <h1 className='text-2xl mb-6 '>{hashResult}</h1>
           <p className='break-words'>
-            Hash: {stringify(hash)}
+            Hash:
           </p>
-          <div className="flex w-full justify-center">
+          <div className='mt-4 p-4 bg-black-100 rounded border'>
+            <pre className='whitespace-pre-wrap'>{stringify(hash, null, 6)}</pre>
+          </div>
+          <div className="flex w-full justify-center pt-5">
             <Button
-              className="w-1/2 mr-2"
+              className="w-1/2 mr-3"
               type='submit'
               onClick={() => utils.handleFileDownload('hash.txt', new Uint8Array(buffer.buffer))}
             >

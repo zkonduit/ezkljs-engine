@@ -17,6 +17,11 @@ type Utils = typeof import("../Utils")
 type Cipher = number[][][]
 type DecryptedCipher = number[][]
 
+function showFirstAndLast(str: string, show: number): string {
+    if (str.length <= show * 2) return str // If the string is already 10 characters or fewer, return it as is.
+    return str.slice(0, show) + ' . . . ' + str.slice(-show)
+}
+
 export default function Encryption() {
     const { engine, utils } = useSharedResources();
     const [alertEncrypt, setAlertEncrypt] = useState<string>('')
@@ -164,11 +169,14 @@ export default function Encryption() {
                 <div className='w-10/12 flex flex-col'>
                     <h1 className='text-2xl mb-6 '>{cipherResult}</h1>
                     <p className='break-words'>
-                        Cipher: {stringify(cipher, null, 6)}
+                        Cipher:
                     </p>
-                    <div className="flex w-full justify-center">
+                    <div className='mt-4 p-4 bg-black-100 rounded border'>
+                        <pre className='whitespace-pre-wrap'>{showFirstAndLast(stringify(cipher), 40)}</pre>
+                    </div>
+                    <div className="flex w-full justify-center pt-5">
                         <Button
-                            className="w-1/2 mr-2"
+                            className="w-1/2 mr-4"
                             type='submit'
                             onClick={() => utils.handleFileDownload('cipher.txt', bufferCipher)}
                         >
@@ -186,11 +194,14 @@ export default function Encryption() {
                 <div className='w-10/12 flex flex-col'>
                     <h1 className='text-2xl mb-6 '>{decryptResult}</h1>
                     <p className='break-words'>
-                        Decrypted Cipher: {stringify(decrypted)}
+                        Decrypted Cipher:
                     </p>
-                    <div className="flex w-full justify-center">
+                    <div className='mt-4 p-4 bg-black-100 rounded border'>
+                        <pre className='whitespace-pre-wrap'>{stringify(decrypted, null, 5)}</pre>
+                    </div>
+                    <div className="flex w-full justify-center pt-5">
                         <Button
-                            className="w-1/2 mr-2"
+                            className="w-1/2 mr-4"
                             type='submit'
                             onClick={() => utils.handleFileDownload('decrypted.txt', bufferDecrypt)}
                         >

@@ -15,9 +15,8 @@ export default function EvmVerify({ files, handleFileChange }: EvmVerifyProps) {
     const [selectedVersion, setSelectedVersion] = useState<Hardfork>(Hardfork.Istanbul);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const selectedValue = e.target.value as Hardfork;
-      setSelectedVersion(selectedValue);
-
+        const selectedValue = e.target.value as Hardfork;
+        setSelectedVersion(selectedValue);
     };
 
     return (

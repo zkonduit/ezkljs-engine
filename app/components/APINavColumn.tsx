@@ -43,9 +43,8 @@ export default function APINavColumn() {
         </div>
         {/* Narrow Screen SideNav */}
         <div
-          className={`${
-            open ? 'translate-x-0' : 'translate-x-[-16rem]'
-          } fixed inset-0 z-[200] bg-white border-r-2 border-slate-300 w-64 transition-transform ease-in-out duration-300 md:hidden`}
+          className={`${open ? 'translate-x-0' : 'translate-x-[-16rem]'
+            } fixed inset-0 z-[200] bg-white border-r-2 border-slate-300 w-64 transition-transform ease-in-out duration-300 md:hidden`}
         >
           <div className='h-16 border-b-2 border-slate-300 items-center flex'>
             <FontAwesomeIcon
@@ -57,11 +56,10 @@ export default function APINavColumn() {
           <NavList />
         </div>
         <div
-          className={`${
-            open
+          className={`${open
               ? 'bg-opacity-50 md:hidden bg-gray-700'
               : 'bg-opacity-10 hidden bg-gray-300'
-          } transition-all ease-in-out duration-700 fixed inset-0 z-[150] `}
+            } transition-all ease-in-out duration-700 fixed inset-0 z-[150] `}
           onClick={() => setOpen(false)}
         />
       </div>

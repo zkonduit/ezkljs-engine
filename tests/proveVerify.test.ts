@@ -1,7 +1,7 @@
 import * as wasmFunctions from '@ezkljs/engine/nodejs';
-import { 
+import {
     readDataFile,
- } from './utils';
+} from './utils';
 import JSONBig from 'json-bigint';
 import { deserialize } from '@ezkljs/engine/nodejs';
 
@@ -22,7 +22,7 @@ describe('Generate witness, prove and verify', () => {
         wasmFunctions.init_panic_hook();
     });
 
-    it ('generate witness', async () => {
+    it('generate witness', async () => {
         // Read in the input and compiled circuit as a Uint8ClampedArray (serialized format)
         input_ser = await readDataFile('input.json');
         // Use the deserialize method to convert the non human-readable (but WASM digestable) serialized input from a Uint8ClampedArray to a JSON object
@@ -36,8 +36,8 @@ describe('Generate witness, prove and verify', () => {
         // We now need to convert the witness from a Uint8Array to Uint8ClampedArray 
         // so that it can be ingested by the genWitness binding
         witness_ser = new Uint8ClampedArray(witness.buffer);
-    }); 
-        
+    });
+
     it('prove', async () => {
         // We need to read in the proving key and srs as Uint8ClampedArrays.
         // Both of these artifacts aren't JSON serializable. 
@@ -55,7 +55,7 @@ describe('Generate witness, prove and verify', () => {
         console.log("prove time (ms)", proveTime)
     });
 
-    it('verify', async() => {
+    it('verify', async () => {
         // read in the verification key and settings files as Uint8ClampedArrays
         const vk = await readDataFile('test.key');
         let circuit_settings_ser = await readDataFile('settings.json');

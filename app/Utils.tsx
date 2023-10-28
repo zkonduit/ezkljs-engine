@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react'
-import { 
+import {
   elgamalGenRandom,
   elgamalEncrypt,
   elgamalDecrypt,
-  prove, 
-  poseidonHash, 
+  prove,
+  poseidonHash,
   verify,
-  vecU64ToFelt,
-  genWitness ,
+  genWitness,
   deserialize
 } from '@ezkljs/engine/web'
-import localEVMVerify, { Hardfork } from '@ezkljs/verify'
+import localEVMVerify from '@ezkljs/verify'
+import { Hardfork } from '@ezkljs/verify'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import JSONBig from 'json-bigint'
@@ -85,48 +85,56 @@ export function FileDownload({
   return <a ref={linkRef} style={{ display: 'none' }} />
 }
 
-export function ElgamalZipFileDownload({
-  fileName,
-  buffer,
-  handleDownloadCompleted,
-}: FileDownloadProps) {
-  const linkRef = useRef<HTMLAnchorElement | null>(null)
+export function handleFileDownload(fileName: string, buffer: Uint8Array) {
+  // Create a blob from the buffer
+  const blob = new Blob([buffer], { type: 'application/octet-stream' });
 
-  useEffect(() => {
-    if (!buffer) {
-      return
+  // Create an Object URL from the blob
+  const url = window.URL.createObjectURL(blob);
+
+  // Create an anchor element for the download
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+
+  // Trigger the download by simulating a click on the anchor element
+  a.click();
+
+  // Remove the anchor element after download
+  document.body.removeChild(a);
+
+  // Free up the Object URL
+  window.URL.revokeObjectURL(url);
+}
+
+export function ElgamalZipFileDownload(fileName: string, buffer: Uint8Array) {
+
+  const blob = new Blob([buffer], { type: 'application/octet-stream' })
+  const reader = new FileReader()
+
+  reader.onloadend = async () => {
+    const base64data = reader.result
+
+    if (typeof base64data === 'string') {
+      const elgamalVar = JSONBig.parse(atob(base64data.split(',')[1]))
+
+      // Create a new Zip file
+      var zip = new JSZip()
+      zip.file('pk.txt', JSONBig.stringify(elgamalVar.pk))
+      zip.file('r.txt', JSONBig.stringify(elgamalVar.r))
+      zip.file('sk.txt', JSONBig.stringify(elgamalVar.sk))
+
+      // Generate the zip file asynchronously
+      const content = await zip.generateAsync({ type: "blob" })
+
+      saveAs(content, fileName)
+
     }
+  }
 
-    const blob = new Blob([buffer], { type: 'application/octet-stream' })
-    const reader = new FileReader()
-
-    reader.onloadend = async () => {
-      const base64data = reader.result
-
-      if (typeof base64data === 'string') {
-        const elgamalVar = JSONBig.parse(atob(base64data.split(',')[1]))
-
-        // Create a new Zip file
-        var zip = new JSZip()
-        zip.file('pk.txt', JSONBig.stringify(elgamalVar.pk))
-        zip.file('r.txt', JSONBig.stringify(elgamalVar.r))
-        zip.file('sk.txt', JSONBig.stringify(elgamalVar.sk))
-
-        // Generate the zip file asynchronously
-        const content = await zip.generateAsync({type:"blob"})
-        
-        saveAs(content, fileName)
-
-        // Notify the parent component that the download operation is complete
-        handleDownloadCompleted()
-      }
-    }
-
-    // Convert the Blob to a Data URL
-    reader.readAsDataURL(blob)
-  }, [buffer, fileName, handleDownloadCompleted])
-
-  return <a ref={linkRef} style={{ display: 'none' }} />
+  // Convert the Blob to a Data URL
+  reader.readAsDataURL(blob)
 }
 
 type FileMapping = {
@@ -163,7 +171,7 @@ interface Uint8ArrayResult {
 
 export async function handleGenProofButton<T extends FileMapping>(
   files: T,
-): Promise<Uint8ArrayResult> {
+) {
   const result = await convertFilesToFilesSer(files)
 
   const start = performance.now();  // Start the timer
@@ -174,11 +182,11 @@ export async function handleGenProofButton<T extends FileMapping>(
     result['model'],
     result['srs'],
   )
-  
+
   const end = performance.now();  // End the timer
 
   return {
-    output: output,
+    output,
     executionTime: end - start
   }
 }
@@ -234,13 +242,13 @@ export async function handleGenWitnessButton<T extends FileMapping>(
   const start = performance.now();  // Start the timer
 
   let output = genWitness(
-    result['compiled_model'],
+    result['compiled_onnx'],
     result['input'],
   )
 
   let witness = deserialize(output)
 
-  console.log(JSON.stringify(witness, null, 2))  
+  console.log(JSON.stringify(witness, null, 2))
 
   const end = performance.now();  // End the timer
 
@@ -260,7 +268,7 @@ interface HashResult {
 export async function handleGenHashButton(message: File): Promise<HashResult> {
   const message_hash = await readUploadedFileAsBuffer(message)
   const start = performance.now();  // Start the timer
-  const output =  poseidonHash(message_hash)
+  const output = poseidonHash(message_hash)
   const end = performance.now();  // End the timer
   return {
     output: output,
@@ -283,7 +291,7 @@ export async function handleVerifyButton<T extends FileMapping>(
   let output = verify(
     result['proof'],
     result['vk'],
-    result['circuitSettings'],
+    result['settings'],
     result['srs'],
   )
 
@@ -319,7 +327,7 @@ export async function handleEvmVerifyButton<T extends FileMapping>(
 }
 
 function stringToUint8Array(str: string): Uint8Array {
-  const encoder = new TextEncoder(); 
+  const encoder = new TextEncoder();
   const uint8Array = encoder.encode(str);
   return uint8Array;
 }

@@ -3,7 +3,7 @@ import { serialize } from '@ezkljs/engine/nodejs';
 import {
     readDataFile,
 } from './utils';
-import { deserialize } from 'v8';
+import { deserialize } from '@ezkljs/engine/nodejs';
 
 describe('poseidonHash', () => {
     it('should return a Uint8Array', async () => {

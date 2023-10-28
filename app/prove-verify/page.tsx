@@ -6,15 +6,12 @@ import {
   Button,
   Alert,
   Spinner as _Spinner,
+  Modal
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchemaProve, formDataSchemaVerify } from './parsers'
 import { stringify } from "json-bigint";
 import { useSharedResources } from '../EngineContext';
-interface Proof {
-  proof: string;
-  instances: string;
-}
 
 // Truncate Proof string
 function showFirstAndLast(str: string, show: number): string {
@@ -24,13 +21,15 @@ function showFirstAndLast(str: string, show: number): string {
 
 export default function ProveVerify() {
   const { engine, utils } = useSharedResources();
+  const [openModal, setOpenModal] = useState<string | undefined>();
+  const props = { openModal, setOpenModal };
   const [alertProof, setAlertProof] = useState<string>('')
   const [warningProof, setWarningProof] = useState<string>('')
   const [alertVerify, setAlertVerify] = useState<string>('')
   const [warningVerify, setWarningVerify] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [proofResult, setProofResult] = useState('')
-  const [proof, setProof] = useState<Proof>({} as Proof)
+  const [proof, setProof] = useState({})
   const [buffer, setBuffer] = useState<Uint8Array | null>(null)
   const [verifyResult, setVerifyResult] = useState<string>('');
 
@@ -95,11 +94,7 @@ export default function ProveVerify() {
         // with patch to web based serialize/deserialize methods.
         const proof = engine.deserialize(output)
         console.log("proof", proof)
-        let prooObj: Proof = {
-          proof: proof.proof.toString(),
-          instances: proof.instances.toString()
-        }
-        setProof(prooObj);
+        setProof(proof);
       })
       .catch((error) => {
         console.error('An error occurred:', error)
@@ -175,32 +170,39 @@ export default function ProveVerify() {
       {buffer && !warningProof ? (
         <div className='w-10/12 flex flex-col'>
           <h1 className='text-2xl mb-6 '>{proofResult}</h1>
-          <p className='break-words'>
-            Proof string:
-          </p>
-          <div className='mt-4 p-4 bg-black-100 rounded border'>
-            <pre className='whitespace-pre-wrap'>{showFirstAndLast(proof.proof, 10)}</pre>
-          </div>
-          <p className='break-words pt-5'>
-            Instances:
-          </p>
-          <div className='mt-4 p-4 bg-black-100 rounded border'>
-            <pre className='whitespace-pre-wrap'>{showFirstAndLast(proof.instances, 10)}</pre>
-          </div>
           <div className="flex w-full justify-center pt-7">
             <Button
-              className="w-1/2 mr-6"
+              className="w-1/2 mr-3"
               type='submit'
               onClick={() => utils.handleFileDownload('test.pf', buffer)}
             >
               Download Proof File
             </Button>
             <Button
+              className="w-1/2 mr-3"
+              onClick={() => props.setOpenModal('default')}
+              data-modal-target="witness-modal"
+              data-modal-toggle="witness-modal"
+            >
+              Show Proof
+            </Button>
+            <Button
               className="w-1/2"
               onClick={() => setBuffer(null)}
             >
-              Go back
+              Reset
             </Button>
+            <Modal
+              show={props.openModal === 'default'}
+              onClose={() => props.setOpenModal(undefined)}
+            >
+              <Modal.Header>Proof File Content: </Modal.Header>
+              <Modal.Body className="bg-black">
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='blackspace-pre-wrap'>{stringify(proof, null, 6)}</pre>
+                </div>
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
       ) : verifyResult && !warningVerify ? (
@@ -211,7 +213,7 @@ export default function ProveVerify() {
               className="w-1/2"
               onClick={() => setVerifyResult("")}
             >
-              Go back
+              Reset
             </Button>
           </div>
         </div>

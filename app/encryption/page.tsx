@@ -6,6 +6,7 @@ import {
     Button,
     Alert,
     Spinner as _Spinner,
+    Modal
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchemaEncrypt, formDataSchemaDecrypt } from './parsers'
@@ -24,6 +25,8 @@ function showFirstAndLast(str: string, show: number): string {
 
 export default function Encryption() {
     const { engine, utils } = useSharedResources();
+    const [openModal, setOpenModal] = useState<string | undefined>();
+    const props = { openModal, setOpenModal };
     const [alertEncrypt, setAlertEncrypt] = useState<string>('')
     const [warningEncrypt, setWarningEncrypt] = useState<string>('')
     const [alertDecrypt, setAlertDecrypt] = useState<string>('')
@@ -168,51 +171,71 @@ export default function Encryption() {
             {bufferCipher && !warningEncrypt ? (
                 <div className='w-10/12 flex flex-col'>
                     <h1 className='text-2xl mb-6 '>{cipherResult}</h1>
-                    <p className='break-words'>
-                        Cipher:
-                    </p>
-                    <div className='mt-4 p-4 bg-black-100 rounded border'>
-                        <pre className='whitespace-pre-wrap'>{showFirstAndLast(stringify(cipher), 40)}</pre>
-                    </div>
                     <div className="flex w-full justify-center pt-5">
                         <Button
-                            className="w-1/2 mr-4"
+                            className="w-1/2 mr-3"
                             type='submit'
                             onClick={() => utils.handleFileDownload('cipher.txt', bufferCipher)}
                         >
                             Download Cipher
                         </Button>
                         <Button
+                            className="w-1/2 mr-3"
+                            onClick={() => props.setOpenModal('default')}
+                            data-modal-target="witness-modal"
+                            data-modal-toggle="witness-modal"
+                        >
+                            Show Cipher
+                        </Button>
+                        <Button
                             className="w-1/2"
                             onClick={() => setBufferCipher(null)}
                         >
-                            Go back
+                            Reset
                         </Button>
+                        <Modal show={props.openModal === 'default'} onClose={() => props.setOpenModal(undefined)} >
+                            <Modal.Header>Cipher File Content: </Modal.Header>
+                            <Modal.Body className="bg-black">
+                                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                                    <pre className='blackspace-pre-wrap'>{stringify(cipher, null, 6)}</pre>
+                                </div>
+                            </Modal.Body>
+                        </Modal>
                     </div>
                 </div>
             ) : bufferDecrypt && !warningDecrypt ? (
                 <div className='w-10/12 flex flex-col'>
                     <h1 className='text-2xl mb-6 '>{decryptResult}</h1>
-                    <p className='break-words'>
-                        Decrypted Cipher:
-                    </p>
-                    <div className='mt-4 p-4 bg-black-100 rounded border'>
-                        <pre className='whitespace-pre-wrap'>{stringify(decrypted, null, 5)}</pre>
-                    </div>
                     <div className="flex w-full justify-center pt-5">
                         <Button
-                            className="w-1/2 mr-4"
+                            className="w-1/2 mr-3"
                             type='submit'
                             onClick={() => utils.handleFileDownload('decrypted.txt', bufferDecrypt)}
                         >
-                            Download Decrypted Cipher
+                            Download Message
+                        </Button>
+                        <Button
+                            className="w-1/2 mr-3"
+                            onClick={() => props.setOpenModal('default')}
+                            data-modal-target="witness-modal"
+                            data-modal-toggle="witness-modal"
+                        >
+                            Show Message
                         </Button>
                         <Button
                             className="w-1/2"
                             onClick={() => setBufferDecrypt(null)}
                         >
-                            Go back
+                            Reset
                         </Button>
+                        <Modal show={props.openModal === 'default'} onClose={() => props.setOpenModal(undefined)} >
+                            <Modal.Header>Decrypted Cipher File Content: </Modal.Header>
+                            <Modal.Body className="bg-black">
+                                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                                    <pre className='whitespace-pre-wrap'>{stringify(decrypted, null, 5)}</pre>
+                                </div>
+                            </Modal.Body>
+                        </Modal>
                     </div>
                 </div>
             ) : loading ? (

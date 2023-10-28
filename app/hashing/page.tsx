@@ -6,6 +6,7 @@ import {
   Button,
   Alert,
   Spinner as _Spinner,
+  Modal
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchema } from './parsers'
@@ -16,6 +17,8 @@ type Hash = number[][][]
 
 export default function Hashing() {
   const { engine, utils } = useSharedResources();
+  const [openModal, setOpenModal] = useState<string | undefined>();
+  const props = { openModal, setOpenModal };
   const [alert, setAlert] = useState<string>('')
   const [warning, setWarning] = useState<string>('')
   const [loading, setLoading] = useState(false)
@@ -82,12 +85,6 @@ export default function Hashing() {
       {buffer && !warning ? (
         <div className='w-10/12 flex flex-col'>
           <h1 className='text-2xl mb-6 '>{hashResult}</h1>
-          <p className='break-words'>
-            Hash:
-          </p>
-          <div className='mt-4 p-4 bg-black-100 rounded border'>
-            <pre className='whitespace-pre-wrap'>{stringify(hash, null, 6)}</pre>
-          </div>
           <div className="flex w-full justify-center pt-5">
             <Button
               className="w-1/2 mr-3"
@@ -97,11 +94,27 @@ export default function Hashing() {
               Download Hash
             </Button>
             <Button
+              className="w-1/2 mr-3"
+              onClick={() => props.setOpenModal('default')}
+              data-modal-target="witness-modal"
+              data-modal-toggle="witness-modal"
+            >
+              Show Witness
+            </Button>
+            <Button
               className="w-1/2"
               onClick={() => setBuffer(null)}
             >
-              Go back
+              Reset
             </Button>
+            <Modal show={props.openModal === 'default'} onClose={() => props.setOpenModal(undefined)} >
+              <Modal.Header>Hash File Content: </Modal.Header>
+              <Modal.Body className="bg-black">
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='blackspace-pre-wrap'>{stringify(hash, null, 6)}</pre>
+                </div>
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
       ) : loading ? (

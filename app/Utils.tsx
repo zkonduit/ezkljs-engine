@@ -242,7 +242,7 @@ export async function handleGenWitnessButton<T extends FileMapping>(
   const start = performance.now();  // Start the timer
 
   let output = genWitness(
-    result['compiled_model'],
+    result['compiled_onnx'],
     result['input'],
   )
 

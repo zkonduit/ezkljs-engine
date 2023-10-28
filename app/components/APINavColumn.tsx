@@ -57,8 +57,8 @@ export default function APINavColumn() {
         </div>
         <div
           className={`${open
-              ? 'bg-opacity-50 md:hidden bg-gray-700'
-              : 'bg-opacity-10 hidden bg-gray-300'
+            ? 'bg-opacity-50 md:hidden bg-gray-700'
+            : 'bg-opacity-10 hidden bg-gray-300'
             } transition-all ease-in-out duration-700 fixed inset-0 z-[150] `}
           onClick={() => setOpen(false)}
         />
@@ -74,13 +74,16 @@ function NavList() {
         <Link href='/'>What is EZKL Engine?</Link>
       </li>
       <li className='h-14 text-slate-500'>
-        <Link href='/prove-verify'>Prove -{'>'} Verify</Link>
+        <Link href='/gen-witness'>Witness Generation</Link>
       </li>
       <li className='h-14 text-slate-500'>
         <Link href='/hashing'>Hashing</Link>
       </li>
       <li className='h-14 text-slate-500'>
         <Link href='/encryption'>Encryption</Link>
+      </li>
+      <li className='h-14 text-slate-500'>
+        <Link href='/prove-verify'>Prove -{'>'} Verify</Link>
       </li>
       <li className='h-14 text-slate-500'>
         <Link href='/felt-utils'>Field Element Utilities</Link>

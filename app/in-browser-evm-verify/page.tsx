@@ -112,7 +112,7 @@ export default function InBrowserEvmVerify() {
                             className="w-1/2"
                             onClick={() => setEvmVerifyResult("")}
                         >
-                            Go back
+                            Reset
                         </Button>
                     </div>
                 </div>

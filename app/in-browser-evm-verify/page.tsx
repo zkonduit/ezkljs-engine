@@ -8,20 +8,30 @@ import {
     Select,
     Spinner as _Spinner,
 } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { formDataSchemaEvmVerify } from './parsers'
 import { stringify } from "json-bigint";
 import { useSharedResources } from '../EngineContext';
-import { Hardfork } from '@ezkljs/verify/dist/commonjs';
-interface Proof {
-    proof: string;
-    instancs: string;
-}
 
-// Truncate Proof string
-function showFirstAndLast(str: string, show: number): string {
-    if (str.length <= show * 2) return str // If the string is already 10 characters or fewer, return it as is.
-    return str.slice(0, show) + ' . . . ' + str.slice(-show)
+enum Hardfork {
+    Chainstart = 'chainstart',
+    Homestead = 'homestead',
+    Dao = 'dao',
+    TangerineWhistle = 'tangerineWhistle',
+    SpuriousDragon = 'spuriousDragon',
+    Byzantium = 'byzantium',
+    Constantinople = 'constantinople',
+    Petersburg = 'petersburg',
+    Istanbul = 'istanbul',
+    MuirGlacier = 'muirGlacier',
+    Berlin = 'berlin',
+    London = 'london',
+    ArrowGlacier = 'arrowGlacier',
+    GrayGlacier = 'grayGlacier',
+    MergeForkIdTransition = 'mergeForkIdTransition',
+    Paris = 'paris',
+    Shanghai = 'shanghai',
+    Cancun = 'cancun',
 }
 
 export default function InBrowserEvmVerify() {
@@ -32,8 +42,6 @@ export default function InBrowserEvmVerify() {
     const [evmVerifyResult, setEvmVerifyResult] = useState<string>('');
 
     const handleSubmitVerify = async (e: React.FormEvent<HTMLFormElement>) => {
-        console.log(Hardfork);
-        // console.log();
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
 

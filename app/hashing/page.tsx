@@ -99,7 +99,7 @@ export default function Hashing() {
               data-modal-target="witness-modal"
               data-modal-toggle="witness-modal"
             >
-              Show Witness
+              Show Hash
             </Button>
             <Button
               className="w-1/2"

@@ -210,7 +210,7 @@ export default function ProveVerify() {
           <h1 className='text-2xl mb-6 '>{verifyResult}</h1>
           <div className="flex w-full justify-center">
             <Button
-              className="w-1/2"
+              className="w-full"
               onClick={() => setVerifyResult("")}
             >
               Reset

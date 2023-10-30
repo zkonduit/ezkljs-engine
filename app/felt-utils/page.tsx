@@ -359,7 +359,8 @@ function VecU64ToIntForm({
         try {
             const int = engine.vecU64ToInt(engine.serialize(entries.vecU64));
             const intDeserialized = engine.deserialize(int)
-            setOutput(intDeserialized)
+            setOutput(intDeserialized.toString())
+            console.log("int deserialized", intDeserialized.toString())
             console.log("int", int)
         } catch (error) {
             console.error('An error occurred:', error)

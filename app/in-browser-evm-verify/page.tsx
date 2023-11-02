@@ -89,8 +89,8 @@ export default function InBrowserEvmVerify() {
                 // Update result based on the outcome
                 setEvmVerifyResult(
                     output
-                        ? 'In-browser EVM Verification successful. Execution time: ' + executionTime + ' ms'
-                        : 'In-browser EVM Verification failed'
+                        ? 'In-browser EVM verification successful. Execution time: ' + executionTime + ' ms'
+                        : 'In-browser EVM verification failed'
                 )
             })
             .catch(error => {

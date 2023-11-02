@@ -89,8 +89,8 @@ export default function InBrowserEvmVerify() {
                 // Update result based on the outcome
                 setEvmVerifyResult(
                     output
-                        ? 'Verification successful. Execution time: ' + executionTime + ' ms'
-                        : 'Verification failed'
+                        ? 'In-browser EVM Verification successful. Execution time: ' + executionTime + ' ms'
+                        : 'In-browser EVM Verification failed'
                 )
             })
             .catch(error => {
@@ -145,7 +145,6 @@ function VerifyingArtifactForm({
     alert: string
     warning: string
 }) {
-    const [EvmVerifyResult, setEvmVerifyResult] = useState('')
     const [selectedVersion, setSelectedVersion] = useState<Hardfork>(Hardfork.Istanbul);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

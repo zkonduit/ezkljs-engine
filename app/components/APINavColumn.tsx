@@ -37,7 +37,7 @@ export default function APINavColumn() {
       <div>
         {/* Wide screen side nav */}
         <div
-          className={`bg-black border-r-2 border-slate-300 w-64  fixed z-[100] top-16 left-0 overflow-y-auto h-[calc(100%-4rem)] hidden md:block`}
+          className={`bg-black border-r-2 border-slate-300 w-64  fixed z-[100] top-0 left-0 overflow-y-auto h-[calc(100%-4rem)] hidden md:block`}
         >
           <NavList />
         </div>
@@ -72,6 +72,9 @@ function NavList() {
     <ul className='fixed h-full pt-8 lg:pl-10 pl-6 '>
       <li className='h-14 text-slate-500'>
         <Link href='/'>What is EZKL Engine?</Link>
+      </li>
+      <li className='h-14 text-slate-500'>
+        <Link href='/setup'>Setup</Link>
       </li>
       <li className='h-14 text-slate-500'>
         <Link href='/gen-witness'>Witness Generation</Link>

@@ -7,7 +7,9 @@ import {
   poseidonHash,
   verify,
   genWitness,
-  deserialize
+  deserialize,
+  genVk,
+  genPk
 } from '@ezkljs/engine/web'
 import localEVMVerify from '@ezkljs/verify'
 import { Hardfork } from '@ezkljs/verify'
@@ -249,6 +251,45 @@ export async function handleGenWitnessButton<T extends FileMapping>(
   let witness = deserialize(output)
 
   console.log(JSON.stringify(witness, null, 2))
+
+  const end = performance.now();  // End the timer
+
+  return {
+    output: output,
+    executionTime: end - start
+  }
+}
+
+export async function handleGenVkButton<T extends FileMapping>(
+  files: T,
+): Promise<Uint8ArrayResult> {
+  const result = await convertFilesToFilesSer(files)
+  const start = performance.now();  // Start the timer
+
+  let output = genVk(
+    result['compiled_onnx'],
+    result['srs'],
+  )
+
+  const end = performance.now();  // End the timer
+
+  return {
+    output: output,
+    executionTime: end - start
+  }
+}
+
+export async function handleGenPkButton<T extends FileMapping>(
+  files: T,
+): Promise<Uint8ArrayResult> {
+  const result = await convertFilesToFilesSer(files)
+  const start = performance.now();  // Start the timer
+
+  let output = genPk(
+    result['vk'],
+    result['compiled_onnx'],
+    result['srs'],
+  )
 
   const end = performance.now();  // End the timer
 

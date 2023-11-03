@@ -86,7 +86,10 @@ function NavList() {
         <Link href='/encryption'>Encryption</Link>
       </li>
       <li className='h-14 text-slate-500'>
-        <Link href='/prove-verify'>Prove -{'>'} Verify</Link>
+        <Link href='/prove'>Prove</Link>
+      </li>
+      <li className='h-14 text-slate-500'>
+        <Link href='/verify'>Verify</Link>
       </li>
       <li className='h-14 text-slate-500'>
         <Link href='/felt-utils'>Field Element Utilities</Link>

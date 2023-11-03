@@ -1,12 +1,10 @@
-// Example for pages/Page1.js
 'use client'
 import {
     FileInput,
     Label,
     Button,
     Alert,
-    Spinner as _Spinner,
-    Modal
+    Spinner as _Spinner
 } from 'flowbite-react'
 import React, { useState } from 'react'
 import { formDataSchemaGenVk, formDataSchemaGenPk } from './parsers'
@@ -279,14 +277,6 @@ async function populateWithSampleFiles() {
     compiledOnnxInputPk.files = dataTransfers[0].files;
     srsInputPk.files = dataTransfers[1].files;
     vkInput.files = dataTransfers[2].files;
-
-    // // If the 'vk' file is different, you'd handle it separately
-    // const vkFile = await fetchAndCreateFile(`/${sampleFileNames.vk}`, sampleFileNames.vk);
-    // const vkDataTransfer = new DataTransfer();
-    // vkDataTransfer.items.add(vkFile);
-
-    // Trigger any onChange or update logic if necessary
-    // This part depends on your application. For example, you might need to call a state setter function if you're using React state to track file input values.
 }
 
 

@@ -249,6 +249,14 @@ export default function Encryption() {
                         <EncryptionArtifactForm handleSubmit={handleSubmitEncryption} alert={alertEncrypt} warning={warningEncrypt} />
                         <DecryptionArtifactForm handleSubmit={handleSubmitDecrypt} alert={alertDecrypt} warning={warningDecrypt} />
                     </div>
+                    <Button
+                        type='submit'
+                        color='dark'
+                        className='self-center mt-4 w-full'
+                        onClick={() => populateWithSampleFiles()}
+                    >
+                        Populate with sample files
+                    </Button>
                 </div>
 
             )}
@@ -263,6 +271,81 @@ function Spinner() {
         </div>
     )
 }
+
+async function populateWithSampleFiles() {
+    // Helper to assert that the element is not null
+    function assertElement<T extends Element>(element: T | null): asserts element is T {
+        if (element === null) {
+            throw new Error('Element not found');
+        }
+    }
+
+    // Names of the sample files in the public directory
+    const sampleFileNames: { [key: string]: string } = {
+        pk: 'pk.txt',
+        message: 'message.txt',
+        r: 'r.txt',
+        cipher: 'elgamal_cipher.txt',
+        sk: 'sk.txt'
+
+    };
+
+    // Helper function to fetch and create a file object from a public URL
+    const fetchAndCreateFile = async (path: string, filename: string): Promise<File> => {
+        const response = await fetch(path);
+        const blob = await response.blob();
+        return new File([blob], filename, { type: blob.type });
+    };
+
+    // Fetch each sample file and create a File object
+    const filePromises = Object.entries(sampleFileNames).map(([key, filename]) =>
+        fetchAndCreateFile(`/data/${filename}`, filename)
+    );
+
+    // Wait for all files to be fetched and created
+    const files = await Promise.all(filePromises);
+
+    // Select the file input elements and assign the FileList to each
+    const pk = document.querySelector<HTMLInputElement>('#elgamal_pk');
+    const message = document.querySelector<HTMLInputElement>('#elgamal_message');
+    const r = document.querySelector<HTMLInputElement>('#elgamal_r');
+    const cipher = document.querySelector<HTMLInputElement>('#cipher');
+    const sk = document.querySelector<HTMLInputElement>('#elgamal_sk');
+
+    // Assert that the elements are not null
+    assertElement(pk);
+    assertElement(message);
+    assertElement(r);
+    assertElement(cipher);
+    assertElement(sk);
+
+    // Create a new DataTransfer to hold the files
+    let dataTransfers: DataTransfer[] = [];
+    files.forEach(
+        (file, idx) => {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file)
+            dataTransfers[idx] = dataTransfer;
+        }
+
+    );
+
+
+    pk.files = dataTransfers[0].files;
+    message.files = dataTransfers[1].files;
+    r.files = dataTransfers[2].files;
+    cipher.files = dataTransfers[3].files;
+    sk.files = dataTransfers[4].files;
+
+    // // If the 'vk' file is different, you'd handle it separately
+    // const vkFile = await fetchAndCreateFile(`/${sampleFileNames.vk}`, sampleFileNames.vk);
+    // const vkDataTransfer = new DataTransfer();
+    // vkDataTransfer.items.add(vkFile);
+
+    // Trigger any onChange or update logic if necessary
+    // This part depends on your application. For example, you might need to call a state setter function if you're using React state to track file input values.
+}
+
 
 function ElgamalRandomVar({ utils }: { utils: Utils }) {
     return (

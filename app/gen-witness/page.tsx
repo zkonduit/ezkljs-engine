@@ -128,7 +128,17 @@ export default function GenWitness() {
             ) : loading ? (
                 <Spinner />
             ) : (
-                <WitnessArtifactForm handleSubmit={handleSubmit} alert={alert} warning={warning} />
+                <div className='flex flex-col justify-between w-full items-center space-y-4'>
+                    <WitnessArtifactForm handleSubmit={handleSubmit} alert={alert} warning={warning} />
+                    <Button
+                        type='submit'
+                        color='dark'
+                        className='self-center mt-4 w-full'
+                        onClick={() => populateWithSampleFiles()}
+                    >
+                        Populate with sample files
+                    </Button>
+                </div>
             )
             }
         </div >
@@ -141,6 +151,67 @@ function Spinner() {
             <_Spinner size='3xl' className='w-28 lg:w-44' />
         </div>
     )
+}
+
+async function populateWithSampleFiles() {
+    // Helper to assert that the element is not null
+    function assertElement<T extends Element>(element: T | null): asserts element is T {
+        if (element === null) {
+            throw new Error('Element not found');
+        }
+    }
+
+    // Names of the sample files in the public directory
+    const sampleFileNames: { [key: string]: string } = {
+        compiled_onnx: 'test_network.compiled',
+        input: 'input.json'
+    };
+
+    // Helper function to fetch and create a file object from a public URL
+    const fetchAndCreateFile = async (path: string, filename: string): Promise<File> => {
+        const response = await fetch(path);
+        const blob = await response.blob();
+        return new File([blob], filename, { type: blob.type });
+    };
+
+    // Fetch each sample file and create a File object
+    const filePromises = Object.entries(sampleFileNames).map(([key, filename]) =>
+        fetchAndCreateFile(`/data/${filename}`, filename)
+    );
+
+    // Wait for all files to be fetched and created
+    const files = await Promise.all(filePromises);
+
+    // Select the file input elements and assign the FileList to each
+    const compiledOnnxInput = document.querySelector<HTMLInputElement>('#compiled_onnx');
+    const input = document.querySelector<HTMLInputElement>('#input');
+
+    // Assert that the elements are not null
+    assertElement(compiledOnnxInput);
+    assertElement(input);
+
+    // Create a new DataTransfer to hold the files
+    let dataTransfers: DataTransfer[] = [];
+    files.forEach(
+        (file, idx) => {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file)
+            dataTransfers[idx] = dataTransfer;
+        }
+
+    );
+
+
+    compiledOnnxInput.files = dataTransfers[0].files;
+    input.files = dataTransfers[1].files;
+
+    // // If the 'vk' file is different, you'd handle it separately
+    // const vkFile = await fetchAndCreateFile(`/${sampleFileNames.vk}`, sampleFileNames.vk);
+    // const vkDataTransfer = new DataTransfer();
+    // vkDataTransfer.items.add(vkFile);
+
+    // Trigger any onChange or update logic if necessary
+    // This part depends on your application. For example, you might need to call a state setter function if you're using React state to track file input values.
 }
 
 function WitnessArtifactForm({

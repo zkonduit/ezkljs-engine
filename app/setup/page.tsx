@@ -179,7 +179,7 @@ export default function Setup() {
                             Download Pk File
                         </Button>
                         <Button
-                            className="w-full"
+                            className="w-1/2"
                             onClick={() => setBufferPk(null)}
                         >
                             Reset
@@ -189,10 +189,21 @@ export default function Setup() {
             ) : loading ? (
                 <Spinner />
             ) : (
-                <div className='flex justify-between w-full items-stretch space-x-8'>
-                    <GenVkArtifactForm handleSubmit={handleSubmitGenVk} alert={alertGenVk} warning={warningGenVk} />
-                    <GenPkArtifactForm handleSubmit={handleSubmitGenPk} alert={alertGenPk} warning={warningGenPk} />
+                <div className='flex flex-col justify-between w-full items-center space-y-4'>
+                    <div className='flex justify-between w-full items-stretch space-x-8'>
+                        <GenVkArtifactForm handleSubmit={handleSubmitGenVk} alert={alertGenVk} warning={warningGenVk} />
+                        <GenPkArtifactForm handleSubmit={handleSubmitGenPk} alert={alertGenPk} warning={warningGenPk} />
+                    </div>
+                    <Button
+                        type='submit'
+                        color='dark'
+                        className='self-center mt-4 w-full'
+                        onClick={() => populateWithSampleFiles()}
+                    >
+                        Populate with sample files
+                    </Button>
                 </div>
+
 
             )}
         </div>
@@ -206,6 +217,78 @@ function Spinner() {
         </div>
     )
 }
+
+async function populateWithSampleFiles() {
+    // Helper to assert that the element is not null
+    function assertElement<T extends Element>(element: T | null): asserts element is T {
+        if (element === null) {
+            throw new Error('Element not found');
+        }
+    }
+
+    // Names of the sample files in the public directory
+    const sampleFileNames: { [key: string]: string } = {
+        compiled_onnx: 'test_network.compiled',
+        srs: 'kzg',
+        vk: 'test.key',
+    };
+
+    // Helper function to fetch and create a file object from a public URL
+    const fetchAndCreateFile = async (path: string, filename: string): Promise<File> => {
+        const response = await fetch(path);
+        const blob = await response.blob();
+        return new File([blob], filename, { type: blob.type });
+    };
+
+    // Fetch each sample file and create a File object
+    const filePromises = Object.entries(sampleFileNames).map(([key, filename]) =>
+        fetchAndCreateFile(`/data/${filename}`, filename)
+    );
+
+    // Wait for all files to be fetched and created
+    const files = await Promise.all(filePromises);
+
+    // Select the file input elements and assign the FileList to each
+    const compiledOnnxInputVk = document.querySelector<HTMLInputElement>('#compiled_onnx_vk');
+    const srsInputVk = document.querySelector<HTMLInputElement>('#srs_vk');
+    const compiledOnnxInputPk = document.querySelector<HTMLInputElement>('#compiled_onnx_pk');
+    const srsInputPk = document.querySelector<HTMLInputElement>('#srs_pk');
+    const vkInput = document.querySelector<HTMLInputElement>('#vk');
+
+    // Assert that the elements are not null
+    assertElement(compiledOnnxInputVk);
+    assertElement(srsInputVk);
+    assertElement(compiledOnnxInputPk);
+    assertElement(srsInputPk);
+    assertElement(vkInput);
+
+    // Create a new DataTransfer to hold the files
+    let dataTransfers: DataTransfer[] = [];
+    files.forEach(
+        (file, idx) => {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file)
+            dataTransfers[idx] = dataTransfer;
+        }
+
+    );
+
+
+    compiledOnnxInputVk.files = dataTransfers[0].files;
+    srsInputVk.files = dataTransfers[1].files;
+    compiledOnnxInputPk.files = dataTransfers[0].files;
+    srsInputPk.files = dataTransfers[1].files;
+    vkInput.files = dataTransfers[2].files;
+
+    // // If the 'vk' file is different, you'd handle it separately
+    // const vkFile = await fetchAndCreateFile(`/${sampleFileNames.vk}`, sampleFileNames.vk);
+    // const vkDataTransfer = new DataTransfer();
+    // vkDataTransfer.items.add(vkFile);
+
+    // Trigger any onChange or update logic if necessary
+    // This part depends on your application. For example, you might need to call a state setter function if you're using React state to track file input values.
+}
+
 
 function GenVkArtifactForm({
     handleSubmit,
@@ -237,7 +320,7 @@ function GenVkArtifactForm({
                 <div>
                     <Label color="white" htmlFor='compiled_onnx' value='Select Compiled Onnx File' />
                     <FileInput
-                        id='compiled_onnx'
+                        id='compiled_onnx_vk'
                         name='compiled_onnx'
                         className='my-4'
                     />
@@ -246,7 +329,7 @@ function GenVkArtifactForm({
                 <div>
                     <Label color="white" htmlFor='srs' value='Select SRS File' />
                     <FileInput
-                        id='srs'
+                        id='srs_vk'
                         name='srs'
                         className='my-4'
                     />
@@ -297,7 +380,7 @@ function GenPkArtifactForm({
                 <div>
                     <Label color="white" htmlFor='compiled_onnx' value='Select Compiled Onnx File' />
                     <FileInput
-                        id='compiled_onnx'
+                        id='compiled_onnx_pk'
                         name='compiled_onnx'
                         className='my-4'
                     />
@@ -306,7 +389,7 @@ function GenPkArtifactForm({
                 <div>
                     <Label color="white" htmlFor='srs' value='Select SRS File' />
                     <FileInput
-                        id='srs'
+                        id='srs_pk'
                         name='srs'
                         className='my-4'
                     />

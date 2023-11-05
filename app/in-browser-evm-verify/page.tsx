@@ -34,7 +34,7 @@ enum Hardfork {
 }
 
 export default function InBrowserEvmVerify() {
-    const { engine, utils } = useSharedResources();
+    const { utils } = useSharedResources();
     const [alertVerify, setAlertVerify] = useState<string>('')
     const [warningVerify, setWarningVerify] = useState<string>('')
     const [loading, setLoading] = useState(false)

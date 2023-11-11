@@ -79,7 +79,7 @@ export default function GenWitness() {
             })
             .catch((error) => {
                 console.error('An error occurred:', error)
-                setWarning(`Hash generation failed: ${error}`)
+                setWarning(`Witness generation failed: ${error}`)
             })
 
         setLoading(false)

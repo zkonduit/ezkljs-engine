@@ -24,11 +24,11 @@ describe('Generate witness, prove and verify', () => {
 
     it('generate witness', async () => {
         // Read in the input and compiled circuit as a Uint8ClampedArray (serialized format)
-        input_ser = await readDataFile('input.json');
+        input_ser = await readDataFile('input.json', '1l_mlp');
         // Use the deserialize method to convert the non human-readable (but WASM digestable) serialized input from a Uint8ClampedArray to a JSON object
         console.log("input.json", JSONBig.stringify(deserialize(input_ser), null, 4))
         // The compiled circuit is bincode serialized, so we can't use the deserialize method on it. 
-        compiled_circuit_ser = await readDataFile('test_network.compiled');
+        compiled_circuit_ser = await readDataFile('test_network.compiled', '1l_mlp');
         // Generate the serialized witness from the input and compiled circuit
         let witness = wasmFunctions.genWitness(compiled_circuit_ser, input_ser)
         // Deserialize the witness from a Uint8ClampedArray to a JSON object
@@ -39,10 +39,11 @@ describe('Generate witness, prove and verify', () => {
     });
 
     it('prove', async () => {
+        wasmFunctions.init_panic_hook();
         // We need to read in the proving key and srs as Uint8ClampedArrays.
         // Both of these artifacts aren't JSON serializable. 
-        let pk_ser = await readDataFile('test.provekey');
-        srs_ser = await readDataFile("kzg");
+        let pk_ser = await readDataFile('test.provekey', '1l_mlp');
+        srs_ser = await readDataFile("kzg", '1l_mlp');
         // Record the start time for proving
         const startTimeProve = Date.now();
         let proof = wasmFunctions.prove(witness_ser, pk_ser, compiled_circuit_ser, srs_ser);
@@ -57,12 +58,13 @@ describe('Generate witness, prove and verify', () => {
 
     it('verify', async () => {
         // read in the verification key and settings files as Uint8ClampedArrays
-        const vk = await readDataFile('test.key');
-        let circuit_settings_ser = await readDataFile('settings.json');
+        const vk = await readDataFile('test.key', '1l_mlp');
+        let circuit_settings_ser = await readDataFile('settings.json', '1l_mlp');
         // Deserialize the settings from a Uint8ClampedArray to a JSON object
         console.log("settings.json", JSONBig.stringify(deserialize(circuit_settings_ser), null, 4))
         // Record the start time for verifying
         const startTimeVerify = Date.now();
+        let proof_ser = await readDataFile('proof.pf', '1l_mlp');
         let verification = wasmFunctions.verify(proof_ser, vk, circuit_settings_ser, srs_ser);
         // Record the end time for verifying
         const endTimeVerify = Date.now();

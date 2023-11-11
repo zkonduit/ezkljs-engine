@@ -1,7 +1,7 @@
 import * as wasmFunctions from '@ezkljs/engine/nodejs';
 import {
     readDataFile
- } from './utils';
+} from './utils';
 import JSONBig from 'json-bigint';
 
 describe('Elgamal Encryption', () => {
@@ -25,7 +25,7 @@ describe('Elgamal Encryption', () => {
         const length = 32;
         let uint8Array = new Uint8Array(length);
         for (let i = 0; i < length; i++) {
-          uint8Array[i] = (Math.floor(Math.random() * Math.pow(2, 8)) >>> (i * 8)) & 0xFF;
+            uint8Array[i] = (Math.floor(Math.random() * Math.pow(2, 8)) >>> (i * 8)) & 0xFF;
         }
         const rng_buffer = new Uint8ClampedArray(uint8Array.buffer);
         const elgamalVariables_ser = wasmFunctions.elgamalGenRandom(rng_buffer);
@@ -35,7 +35,7 @@ describe('Elgamal Encryption', () => {
     });
 
     it('elgamalEncrypt', async () => {
-        const message_ser = await readDataFile('message.txt');
+        const message_ser = await readDataFile('message.txt', '1l_mlp');
         const pk_ser = wasmFunctions.serialize(elgamalVariables.pk);
         const r_ser = wasmFunctions.serialize(elgamalVariables.r);
         const cipherText_ser = wasmFunctions.elgamalEncrypt(pk_ser, message_ser, r_ser);
@@ -49,7 +49,7 @@ describe('Elgamal Encryption', () => {
         const message_ser = wasmFunctions.elgamalDecrypt(cipherText_ser, sk_ser);
         const message = wasmFunctions.deserialize(message_ser)
         console.log("Elgamal decrypted message", JSONBig.stringify(message, null, 4))
-        let message_ser_original = await readDataFile('message.txt');
+        let message_ser_original = await readDataFile('message.txt', '1l_mlp');
         let originalMessage = wasmFunctions.deserialize(message_ser_original);
         console.log("Original message", originalMessage)
         expect(message).toEqual(originalMessage);

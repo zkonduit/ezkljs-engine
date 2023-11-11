@@ -22,9 +22,9 @@ describe('Field element utils', () => {
 
                 const floatingPointRoundTrip = integer / (1 << scale);
 
-                console.debug("Test floating point value", floatingPoint)
-                console.debug("Test scale (multiply floating point by 2^scale then rounding to get integer fixed point)", scale)
-                console.debug("Test integer (fixed point) value", integer);
+                // console.debug("Test floating point value", floatingPoint)
+                // console.debug("Test scale (multiply floating point by 2^scale then rounding to get integer fixed point)", scale)
+                // console.debug("Test integer (fixed point) value", integer);
 
                 const U64sSer = wasmFunctions.floatToVecU64(floatingPoint, scale);
                 let U64sOutput = uint8ArrayToJsonObject(new Uint8Array(U64sSer.buffer));

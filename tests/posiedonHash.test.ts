@@ -18,7 +18,7 @@ describe('poseidonHash', () => {
         // As a sanity check, read in the message.txt file
         // which contains the same message and compare 
         // the hash of each to make sure they are equal.
-        let message_file = await readDataFile('message.txt');
+        let message_file = await readDataFile('message.txt', '1l_mlp');
         const result = wasmFunctions.poseidonHash(message_ser);
         const result_file = wasmFunctions.poseidonHash(message_file);
         expect(result_file).toEqual(result);

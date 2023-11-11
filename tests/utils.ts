@@ -13,8 +13,8 @@ export function uint8ArrayToJsonObject(uint8Array: Uint8Array) {
 
 // HELPERS FOR PROVE AND VERIFY TESTS
 
-export async function readDataFile(filename: string): Promise<Uint8ClampedArray> {
-    const filePath = path.join(__dirname, '..', 'public', 'data', filename);
+export async function readDataFile(filename: string, example: string): Promise<Uint8ClampedArray> {
+    const filePath = path.join(__dirname, '..', 'public', 'data', example, filename);
     const buffer = await fs.readFile(filePath);
     return new Uint8ClampedArray(buffer.buffer);
 }

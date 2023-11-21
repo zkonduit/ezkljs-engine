@@ -6,5 +6,5 @@ const fileSchema = z.custom<File | null>((value) => {
 }, "File name can't be empty")
 
 export const formDataSchema = z.object({
-  message: fileSchema
+  message: fileSchema,
 })

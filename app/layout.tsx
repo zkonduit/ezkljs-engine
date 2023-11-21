@@ -3,7 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import APINavColumn from './components/APINavColumn'
 import Main from './components/Main'
-import { SharedResourcesProvider } from './EngineContext';
+import { SharedResourcesProvider } from './EngineContext'
 
 export const metadata: Metadata = {
   title: 'Engine Example',
@@ -17,10 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <SharedResourcesProvider>
-      <html lang='en'>
-        <body className='m-0 h-screen flex flex-col'>
+      <html lang="en">
+        <body className="m-0 h-screen flex flex-col">
           {/* <!-- Content Area --> */}
-          <div className='flex-grow flex flex-row mt-0'>
+          <div className="flex-grow flex flex-row mt-0">
             {/* <!-- Left Navigation Column --> */}
             <APINavColumn />
 

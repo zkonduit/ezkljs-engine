@@ -37,15 +37,14 @@ export default function APINavColumn() {
       <div>
         {/* Wide screen side nav */}
         <div
-          className={`bg-black border-r-2 border-slate-300 w-64  fixed z-[100] top-0 left-0 overflow-y-auto h-[calc(100%-4rem)] hidden md:block`}
+          className={`bg-black border-r-2 border-slate-300 w-64 fixed z-[100] top-0 left-0 overflow-y-auto h-full hidden md:block`}
         >
           <NavList />
         </div>
         {/* Narrow Screen SideNav */}
         <div
-          className={`${
-            open ? 'translate-x-0' : 'translate-x-[-16rem]'
-          } fixed inset-0 z-[200] bg-white border-r-2 border-slate-300 w-64 transition-transform ease-in-out duration-300 md:hidden`}
+          className={`${open ? 'translate-x-0' : 'translate-x-[-16rem]'
+            } fixed inset-0 z-[200] bg-white border-r-2 border-slate-300 w-64 transition-transform ease-in-out duration-300 md:hidden`}
         >
           <div className='h-16 border-b-2 border-slate-300 items-center flex'>
             <FontAwesomeIcon
@@ -57,11 +56,10 @@ export default function APINavColumn() {
           <NavList />
         </div>
         <div
-          className={`${
-            open
-              ? 'bg-opacity-50 md:hidden bg-gray-700'
-              : 'bg-opacity-10 hidden bg-gray-300'
-          } transition-all ease-in-out duration-700 fixed inset-0 z-[150] `}
+          className={`${open
+            ? 'bg-opacity-50 md:hidden bg-gray-700'
+            : 'bg-opacity-10 hidden bg-gray-300'
+            } transition-all ease-in-out duration-700 fixed inset-0 z-[150] `}
           onClick={() => setOpen(false)}
         />
       </div>

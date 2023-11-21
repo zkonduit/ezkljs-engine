@@ -79,14 +79,14 @@ export default function Hashing() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {buffer && !warning ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{hashResult}</h1>
-          <div className="flex w-full justify-center pt-5">
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{hashResult}</h1>
+          <div className='flex w-full justify-center pt-5'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() =>
                 utils.handleFileDownload(
                   'hash.txt',
@@ -97,14 +97,14 @@ export default function Hashing() {
               Download Hash
             </Button>
             <Button
-              className="w-1/2 mr-3"
+              className='w-1/2 mr-3'
               onClick={() => props.setOpenModal('default')}
-              data-modal-target="witness-modal"
-              data-modal-toggle="witness-modal"
+              data-modal-target='witness-modal'
+              data-modal-toggle='witness-modal'
             >
               Show Hash
             </Button>
-            <Button className="w-1/2" onClick={() => setBuffer(null)}>
+            <Button className='w-1/2' onClick={() => setBuffer(null)}>
               Reset
             </Button>
             <Modal
@@ -112,9 +112,9 @@ export default function Hashing() {
               onClose={() => props.setOpenModal(undefined)}
             >
               <Modal.Header>Hash File Content: </Modal.Header>
-              <Modal.Body className="bg-black">
-                <div className="mt-4 p-4 bg-black-100 rounded border">
-                  <pre className="blackspace-pre-wrap">
+              <Modal.Body className='bg-black'>
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='blackspace-pre-wrap'>
                     {stringify(hash, null, 6)}
                   </pre>
                 </div>
@@ -125,16 +125,16 @@ export default function Hashing() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col justify-between w-full items-center space-y-4">
+        <div className='flex flex-col justify-between w-full items-center space-y-4'>
           <HashingArtifactForm
             handleSubmit={handleSubmitHashing}
             alert={alert}
             warning={warning}
           />
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample file
@@ -147,8 +147,8 @@ export default function Hashing() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -221,28 +221,28 @@ function HashingArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Hashing</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Hashing</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* MESSAGE */}
         <div>
-          <Label color="white" htmlFor="message" value="Select Message File" />
-          <FileInput id="message" name="message" className="my-4" />
+          <Label color='white' htmlFor='message' value='Select Message File' />
+          <FileInput id='message' name='message' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Hash
         </Button>
       </form>

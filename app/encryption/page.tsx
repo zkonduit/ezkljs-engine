@@ -170,14 +170,14 @@ export default function Encryption() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {bufferCipher && !warningEncrypt ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{cipherResult}</h1>
-          <div className="flex w-full justify-center pt-5">
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{cipherResult}</h1>
+          <div className='flex w-full justify-center pt-5'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() =>
                 utils.handleFileDownload('cipher.txt', bufferCipher)
               }
@@ -185,14 +185,14 @@ export default function Encryption() {
               Download Cipher
             </Button>
             <Button
-              className="w-1/2 mr-3"
+              className='w-1/2 mr-3'
               onClick={() => props.setOpenModal('default')}
-              data-modal-target="witness-modal"
-              data-modal-toggle="witness-modal"
+              data-modal-target='witness-modal'
+              data-modal-toggle='witness-modal'
             >
               Show Cipher
             </Button>
-            <Button className="w-1/2" onClick={() => setBufferCipher(null)}>
+            <Button className='w-1/2' onClick={() => setBufferCipher(null)}>
               Reset
             </Button>
             <Modal
@@ -200,9 +200,9 @@ export default function Encryption() {
               onClose={() => props.setOpenModal(undefined)}
             >
               <Modal.Header>Cipher File Content: </Modal.Header>
-              <Modal.Body className="bg-black">
-                <div className="mt-4 p-4 bg-black-100 rounded border">
-                  <pre className="blackspace-pre-wrap">
+              <Modal.Body className='bg-black'>
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='blackspace-pre-wrap'>
                     {stringify(cipher, null, 6)}
                   </pre>
                 </div>
@@ -211,12 +211,12 @@ export default function Encryption() {
           </div>
         </div>
       ) : bufferDecrypt && !warningDecrypt ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{decryptResult}</h1>
-          <div className="flex w-full justify-center pt-5">
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{decryptResult}</h1>
+          <div className='flex w-full justify-center pt-5'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() =>
                 utils.handleFileDownload('decrypted.txt', bufferDecrypt)
               }
@@ -224,14 +224,14 @@ export default function Encryption() {
               Download Message
             </Button>
             <Button
-              className="w-1/2 mr-3"
+              className='w-1/2 mr-3'
               onClick={() => props.setOpenModal('default')}
-              data-modal-target="witness-modal"
-              data-modal-toggle="witness-modal"
+              data-modal-target='witness-modal'
+              data-modal-toggle='witness-modal'
             >
               Show Message
             </Button>
-            <Button className="w-1/2" onClick={() => setBufferDecrypt(null)}>
+            <Button className='w-1/2' onClick={() => setBufferDecrypt(null)}>
               Reset
             </Button>
             <Modal
@@ -239,9 +239,9 @@ export default function Encryption() {
               onClose={() => props.setOpenModal(undefined)}
             >
               <Modal.Header>Decrypted Cipher File Content: </Modal.Header>
-              <Modal.Body className="bg-black">
-                <div className="mt-4 p-4 bg-black-100 rounded border">
-                  <pre className="whitespace-pre-wrap">
+              <Modal.Body className='bg-black'>
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='whitespace-pre-wrap'>
                     {stringify(decrypted, null, 5)}
                   </pre>
                 </div>
@@ -252,11 +252,11 @@ export default function Encryption() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="w-full flex flex-col items-stretch">
-          <div className="w-full">
+        <div className='w-full flex flex-col items-stretch'>
+          <div className='w-full'>
             <ElgamalRandomVar utils={utils} />
           </div>
-          <div className="flex space-x-8 w-full">
+          <div className='flex space-x-8 w-full'>
             <EncryptionArtifactForm
               handleSubmit={handleSubmitEncryption}
               alert={alertEncrypt}
@@ -269,9 +269,9 @@ export default function Encryption() {
             />
           </div>
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample files
@@ -284,8 +284,8 @@ export default function Encryption() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -366,18 +366,18 @@ async function populateWithSampleFiles() {
 
 function ElgamalRandomVar({ utils }: { utils: Utils }) {
   return (
-    <div className="flex flex-col justify-center items-center h-4/6 pb-0">
-      <h1 className="text-2xl mb-3 ">Generate Random Elgamal Variables</h1>
+    <div className='flex flex-col justify-center items-center h-4/6 pb-0'>
+      <h1 className='text-2xl mb-3 '>Generate Random Elgamal Variables</h1>
       <Label
-        color="white"
-        htmlFor="elgamal_pk"
-        value="Generates a secure Public Key, Secret Key and Random Seed"
+        color='white'
+        htmlFor='elgamal_pk'
+        value='Generates a secure Public Key, Secret Key and Random Seed'
       />
       <Button
-        type="submit"
-        color="dark"
-        className="w-full self-center mt-4"
-        id="genREVButton"
+        type='submit'
+        color='dark'
+        className='w-full self-center mt-4'
+        id='genREVButton'
         onClick={() => {
           const result = utils.handleGenREVButton()
           utils.ElgamalZipFileDownload('vars.zip', result)
@@ -399,54 +399,54 @@ function EncryptionArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Encrypting</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Encrypting</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* PK */}
         <div>
           <Label
-            color="white"
-            htmlFor="elgamal_pk"
-            value="Select Public Key File"
+            color='white'
+            htmlFor='elgamal_pk'
+            value='Select Public Key File'
           />
-          <FileInput id="elgamal_pk" name="elgamal_pk" className="my-4" />
+          <FileInput id='elgamal_pk' name='elgamal_pk' className='my-4' />
         </div>
         {/* MESSAGE */}
         <div>
           <Label
-            color="white"
-            htmlFor="elgamal_message"
-            value="Select Message File"
+            color='white'
+            htmlFor='elgamal_message'
+            value='Select Message File'
           />
           <FileInput
-            id="elgamal_message"
-            name="elgamal_message"
-            className="my-4"
+            id='elgamal_message'
+            name='elgamal_message'
+            className='my-4'
           />
         </div>
         {/* RANDOM SEED */}
         <div>
           <Label
-            color="white"
-            htmlFor="elgamal_r"
-            value="Select Random Seed File"
+            color='white'
+            htmlFor='elgamal_r'
+            value='Select Random Seed File'
           />
-          <FileInput id="elgamal_r" name="elgamal_r" className="my-4" />
+          <FileInput id='elgamal_r' name='elgamal_r' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Cipher
         </Button>
       </form>
@@ -463,37 +463,37 @@ function DecryptionArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Decrypting</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Decrypting</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow justify-between"
+        className='flex flex-col flex-grow justify-between'
       >
         {/* CIPHER */}
         <div>
-          <Label color="white" htmlFor="cipher" value="Select Cipher File" />
-          <FileInput id="cipher" name="cipher" className="my-4" />
+          <Label color='white' htmlFor='cipher' value='Select Cipher File' />
+          <FileInput id='cipher' name='cipher' className='my-4' />
         </div>
         {/* SECRET KEY */}
         <div>
           <Label
-            color="white"
-            htmlFor="elgamal_sk"
-            value="Select Secret Key File"
+            color='white'
+            htmlFor='elgamal_sk'
+            value='Select Secret Key File'
           />
-          <FileInput id="elgamal_sk" name="elgamal_sk" className="my-4" />
+          <FileInput id='elgamal_sk' name='elgamal_sk' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Decrypt Cipher
         </Button>
       </form>

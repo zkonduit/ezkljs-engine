@@ -86,28 +86,28 @@ export default function GenWitness() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {buffer && !warning ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{witnessResult}</h1>
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{witnessResult}</h1>
 
-          <div className="flex w-full justify-center pt-5">
+          <div className='flex w-full justify-center pt-5'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() => utils.handleFileDownload('witness.json', buffer)}
             >
               Download Witness
             </Button>
             <Button
-              className="w-1/2 mr-3"
+              className='w-1/2 mr-3'
               onClick={() => props.setOpenModal('default')}
-              data-modal-target="witness-modal"
-              data-modal-toggle="witness-modal"
+              data-modal-target='witness-modal'
+              data-modal-toggle='witness-modal'
             >
               Show Witness
             </Button>
-            <Button className="w-1/2" onClick={() => setBuffer(null)}>
+            <Button className='w-1/2' onClick={() => setBuffer(null)}>
               Reset
             </Button>
             <Modal
@@ -115,9 +115,9 @@ export default function GenWitness() {
               onClose={() => props.setOpenModal(undefined)}
             >
               <Modal.Header>Witness File Content: </Modal.Header>
-              <Modal.Body className="bg-black">
-                <div className="mt-4 p-4 bg-black-100 rounded border">
-                  <pre className="blackspace-pre-wrap">
+              <Modal.Body className='bg-black'>
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='blackspace-pre-wrap'>
                     {stringify(witness, null, 6)}
                   </pre>
                 </div>
@@ -128,16 +128,16 @@ export default function GenWitness() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col justify-between w-full items-center space-y-4">
+        <div className='flex flex-col justify-between w-full items-center space-y-4'>
           <WitnessArtifactForm
             handleSubmit={handleSubmit}
             alert={alert}
             warning={warning}
           />
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample files
@@ -150,8 +150,8 @@ export default function GenWitness() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -229,37 +229,37 @@ function WitnessArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Witnessing</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Witnessing</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* COMPILED ONNX */}
         <div>
           <Label
-            color="white"
-            htmlFor="compiled_onnx"
-            value="Select Compiled Onnx File"
+            color='white'
+            htmlFor='compiled_onnx'
+            value='Select Compiled Onnx File'
           />
-          <FileInput id="compiled_onnx" name="compiled_onnx" className="my-4" />
+          <FileInput id='compiled_onnx' name='compiled_onnx' className='my-4' />
         </div>
         {/* INPUT */}
         <div>
-          <Label color="white" htmlFor="input" value="Select Input File" />
-          <FileInput id="input" name="input" className="my-4" />
+          <Label color='white' htmlFor='input' value='Select Input File' />
+          <FileInput id='input' name='input' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Witness
         </Button>
       </form>

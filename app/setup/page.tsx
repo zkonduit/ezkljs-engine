@@ -145,35 +145,35 @@ export default function Setup() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {bufferVk && !warningGenVk ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{genVkResult}</h1>
-          <div className="flex w-full justify-center pt-7">
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{genVkResult}</h1>
+          <div className='flex w-full justify-center pt-7'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() => utils.handleFileDownload('test.vk', bufferVk)}
             >
               Download Vk File
             </Button>
-            <Button className="w-1/2" onClick={() => setBufferVk(null)}>
+            <Button className='w-1/2' onClick={() => setBufferVk(null)}>
               Reset
             </Button>
           </div>
         </div>
       ) : bufferPk && !warningGenPk ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{genPkResult}</h1>
-          <div className="flex w-full justify-center pt-7">
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{genPkResult}</h1>
+          <div className='flex w-full justify-center pt-7'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() => utils.handleFileDownload('test.pk', bufferPk)}
             >
               Download Pk File
             </Button>
-            <Button className="w-1/2" onClick={() => setBufferPk(null)}>
+            <Button className='w-1/2' onClick={() => setBufferPk(null)}>
               Reset
             </Button>
           </div>
@@ -181,8 +181,8 @@ export default function Setup() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col justify-between w-full items-center space-y-4">
-          <div className="flex justify-between w-full items-stretch space-x-8">
+        <div className='flex flex-col justify-between w-full items-center space-y-4'>
+          <div className='flex justify-between w-full items-stretch space-x-8'>
             <GenVkArtifactForm
               handleSubmit={handleSubmitGenVk}
               alert={alertGenVk}
@@ -195,9 +195,9 @@ export default function Setup() {
             />
           </div>
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample files
@@ -210,8 +210,8 @@ export default function Setup() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -292,41 +292,41 @@ function GenVkArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Generate Verifying Key</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Generate Verifying Key</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* COMPILED ONNX MODEL */}
         <div>
           <Label
-            color="white"
-            htmlFor="compiled_onnx"
-            value="Select Compiled Onnx File"
+            color='white'
+            htmlFor='compiled_onnx'
+            value='Select Compiled Onnx File'
           />
           <FileInput
-            id="compiled_onnx_vk"
-            name="compiled_onnx"
-            className="my-4"
+            id='compiled_onnx_vk'
+            name='compiled_onnx'
+            className='my-4'
           />
         </div>
         {/* SRS */}
         <div>
-          <Label color="white" htmlFor="srs" value="Select SRS File" />
-          <FileInput id="srs_vk" name="srs" className="my-4" />
+          <Label color='white' htmlFor='srs' value='Select SRS File' />
+          <FileInput id='srs_vk' name='srs' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Vk
         </Button>
       </form>
@@ -343,46 +343,46 @@ function GenPkArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Generate Proving Key</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Generate Proving Key</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* VK */}
         <div>
-          <Label color="white" htmlFor="vk" value="Select VK File" />
-          <FileInput id="vk" name="vk" className="my-4" />
+          <Label color='white' htmlFor='vk' value='Select VK File' />
+          <FileInput id='vk' name='vk' className='my-4' />
         </div>
         {/* COMPILED ONNX MODEL */}
         <div>
           <Label
-            color="white"
-            htmlFor="compiled_onnx"
-            value="Select Compiled Onnx File"
+            color='white'
+            htmlFor='compiled_onnx'
+            value='Select Compiled Onnx File'
           />
           <FileInput
-            id="compiled_onnx_pk"
-            name="compiled_onnx"
-            className="my-4"
+            id='compiled_onnx_pk'
+            name='compiled_onnx'
+            className='my-4'
           />
         </div>
         {/* SRS */}
         <div>
-          <Label color="white" htmlFor="srs" value="Select SRS File" />
-          <FileInput id="srs_pk" name="srs" className="my-4" />
+          <Label color='white' htmlFor='srs' value='Select SRS File' />
+          <FileInput id='srs_pk' name='srs' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Pk
         </Button>
       </form>

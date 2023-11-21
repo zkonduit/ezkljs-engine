@@ -27,24 +27,24 @@ export default function FeltUtils() {
   const { engine } = useSharedResources()
 
   return (
-    <div className="flex flex-wrap h-screen pt-10 pb-20">
-      <div className="flex flex-col w-1/2 h-1/2 justify-center items-center p-4">
-        <div className="w-full h-full overflow-auto">
+    <div className='flex flex-wrap h-screen pt-10 pb-20'>
+      <div className='flex flex-col w-1/2 h-1/2 justify-center items-center p-4'>
+        <div className='w-full h-full overflow-auto'>
           <FloatToVecU64Form engine={engine} />
         </div>
       </div>
-      <div className="flex flex-col w-1/2 h-1/2 justify-center items-center p-4">
-        <div className="w-full h-full overflow-auto">
+      <div className='flex flex-col w-1/2 h-1/2 justify-center items-center p-4'>
+        <div className='w-full h-full overflow-auto'>
           <VecU64ToFloatForm engine={engine} />
         </div>
       </div>
-      <div className="flex flex-col w-1/2 h-1/2 justify-center items-center p-4">
-        <div className="w-full h-full overflow-auto">
+      <div className='flex flex-col w-1/2 h-1/2 justify-center items-center p-4'>
+        <div className='w-full h-full overflow-auto'>
           <VecU64ToIntForm engine={engine} />
         </div>
       </div>
-      <div className="flex flex-col w-1/2 h-1/2 justify-center items-center p-4">
-        <div className="w-full h-full overflow-auto">
+      <div className='flex flex-col w-1/2 h-1/2 justify-center items-center p-4'>
+        <div className='w-full h-full overflow-auto'>
           <VecU64ToFeltForm engine={engine} />
         </div>
       </div>
@@ -122,40 +122,40 @@ function FloatToVecU64Form({ engine }: { engine: Engine }) {
   }
 
   return (
-    <div className="">
-      <h1 className="text-2xl mb-6 ">Float {'->'} VecU64</h1>
+    <div className=''>
+      <h1 className='text-2xl mb-6 '>Float {'->'} VecU64</h1>
       {alertFloatToVecU64 && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alertFloatToVecU64}
         </Alert>
       )}
       {warningFloatToVecU64 && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warningFloatToVecU64}
         </Alert>
       )}
       <form
         onSubmit={handleSubmitFloatToVecU64}
-        className="flex flex-col flex-grow justify-between"
+        className='flex flex-col flex-grow justify-between'
       >
         {/* FLOATING POINT */}
         <div>
-          <Label color="white" htmlFor="fp" value="Floating Point" />
-          <TextInput type="test" id="fp" name="fp" className="my-4" />
+          <Label color='white' htmlFor='fp' value='Floating Point' />
+          <TextInput type='test' id='fp' name='fp' className='my-4' />
         </div>
         {/* SCALE */}
         <div>
-          <Label color="white" htmlFor="scale" value="Scale" />
-          <TextInput type="number" id="scale" name="scale" className="my-4" />
+          <Label color='white' htmlFor='scale' value='Scale' />
+          <TextInput type='number' id='scale' name='scale' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate VecU64
         </Button>
       </form>
       {/* Output section */}
       {output && (
-        <div className="mt-4 p-4 bg-black-100 rounded border">
-          <pre className="whitespace-pre-wrap">{output}</pre>
+        <div className='mt-4 p-4 bg-black-100 rounded border'>
+          <pre className='whitespace-pre-wrap'>{output}</pre>
         </div>
       )}
     </div>
@@ -233,40 +233,40 @@ function VecU64ToFloatForm({ engine }: { engine: Engine }) {
   }
 
   return (
-    <div className="">
-      <h1 className="text-2xl mb-6 ">VecU64 {'->'} Float</h1>
+    <div className=''>
+      <h1 className='text-2xl mb-6 '>VecU64 {'->'} Float</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* vecU64 */}
         <div>
-          <Label color="white" htmlFor="vecU64" value="Length 4 vecU64" />
-          <TextInput type="text" id="vecU64" name="vecU64" className="my-4" />
+          <Label color='white' htmlFor='vecU64' value='Length 4 vecU64' />
+          <TextInput type='text' id='vecU64' name='vecU64' className='my-4' />
         </div>
         {/* SCALE */}
         <div>
-          <Label color="white" htmlFor="scale" value="Scale" />
-          <TextInput type="number" id="scale" name="scale" className="my-4" />
+          <Label color='white' htmlFor='scale' value='Scale' />
+          <TextInput type='number' id='scale' name='scale' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Floating Point
         </Button>
       </form>
       {/* Output section */}
       {output && (
-        <div className="mt-4 p-4 bg-black-100 rounded border">
-          <pre className="whitespace-pre-wrap">{output}</pre>
+        <div className='mt-4 p-4 bg-black-100 rounded border'>
+          <pre className='whitespace-pre-wrap'>{output}</pre>
         </div>
       )}
     </div>
@@ -336,35 +336,35 @@ function VecU64ToIntForm({ engine }: { engine: Engine }) {
   }
 
   return (
-    <div className="">
-      <h1 className="text-2xl mb-6 ">VecU64 {'->'} Int</h1>
+    <div className=''>
+      <h1 className='text-2xl mb-6 '>VecU64 {'->'} Int</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* vecU64 */}
         <div>
-          <Label color="white" htmlFor="vecU64" value="Length 4 vecU64" />
-          <TextInput type="text" id="vecU64" name="vecU64" className="my-4" />
+          <Label color='white' htmlFor='vecU64' value='Length 4 vecU64' />
+          <TextInput type='text' id='vecU64' name='vecU64' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Integer
         </Button>
       </form>
       {/* Output section */}
       {output && (
-        <div className="mt-4 p-4 bg-black-100 rounded border">
-          <pre className="whitespace-pre-wrap">{output}</pre>
+        <div className='mt-4 p-4 bg-black-100 rounded border'>
+          <pre className='whitespace-pre-wrap'>{output}</pre>
         </div>
       )}
     </div>
@@ -443,35 +443,35 @@ function VecU64ToFeltForm({ engine }: { engine: Engine }) {
   }
 
   return (
-    <div className="">
-      <h1 className="text-2xl mb-6 ">VecU64 {'->'} Felt</h1>
+    <div className=''>
+      <h1 className='text-2xl mb-6 '>VecU64 {'->'} Felt</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* vecU64 */}
         <div>
-          <Label color="white" htmlFor="vecU64" value="Length 4 vecU64" />
-          <TextInput type="text" id="vecU64" name="vecU64" className="my-4" />
+          <Label color='white' htmlFor='vecU64' value='Length 4 vecU64' />
+          <TextInput type='text' id='vecU64' name='vecU64' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Field Element
         </Button>
       </form>
       {/* Output section */}
       {output && (
-        <div className="mt-4 p-4 bg-black-100 rounded border">
-          <pre className="whitespace-pre-wrap">{formatOutput(output)}</pre>
+        <div className='mt-4 p-4 bg-black-100 rounded border'>
+          <pre className='whitespace-pre-wrap'>{formatOutput(output)}</pre>
         </div>
       )}
     </div>

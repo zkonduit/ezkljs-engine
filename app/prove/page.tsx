@@ -95,27 +95,27 @@ export default function Prove() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {buffer && !warningProof ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{proofResult}</h1>
-          <div className="flex w-full justify-center pt-7">
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{proofResult}</h1>
+          <div className='flex w-full justify-center pt-7'>
             <Button
-              className="w-1/2 mr-3"
-              type="submit"
+              className='w-1/2 mr-3'
+              type='submit'
               onClick={() => utils.handleFileDownload('test.pf', buffer)}
             >
               Download Proof File
             </Button>
             <Button
-              className="w-1/2 mr-3"
+              className='w-1/2 mr-3'
               onClick={() => props.setOpenModal('default')}
-              data-modal-target="witness-modal"
-              data-modal-toggle="witness-modal"
+              data-modal-target='witness-modal'
+              data-modal-toggle='witness-modal'
             >
               Show Proof
             </Button>
-            <Button className="w-1/2" onClick={() => setBuffer(null)}>
+            <Button className='w-1/2' onClick={() => setBuffer(null)}>
               Reset
             </Button>
             <Modal
@@ -123,9 +123,9 @@ export default function Prove() {
               onClose={() => props.setOpenModal(undefined)}
             >
               <Modal.Header>Proof File Content: </Modal.Header>
-              <Modal.Body className="bg-black">
-                <div className="mt-4 p-4 bg-black-100 rounded border">
-                  <pre className="blackspace-pre-wrap">
+              <Modal.Body className='bg-black'>
+                <div className='mt-4 p-4 bg-black-100 rounded border'>
+                  <pre className='blackspace-pre-wrap'>
                     {stringify(proof, null, 6)}
                   </pre>
                 </div>
@@ -136,8 +136,8 @@ export default function Prove() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col justify-between w-full items-center space-y-4">
-          <div className="flex justify-between w-full items-stretch space-x-8">
+        <div className='flex flex-col justify-between w-full items-center space-y-4'>
+          <div className='flex justify-between w-full items-stretch space-x-8'>
             <ProvingArtifactForm
               handleSubmit={handleSubmitProve}
               alert={alertProof}
@@ -145,9 +145,9 @@ export default function Prove() {
             />
           </div>
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample files
@@ -160,8 +160,8 @@ export default function Prove() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -239,47 +239,47 @@ function ProvingArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Proving</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Proving</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* WITNESS */}
         <div>
-          <Label color="white" htmlFor="witness" value="Select Witness File" />
-          <FileInput id="witness" name="witness" className="my-4" />
+          <Label color='white' htmlFor='witness' value='Select Witness File' />
+          <FileInput id='witness' name='witness' className='my-4' />
         </div>
         {/* PK */}
         <div>
-          <Label color="white" htmlFor="pk" value="Select Proving Key File" />
-          <FileInput id="pk" name="pk" className="my-4" />
+          <Label color='white' htmlFor='pk' value='Select Proving Key File' />
+          <FileInput id='pk' name='pk' className='my-4' />
         </div>
         {/* COMPILED ONNX MODEL */}
         <div>
           <Label
-            color="white"
-            htmlFor="compiled_onnx"
-            value="Select Compiled Onnx File"
+            color='white'
+            htmlFor='compiled_onnx'
+            value='Select Compiled Onnx File'
           />
-          <FileInput id="compiled_onnx" name="compiled_onnx" className="my-4" />
+          <FileInput id='compiled_onnx' name='compiled_onnx' className='my-4' />
         </div>
         {/* SRS */}
         <div>
-          <Label color="white" htmlFor="srs" value="Select SRS File" />
-          <FileInput id="srs_prove" name="srs" className="my-4" />
+          <Label color='white' htmlFor='srs' value='Select SRS File' />
+          <FileInput id='srs_prove' name='srs' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Generate Proof
         </Button>
       </form>

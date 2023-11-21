@@ -47,11 +47,11 @@ export default function APINavColumn() {
             open ? 'translate-x-0' : 'translate-x-[-16rem]'
           } fixed inset-0 z-[200] bg-white border-r-2 border-slate-300 w-64 transition-transform ease-in-out duration-300 md:hidden`}
         >
-          <div className="h-16 border-b-2 border-slate-300 items-center flex">
+          <div className='h-16 border-b-2 border-slate-300 items-center flex'>
             <FontAwesomeIcon
               icon={faX}
               onClick={() => setOpen(false)}
-              className="w-4 ml-4 md:hidden"
+              className='w-4 ml-4 md:hidden'
             />
           </div>
           <NavList />
@@ -71,33 +71,33 @@ export default function APINavColumn() {
 
 function NavList() {
   return (
-    <ul className="fixed h-full pt-8 lg:pl-10 pl-6 ">
-      <li className="h-14 text-slate-500">
-        <Link href="/">What is EZKL Engine?</Link>
+    <ul className='fixed h-full pt-8 lg:pl-10 pl-6 '>
+      <li className='h-14 text-slate-500'>
+        <Link href='/'>What is EZKL Engine?</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/setup">Setup</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/setup'>Setup</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/gen-witness">Witness Generation</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/gen-witness'>Witness Generation</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/hashing">Hashing</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/hashing'>Hashing</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/encryption">Encryption</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/encryption'>Encryption</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/prove">Prove</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/prove'>Prove</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/verify">Verify</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/verify'>Verify</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/felt-utils">Field Element Utilities</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/felt-utils'>Field Element Utilities</Link>
       </li>
-      <li className="h-14 text-slate-500">
-        <Link href="/in-browser-evm-verify">In-Browser EVM Verification</Link>
+      <li className='h-14 text-slate-500'>
+        <Link href='/in-browser-evm-verify'>In-Browser EVM Verification</Link>
       </li>
     </ul>
   )

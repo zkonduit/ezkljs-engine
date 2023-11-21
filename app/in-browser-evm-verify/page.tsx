@@ -105,12 +105,12 @@ export default function InBrowserEvmVerify() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {evmVerifyResult && !warningVerify ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{evmVerifyResult}</h1>
-          <div className="flex w-full justify-center">
-            <Button className="w-1/2" onClick={() => setEvmVerifyResult('')}>
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{evmVerifyResult}</h1>
+          <div className='flex w-full justify-center'>
+            <Button className='w-1/2' onClick={() => setEvmVerifyResult('')}>
               Reset
             </Button>
           </div>
@@ -118,16 +118,16 @@ export default function InBrowserEvmVerify() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col justify-between w-full items-center space-y-4">
+        <div className='flex flex-col justify-between w-full items-center space-y-4'>
           <VerifyingArtifactForm
             handleSubmit={handleSubmitVerify}
             alert={alertVerify}
             warning={warningVerify}
           />
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample files
@@ -140,8 +140,8 @@ export default function InBrowserEvmVerify() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -227,51 +227,51 @@ function VerifyingArtifactForm({
     setSelectedVersion(selectedValue)
   }
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">In-Browser Evm Verifying</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>In-Browser Evm Verifying</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* PROOF */}
         <div>
-          <Label color="white" htmlFor="proof" value="Select Proof File" />
-          <FileInput id="proof" name="proof" className="my-4" />
+          <Label color='white' htmlFor='proof' value='Select Proof File' />
+          <FileInput id='proof' name='proof' className='my-4' />
         </div>
         {/* VERIFIER BYTECODE */}
         <div>
           <Label
-            color="white"
-            htmlFor="bytecode_verifier"
-            value="Select Evm Verifier Bytecode"
+            color='white'
+            htmlFor='bytecode_verifier'
+            value='Select Evm Verifier Bytecode'
           />
           <FileInput
-            id="bytecode_verifier"
-            name="bytecode_verifier"
-            className="my-4"
+            id='bytecode_verifier'
+            name='bytecode_verifier'
+            className='my-4'
           />
         </div>
         {/* EVM VERSION */}
         <div>
           <Label
-            color="white"
-            htmlFor="evm_version"
-            value="Select Evm Version"
+            color='white'
+            htmlFor='evm_version'
+            value='Select Evm Version'
           />
           <Select
-            id="evm_version"
-            name="evm_version"
-            className="my-4"
+            id='evm_version'
+            name='evm_version'
+            className='my-4'
             onChange={handleChange}
             value={selectedVersion}
           >
@@ -282,7 +282,7 @@ function VerifyingArtifactForm({
             ))}
           </Select>
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Verify
         </Button>
       </form>

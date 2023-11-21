@@ -83,12 +83,12 @@ export default function Verify() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-5/6 pb-20">
+    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
       {verifyResult && !warningVerify ? (
-        <div className="w-10/12 flex flex-col">
-          <h1 className="text-2xl mb-6 ">{verifyResult}</h1>
-          <div className="flex w-full justify-center">
-            <Button className="w-full" onClick={() => setVerifyResult('')}>
+        <div className='w-10/12 flex flex-col'>
+          <h1 className='text-2xl mb-6 '>{verifyResult}</h1>
+          <div className='flex w-full justify-center'>
+            <Button className='w-full' onClick={() => setVerifyResult('')}>
               Reset
             </Button>
           </div>
@@ -96,8 +96,8 @@ export default function Verify() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col justify-between w-full items-center space-y-4">
-          <div className="flex justify-between w-full items-stretch space-x-8">
+        <div className='flex flex-col justify-between w-full items-center space-y-4'>
+          <div className='flex justify-between w-full items-stretch space-x-8'>
             <VerifyingArtifactForm
               handleSubmit={handleSubmitVerify}
               alert={alertVerify}
@@ -105,9 +105,9 @@ export default function Verify() {
             />
           </div>
           <Button
-            type="submit"
-            color="dark"
-            className="self-center mt-4 w-full"
+            type='submit'
+            color='dark'
+            className='self-center mt-4 w-full'
             onClick={() => populateWithSampleFiles()}
           >
             Populate with sample files
@@ -120,8 +120,8 @@ export default function Verify() {
 // UI Component
 function Spinner() {
   return (
-    <div className="h-full flex items-center">
-      <_Spinner size="3xl" className="w-28 lg:w-44" />
+    <div className='h-full flex items-center'>
+      <_Spinner size='3xl' className='w-28 lg:w-44' />
     </div>
   )
 }
@@ -198,47 +198,47 @@ function VerifyingArtifactForm({
   warning: string
 }) {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-2xl mb-6 ">Verifying</h1>
+    <div className='flex flex-col'>
+      <h1 className='text-2xl mb-6 '>Verifying</h1>
       {alert && (
-        <Alert color="info" className="mb-6">
+        <Alert color='info' className='mb-6'>
           {alert}
         </Alert>
       )}
       {warning && (
-        <Alert color="warning" className="mb-6">
+        <Alert color='warning' className='mb-6'>
           {warning}
         </Alert>
       )}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col flex-grow  justify-between"
+        className='flex flex-col flex-grow  justify-between'
       >
         {/* PROOF */}
         <div>
-          <Label color="white" htmlFor="proof" value="Select Proof File" />
-          <FileInput id="proof" name="proof" className="my-4" />
+          <Label color='white' htmlFor='proof' value='Select Proof File' />
+          <FileInput id='proof' name='proof' className='my-4' />
         </div>
         {/* SETTINGS */}
         <div>
           <Label
-            color="white"
-            htmlFor="settings"
-            value="Select Settings File"
+            color='white'
+            htmlFor='settings'
+            value='Select Settings File'
           />
-          <FileInput id="settings" name="settings" className="my-4" />
+          <FileInput id='settings' name='settings' className='my-4' />
         </div>
         {/* VK */}
         <div>
-          <Label color="white" htmlFor="vk" value="Select VK File" />
-          <FileInput id="vk" name="vk" className="my-4" />
+          <Label color='white' htmlFor='vk' value='Select VK File' />
+          <FileInput id='vk' name='vk' className='my-4' />
         </div>
         {/* SRS */}
         <div>
-          <Label color="white" htmlFor="srs" value="Select SRS File" />
-          <FileInput id="srs_verify" name="srs" className="my-4" />
+          <Label color='white' htmlFor='srs' value='Select SRS File' />
+          <FileInput id='srs_verify' name='srs' className='my-4' />
         </div>
-        <Button type="submit" color="dark" className="w-full self-center mt-4">
+        <Button type='submit' color='dark' className='w-full self-center mt-4'>
           Verify
         </Button>
       </form>

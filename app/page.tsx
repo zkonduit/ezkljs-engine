@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="h-56 flex flex-col justify-between pt-8">
+    <main className='h-56 flex flex-col justify-between pt-8'>
       <p>
         ZKML proving and verifying in browser and nodejs contexts can be quite
         the pain to setup and maintain. There are alot of things that can go

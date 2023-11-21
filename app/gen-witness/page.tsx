@@ -89,23 +89,23 @@ export default function GenWitness() {
                 <div className='flex flex-col justify-around'>
                     <h1 className='text-2xl mb-6 '>{witnessResult}</h1>
 
-                    <div className='flex flex-col flex-grow w-full items-center justify-around pt-5'>
+                    <div className='flex flex-col flex-grow w-full items-center justify-around'>
                         <Button
-                            className='w-full'
+                            className='w-full flex-grow'
                             type='submit'
                             onClick={() => utils.handleFileDownload('witness.json', buffer)}
                         >
                             Download Witness
                         </Button>
                         <Button
-                            className='w-full mt-4'
+                            className='w-full flex-grow mt-4'
                             onClick={() => setOpenModal('default')}
                             data-modal-target='witness-modal'
                             data-modal-toggle='witness-modal'
                         >
                             Show Witness
                         </Button>
-                        <Button className='w-full mt-4' onClick={() => setBuffer(null)}>
+                        <Button className='w-full flex-grow mt-4' onClick={() => setBuffer(null)}>
                             Reset
                         </Button>
                         <Modal

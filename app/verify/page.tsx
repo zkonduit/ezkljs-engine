@@ -69,8 +69,8 @@ export default function Verify() {
         setVerifyResult(
           output
             ? 'Verification successful. Execution time: ' +
-                executionTime +
-                ' ms'
+            executionTime +
+            ' ms'
             : 'Verification failed',
         )
       })
@@ -83,12 +83,12 @@ export default function Verify() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='flex flex-column justify-around'>
       {verifyResult && !warningVerify ? (
-        <div className='w-10/12 flex flex-col'>
-          <h1 className='text-2xl mb-6 '>{verifyResult}</h1>
-          <div className='flex w-full justify-center'>
-            <Button className='w-full' onClick={() => setVerifyResult('')}>
+        <div className='flex flex-col justify-around'>
+          <h1 className='text-2xl mb-4 '>{verifyResult}</h1>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
+            <Button className='w-full flex-grow' onClick={() => setVerifyResult('')}>
               Reset
             </Button>
           </div>
@@ -212,7 +212,7 @@ function VerifyingArtifactForm({
       )}
       <form
         onSubmit={handleSubmit}
-        className='flex flex-col flex-grow  justify-between'
+        className='flex flex-col flex-grow justify-between'
       >
         {/* PROOF */}
         <div>

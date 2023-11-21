@@ -131,8 +131,8 @@ export default function Setup() {
         setGenPkResult(
           output
             ? 'Pk generation successful. Execution time: ' +
-                executionTime +
-                ' ms'
+            executionTime +
+            ' ms'
             : 'Pk generation failed',
         )
       })
@@ -145,35 +145,35 @@ export default function Setup() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='flex flex-column justify-around'>
       {bufferVk && !warningGenVk ? (
-        <div className='w-10/12 flex flex-col'>
-          <h1 className='text-2xl mb-6 '>{genVkResult}</h1>
-          <div className='flex w-full justify-center pt-7'>
+        <div className='flex flex-col justify-around'>
+          <h1 className='text-2xl mb-4 '>{genVkResult}</h1>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow'
               type='submit'
               onClick={() => utils.handleFileDownload('test.vk', bufferVk)}
             >
               Download Vk File
             </Button>
-            <Button className='w-1/2' onClick={() => setBufferVk(null)}>
+            <Button className='w-full flex-grow mt-4' onClick={() => setBufferVk(null)}>
               Reset
             </Button>
           </div>
         </div>
       ) : bufferPk && !warningGenPk ? (
-        <div className='w-10/12 flex flex-col'>
-          <h1 className='text-2xl mb-6 '>{genPkResult}</h1>
-          <div className='flex w-full justify-center pt-7'>
+        <div className='flex flex-col justify-around'>
+          <h1 className='text-2xl mb-4 '>{genPkResult}</h1>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow'
               type='submit'
               onClick={() => utils.handleFileDownload('test.pk', bufferPk)}
             >
               Download Pk File
             </Button>
-            <Button className='w-1/2' onClick={() => setBufferPk(null)}>
+            <Button className='w-full flex-grow mt-4' onClick={() => setBufferPk(null)}>
               Reset
             </Button>
           </div>

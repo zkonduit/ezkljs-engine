@@ -99,23 +99,23 @@ export default function Prove() {
       {buffer && !warningProof ? (
         <div className='flex flex-col justify-around'>
           <h1 className='text-2xl mb-6 '>{proofResult}</h1>
-          <div className='flex flex-col flex-grow w-full items-center justify-around pt-5'>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
             <Button
-              className='w-full mb-4' // Added margin-bottom to separate buttons
+              className='w-full flex-grow'
               type='submit'
               onClick={() => utils.handleFileDownload('test.pf', buffer)}
             >
               Download Proof File
             </Button>
             <Button
-              className='w-full mb-4' // Added margin-bottom to separate buttons
+              className='w-full flex-grow mt-4'
               onClick={() => props.setOpenModal('default')}
               data-modal-target='witness-modal'
               data-modal-toggle='witness-modal'
             >
               Show Proof
             </Button>
-            <Button className='w-full' onClick={() => setBuffer(null)}>
+            <Button className='w-full flex-grow mt-4' onClick={() => setBuffer(null)}>
               Reset
             </Button>
             <Modal

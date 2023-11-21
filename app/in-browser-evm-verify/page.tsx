@@ -91,8 +91,8 @@ export default function InBrowserEvmVerify() {
         setEvmVerifyResult(
           output
             ? 'In-browser EVM verification successful. Execution time: ' +
-                executionTime +
-                ' ms'
+            executionTime +
+            ' ms'
             : 'In-browser EVM verification failed',
         )
       })
@@ -105,12 +105,12 @@ export default function InBrowserEvmVerify() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='flex flex-column justify-around'>
       {evmVerifyResult && !warningVerify ? (
-        <div className='w-10/12 flex flex-col'>
-          <h1 className='text-2xl mb-6 '>{evmVerifyResult}</h1>
-          <div className='flex w-full justify-center'>
-            <Button className='w-1/2' onClick={() => setEvmVerifyResult('')}>
+        <div className='flex flex-col justify-around'>
+          <h1 className='text-2xl mb-4 '>{evmVerifyResult}</h1>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
+            <Button className='w-full flex-grow' onClick={() => setEvmVerifyResult('')}>
               Reset
             </Button>
           </div>
@@ -199,14 +199,6 @@ async function populateWithSampleFiles() {
 
   proof.files = dataTransfers[0].files
   bytecode.files = dataTransfers[1].files
-
-  // // If the 'vk' file is different, you'd handle it separately
-  // const vkFile = await fetchAndCreateFile(`/${sampleFileNames.vk}`, sampleFileNames.vk);
-  // const vkDataTransfer = new DataTransfer();
-  // vkDataTransfer.items.add(vkFile);
-
-  // Trigger any onChange or update logic if necessary
-  // This part depends on your application. For example, you might need to call a state setter function if you're using React state to track file input values.
 }
 
 function VerifyingArtifactForm({

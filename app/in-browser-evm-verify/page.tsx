@@ -166,7 +166,7 @@ async function populateWithSampleFiles() {
 
     // Fetch each sample file and create a File object
     const filePromises = Object.entries(sampleFileNames).map(([key, filename]) =>
-        fetchAndCreateFile(`/data/${filename}`, filename)
+        fetchAndCreateFile(`/data/1l_mlp/${filename}`, filename)
     );
 
     // Wait for all files to be fetched and created

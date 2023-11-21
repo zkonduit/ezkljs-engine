@@ -84,28 +84,28 @@ export default function GenWitness() {
     }
 
     return (
-        <div className='py-7'>
+        <div className='flex flex-column justify-around'>
             {buffer && !warning ? (
-                <div className='flex flex-col justify-between items-center'>
+                <div className='flex flex-col justify-around'>
                     <h1 className='text-2xl mb-6 '>{witnessResult}</h1>
 
-                    <div className='flex w-full justify-center pt-5'>
+                    <div className='flex flex-col flex-grow w-full items-center justify-around pt-5'>
                         <Button
-                            className='w-1/2 mr-3'
+                            className='w-full'
                             type='submit'
                             onClick={() => utils.handleFileDownload('witness.json', buffer)}
                         >
                             Download Witness
                         </Button>
                         <Button
-                            className='w-1/2 mr-3'
+                            className='w-full mt-4'
                             onClick={() => setOpenModal('default')}
                             data-modal-target='witness-modal'
                             data-modal-toggle='witness-modal'
                         >
                             Show Witness
                         </Button>
-                        <Button className='w-1/2' onClick={() => setBuffer(null)}>
+                        <Button className='w-full mt-4' onClick={() => setBuffer(null)}>
                             Reset
                         </Button>
                         <Modal

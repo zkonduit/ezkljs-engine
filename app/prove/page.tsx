@@ -95,27 +95,27 @@ export default function Prove() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='flex flex-column justify-around'>
       {buffer && !warningProof ? (
-        <div className='w-10/12 flex flex-col'>
+        <div className='flex flex-col justify-around'>
           <h1 className='text-2xl mb-6 '>{proofResult}</h1>
-          <div className='flex w-full justify-center pt-7'>
+          <div className='flex flex-col flex-grow w-full items-center justify-around pt-5'>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full mb-4' // Added margin-bottom to separate buttons
               type='submit'
               onClick={() => utils.handleFileDownload('test.pf', buffer)}
             >
               Download Proof File
             </Button>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full mb-4' // Added margin-bottom to separate buttons
               onClick={() => props.setOpenModal('default')}
               data-modal-target='witness-modal'
               data-modal-toggle='witness-modal'
             >
               Show Proof
             </Button>
-            <Button className='w-1/2' onClick={() => setBuffer(null)}>
+            <Button className='w-full' onClick={() => setBuffer(null)}>
               Reset
             </Button>
             <Modal
@@ -124,8 +124,8 @@ export default function Prove() {
             >
               <Modal.Header>Proof File Content: </Modal.Header>
               <Modal.Body className='bg-black'>
-                <div className='mt-4 p-4 bg-black-100 rounded border'>
-                  <pre className='blackspace-pre-wrap'>
+                <div className='mt-4 p-4 bg-black-100 rounded'>
+                  <pre className='blackspace-pre-wrap' style={{ fontSize: '13px' }}>
                     {stringify(proof, null, 6)}
                   </pre>
                 </div>

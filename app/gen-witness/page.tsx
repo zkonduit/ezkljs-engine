@@ -16,7 +16,6 @@ import { useSharedResources } from '../EngineContext'
 export default function GenWitness() {
   const { engine, utils } = useSharedResources()
   const [openModal, setOpenModal] = useState<string | undefined>()
-  const props = { openModal, setOpenModal }
   const [alert, setAlert] = useState<string>('')
   const [warning, setWarning] = useState<string>('')
   const [loading, setLoading] = useState(false)
@@ -101,7 +100,7 @@ export default function GenWitness() {
             </Button>
             <Button
               className='w-1/2 mr-3'
-              onClick={() => props.setOpenModal('default')}
+              onClick={() => setOpenModal('default')}
               data-modal-target='witness-modal'
               data-modal-toggle='witness-modal'
             >
@@ -111,8 +110,8 @@ export default function GenWitness() {
               Reset
             </Button>
             <Modal
-              show={props.openModal === 'default'}
-              onClose={() => props.setOpenModal(undefined)}
+              show={openModal === 'default'}
+              onClose={() => setOpenModal(undefined)}
             >
               <Modal.Header>Witness File Content: </Modal.Header>
               <Modal.Body className='bg-black'>

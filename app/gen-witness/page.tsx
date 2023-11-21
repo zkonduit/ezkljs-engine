@@ -85,7 +85,7 @@ export default function GenWitness() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='py-14'>
       {buffer && !warning ? (
         <div className='w-10/12 flex flex-col'>
           <h1 className='text-2xl mb-6 '>{witnessResult}</h1>

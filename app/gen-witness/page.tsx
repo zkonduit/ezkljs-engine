@@ -1,4 +1,3 @@
-// Example for pages/Page1.js
 'use client'
 import {
     FileInput,
@@ -6,17 +5,16 @@ import {
     Button,
     Alert,
     Spinner as _Spinner,
-    Modal
+    Modal,
 } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { formDataSchema } from './parsers'
-import { stringify } from "json-bigint";
-import { useSharedResources } from '../EngineContext';
+import { stringify } from 'json-bigint'
+import { useSharedResources } from '../EngineContext'
 
 export default function GenWitness() {
-    const { engine, utils } = useSharedResources();
-    const [openModal, setOpenModal] = useState<string | undefined>();
-    const props = { openModal, setOpenModal };
+    const { engine, utils } = useSharedResources()
+    const [openModal, setOpenModal] = useState<string | undefined>()
     const [alert, setAlert] = useState<string>('')
     const [warning, setWarning] = useState<string>('')
     const [loading, setLoading] = useState(false)
@@ -24,14 +22,13 @@ export default function GenWitness() {
     const [witnessResult, setWitnessResult] = useState<string>('')
     const [buffer, setBuffer] = useState<Uint8Array | null>(null)
 
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
 
         const formInputs = {
             compiled_onnx: formData.get('compiled_onnx'),
-            input: formData.get('input')
+            input: formData.get('input'),
         }
         // Validate form has valid inputs (zod)
         const validatedFormInputs = formDataSchema.safeParse(formInputs)
@@ -57,13 +54,14 @@ export default function GenWitness() {
 
         let files = {
             compiled_onnx: validatedFormInputs.data.compiled_onnx,
-            input: validatedFormInputs.data.input
+            input: validatedFormInputs.data.input,
         }
 
         setLoading(true)
 
         /* ================== ENGINE API ====================== */
-        utils.handleGenWitnessButton(files as { [key: string]: File })
+        utils
+            .handleGenWitnessButton(files as { [key: string]: File })
             .then(({ output, executionTime }) => {
                 setBuffer(output)
 
@@ -71,11 +69,11 @@ export default function GenWitness() {
                 setWitnessResult(
                     output
                         ? `Witness generation successful. Execution time: ${executionTime} ms`
-                        : "Witness generation failed"
+                        : 'Witness generation failed',
                 )
                 const witness = engine.deserialize(output)
-                console.log("witness", witness)
-                setWitness(witness);
+                console.log('witness', witness)
+                setWitness(witness)
             })
             .catch((error) => {
                 console.error('An error occurred:', error)
@@ -85,51 +83,55 @@ export default function GenWitness() {
         setLoading(false)
     }
 
-
     return (
-        <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+        <div className='flex flex-column justify-around'>
             {buffer && !warning ? (
-                <div className='w-10/12 flex flex-col'>
+                <div className='flex flex-col justify-around'>
                     <h1 className='text-2xl mb-6 '>{witnessResult}</h1>
 
-                    <div className="flex w-full justify-center pt-5">
+                    <div className='flex flex-col flex-grow w-full items-center justify-around'>
                         <Button
-                            className="w-1/2 mr-3"
+                            className='w-full flex-grow'
                             type='submit'
                             onClick={() => utils.handleFileDownload('witness.json', buffer)}
                         >
                             Download Witness
                         </Button>
                         <Button
-                            className="w-1/2 mr-3"
-                            onClick={() => props.setOpenModal('default')}
-                            data-modal-target="witness-modal"
-                            data-modal-toggle="witness-modal"
+                            className='w-full flex-grow mt-4'
+                            onClick={() => setOpenModal('default')}
+                            data-modal-target='witness-modal'
+                            data-modal-toggle='witness-modal'
                         >
                             Show Witness
                         </Button>
-                        <Button
-                            className="w-1/2"
-                            onClick={() => setBuffer(null)}
-                        >
+                        <Button className='w-full flex-grow mt-4' onClick={() => setBuffer(null)}>
                             Reset
                         </Button>
-                        <Modal show={props.openModal === 'default'} onClose={() => props.setOpenModal(undefined)} >
+                        <Modal
+                            show={openModal === 'default'}
+                            onClose={() => setOpenModal(undefined)}
+                        >
                             <Modal.Header>Witness File Content: </Modal.Header>
-                            <Modal.Body className="bg-black">
-                                <div className='mt-4 p-4 bg-black-100 rounded border'>
-                                    <pre className='blackspace-pre-wrap'>{stringify(witness, null, 6)}</pre>
+                            <Modal.Body className='bg-black'>
+                                <div className='mt-4 p-4 bg-black-100 rounded'>
+                                    <pre className='blackspace-pre-wrap' style={{ fontSize: '13px' }}>
+                                        {stringify(witness, null, 6)}
+                                    </pre>
                                 </div>
                             </Modal.Body>
                         </Modal>
                     </div>
                 </div>
-
             ) : loading ? (
                 <Spinner />
             ) : (
                 <div className='flex flex-col justify-between w-full items-center space-y-4'>
-                    <WitnessArtifactForm handleSubmit={handleSubmit} alert={alert} warning={warning} />
+                    <WitnessArtifactForm
+                        handleSubmit={handleSubmit}
+                        alert={alert}
+                        warning={warning}
+                    />
                     <Button
                         type='submit'
                         color='dark'
@@ -139,10 +141,9 @@ export default function GenWitness() {
                         Populate with sample files
                     </Button>
                 </div>
-            )
-            }
-        </div >
-    );
+            )}
+        </div>
+    )
 }
 // UI Component
 function Spinner() {
@@ -155,69 +156,63 @@ function Spinner() {
 
 async function populateWithSampleFiles() {
     // Helper to assert that the element is not null
-    function assertElement<T extends Element>(element: T | null): asserts element is T {
+    function assertElement<T extends Element>(
+        element: T | null,
+    ): asserts element is T {
         if (element === null) {
-            throw new Error('Element not found');
+            throw new Error('Element not found')
         }
     }
 
     // Names of the sample files in the public directory
     const sampleFileNames: { [key: string]: string } = {
         compiled_onnx: 'test_network.compiled',
-        input: 'input.json'
-    };
+        input: 'input.json',
+    }
 
     // Helper function to fetch and create a file object from a public URL
-    const fetchAndCreateFile = async (path: string, filename: string): Promise<File> => {
-        const response = await fetch(path);
-        const blob = await response.blob();
-        return new File([blob], filename, { type: blob.type });
-    };
+    const fetchAndCreateFile = async (
+        path: string,
+        filename: string,
+    ): Promise<File> => {
+        const response = await fetch(path)
+        const blob = await response.blob()
+        return new File([blob], filename, { type: blob.type })
+    }
 
     // Fetch each sample file and create a File object
     const filePromises = Object.entries(sampleFileNames).map(([key, filename]) =>
-        fetchAndCreateFile(`/data/${filename}`, filename)
-    );
+        fetchAndCreateFile(`/data/1l_mlp/${filename}`, filename),
+    )
 
     // Wait for all files to be fetched and created
-    const files = await Promise.all(filePromises);
+    const files = await Promise.all(filePromises)
 
     // Select the file input elements and assign the FileList to each
-    const compiledOnnxInput = document.querySelector<HTMLInputElement>('#compiled_onnx');
-    const input = document.querySelector<HTMLInputElement>('#input');
+    const compiledOnnxInput =
+        document.querySelector<HTMLInputElement>('#compiled_onnx')
+    const input = document.querySelector<HTMLInputElement>('#input')
 
     // Assert that the elements are not null
-    assertElement(compiledOnnxInput);
-    assertElement(input);
+    assertElement(compiledOnnxInput)
+    assertElement(input)
 
     // Create a new DataTransfer to hold the files
-    let dataTransfers: DataTransfer[] = [];
-    files.forEach(
-        (file, idx) => {
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file)
-            dataTransfers[idx] = dataTransfer;
-        }
+    let dataTransfers: DataTransfer[] = []
+    files.forEach((file, idx) => {
+        const dataTransfer = new DataTransfer()
+        dataTransfer.items.add(file)
+        dataTransfers[idx] = dataTransfer
+    })
 
-    );
-
-
-    compiledOnnxInput.files = dataTransfers[0].files;
-    input.files = dataTransfers[1].files;
-
-    // // If the 'vk' file is different, you'd handle it separately
-    // const vkFile = await fetchAndCreateFile(`/${sampleFileNames.vk}`, sampleFileNames.vk);
-    // const vkDataTransfer = new DataTransfer();
-    // vkDataTransfer.items.add(vkFile);
-
-    // Trigger any onChange or update logic if necessary
-    // This part depends on your application. For example, you might need to call a state setter function if you're using React state to track file input values.
+    compiledOnnxInput.files = dataTransfers[0].files
+    input.files = dataTransfers[1].files
 }
 
 function WitnessArtifactForm({
     handleSubmit,
     alert,
-    warning
+    warning,
 }: {
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
     alert: string
@@ -242,21 +237,17 @@ function WitnessArtifactForm({
             >
                 {/* COMPILED ONNX */}
                 <div>
-                    <Label color="white" htmlFor='compiled_onnx' value='Select Compiled Onnx File' />
-                    <FileInput
-                        id='compiled_onnx'
-                        name='compiled_onnx'
-                        className='my-4'
+                    <Label
+                        color='white'
+                        htmlFor='compiled_onnx'
+                        value='Select Compiled Onnx File'
                     />
+                    <FileInput id='compiled_onnx' name='compiled_onnx' className='my-4' />
                 </div>
                 {/* INPUT */}
                 <div>
-                    <Label color="white" htmlFor='input' value='Select Input File' />
-                    <FileInput
-                        id='input'
-                        name='input'
-                        className='my-4'
-                    />
+                    <Label color='white' htmlFor='input' value='Select Input File' />
+                    <FileInput id='input' name='input' className='my-4' />
                 </div>
                 <Button type='submit' color='dark' className='w-full self-center mt-4'>
                     Generate Witness
@@ -265,36 +256,3 @@ function WitnessArtifactForm({
         </div>
     )
 }
-
-// const Modal = ({ isOpen, onClose, witness }: { isOpen: boolean, onClose: () => void, witness: object }) => {
-//     if (!isOpen) return null;
-
-//     return (
-//         <div id="witness-modal" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-//             <div className="relative w-full max-w-2xl max-h-full">
-//                 {/* <!-- Modal content --> */}
-//                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-//                     {/* <!-- Modal header --> */}
-//                     <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-//                             Witness Information
-//                         </h3>
-//                         <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="witness-modal">
-//                             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-//                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-//                             </svg>
-//                             <span className="sr-only">Close modal</span>
-//                         </button>
-//                     </div>
-//                     {/* <!-- Modal body --> */}
-//                     <div className="p-6 space-y-6">
-//                         <div className='mt-4 p-4 bg-black-100 rounded border'>
-//                             <pre className='whitespace-pre-wrap'>{stringify(witness, null, 6)}</pre>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-

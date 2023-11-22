@@ -9,7 +9,7 @@ import {
   genWitness,
   deserialize,
   genVk,
-  genPk
+  genPk,
 } from '@ezkljs/engine/web'
 import localEVMVerify from '@ezkljs/verify'
 import { Hardfork } from '@ezkljs/verify'
@@ -89,29 +89,28 @@ export function FileDownload({
 
 export function handleFileDownload(fileName: string, buffer: Uint8Array) {
   // Create a blob from the buffer
-  const blob = new Blob([buffer], { type: 'application/octet-stream' });
+  const blob = new Blob([buffer], { type: 'application/octet-stream' })
 
   // Create an Object URL from the blob
-  const url = window.URL.createObjectURL(blob);
+  const url = window.URL.createObjectURL(blob)
 
   // Create an anchor element for the download
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = fileName;
-  document.body.appendChild(a);
+  const a = document.createElement('a')
+  a.href = url
+  a.download = fileName
+  document.body.appendChild(a)
 
   // Trigger the download by simulating a click on the anchor element
-  a.click();
+  a.click()
 
   // Remove the anchor element after download
-  document.body.removeChild(a);
+  document.body.removeChild(a)
 
   // Free up the Object URL
-  window.URL.revokeObjectURL(url);
+  window.URL.revokeObjectURL(url)
 }
 
 export function ElgamalZipFileDownload(fileName: string, buffer: Uint8Array) {
-
   const blob = new Blob([buffer], { type: 'application/octet-stream' })
   const reader = new FileReader()
 
@@ -128,10 +127,9 @@ export function ElgamalZipFileDownload(fileName: string, buffer: Uint8Array) {
       zip.file('sk.txt', JSONBig.stringify(elgamalVar.sk))
 
       // Generate the zip file asynchronously
-      const content = await zip.generateAsync({ type: "blob" })
+      const content = await zip.generateAsync({ type: 'blob' })
 
       saveAs(content, fileName)
-
     }
   }
 
@@ -165,18 +163,15 @@ async function convertFilesToFilesSer<T extends FileMapping>(
   return filesSer
 }
 
-
 interface Uint8ArrayResult {
-  output: Uint8Array;
-  executionTime: number;
+  output: Uint8Array
+  executionTime: number
 }
 
-export async function handleGenProofButton<T extends FileMapping>(
-  files: T,
-) {
+export async function handleGenProofButton<T extends FileMapping>(files: T) {
   const result = await convertFilesToFilesSer(files)
 
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
   let output = prove(
     result['data'],
@@ -185,11 +180,11 @@ export async function handleGenProofButton<T extends FileMapping>(
     result['srs'],
   )
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
@@ -203,19 +198,15 @@ export async function handleGenElgamalEncryptionButton<T extends FileMapping>(
 ): Promise<Uint8ArrayResult> {
   const result = await convertFilesToFilesSer(files)
 
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
-  let output = elgamalEncrypt(
-    result['pk'],
-    result['message'],
-    result['r']
-  )
+  let output = elgamalEncrypt(result['pk'], result['message'], result['r'])
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
@@ -223,40 +214,34 @@ export async function handleGenElgamalDecryptionButton<T extends FileMapping>(
   files: T,
 ): Promise<Uint8ArrayResult> {
   const result = await convertFilesToFilesSer(files)
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
-  let output = elgamalDecrypt(
-    result['cipher'],
-    result['sk']
-  )
+  let output = elgamalDecrypt(result['cipher'], result['sk'])
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 export async function handleGenWitnessButton<T extends FileMapping>(
   files: T,
 ): Promise<Uint8ArrayResult> {
   const result = await convertFilesToFilesSer(files)
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
-  let output = genWitness(
-    result['compiled_onnx'],
-    result['input'],
-  )
+  let output = genWitness(result['compiled_onnx'], result['input'])
 
   let witness = deserialize(output)
 
   console.log(JSON.stringify(witness, null, 2))
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
@@ -264,18 +249,15 @@ export async function handleGenVkButton<T extends FileMapping>(
   files: T,
 ): Promise<Uint8ArrayResult> {
   const result = await convertFilesToFilesSer(files)
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
-  let output = genVk(
-    result['compiled_onnx'],
-    result['srs'],
-  )
+  let output = genVk(result['compiled_onnx'], result['srs'])
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
@@ -283,43 +265,37 @@ export async function handleGenPkButton<T extends FileMapping>(
   files: T,
 ): Promise<Uint8ArrayResult> {
   const result = await convertFilesToFilesSer(files)
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
-  let output = genPk(
-    result['vk'],
-    result['compiled_onnx'],
-    result['srs'],
-  )
+  let output = genPk(result['vk'], result['compiled_onnx'], result['srs'])
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
-
 interface HashResult {
-  output: Uint8ClampedArray;
-  executionTime: number;
+  output: Uint8ClampedArray
+  executionTime: number
 }
-
 
 export async function handleGenHashButton(message: File): Promise<HashResult> {
   const message_hash = await readUploadedFileAsBuffer(message)
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
   const output = poseidonHash(message_hash)
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
 interface VerifyResult {
-  output: boolean;
-  executionTime: number;
+  output: boolean
+  executionTime: number
 }
 
 export async function handleVerifyButton<T extends FileMapping>(
@@ -327,7 +303,7 @@ export async function handleVerifyButton<T extends FileMapping>(
 ): Promise<VerifyResult> {
   const result = await convertFilesToFilesSer(files)
 
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
   let output = verify(
     result['proof'],
@@ -336,47 +312,47 @@ export async function handleVerifyButton<T extends FileMapping>(
     result['srs'],
   )
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
 export async function handleEvmVerifyButton<T extends FileMapping>(
   files: T,
-  evmVersion: Hardfork
+  evmVersion: Hardfork,
 ): Promise<VerifyResult> {
   const result = await convertFilesToFilesSer(files)
-  console.log("evmVersion", evmVersion)
+  console.log('evmVersion', evmVersion)
 
-  const start = performance.now();  // Start the timer
+  const start = performance.now() // Start the timer
 
   let output = await localEVMVerify(
     result['proof'],
     new TextDecoder().decode(result['bytecodeVerifier']),
-    evmVersion
+    evmVersion,
   )
 
-  const end = performance.now();  // End the timer
+  const end = performance.now() // End the timer
 
   return {
     output: output,
-    executionTime: end - start
+    executionTime: end - start,
   }
 }
 
 function stringToUint8Array(str: string): Uint8Array {
-  const encoder = new TextEncoder();
-  const uint8Array = encoder.encode(str);
-  return uint8Array;
+  const encoder = new TextEncoder()
+  const uint8Array = encoder.encode(str)
+  return uint8Array
 }
 
 function generate256BitSeed(): Uint8ClampedArray {
-  const uuid = self.crypto.randomUUID();
-  const buffer = stringToUint8Array(uuid);
-  let seed = self.crypto.getRandomValues(buffer);
-  seed = seed.slice(0, 32);
-  return new Uint8ClampedArray(seed.buffer);
+  const uuid = self.crypto.randomUUID()
+  const buffer = stringToUint8Array(uuid)
+  let seed = self.crypto.getRandomValues(buffer)
+  seed = seed.slice(0, 32)
+  return new Uint8ClampedArray(seed.buffer)
 }

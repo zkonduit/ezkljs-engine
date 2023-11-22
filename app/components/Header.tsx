@@ -1,8 +1,7 @@
 'use client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import Image from 'next/image';
-
+import Image from 'next/image'
 
 import TopNav from './TopNav'
 
@@ -32,11 +31,11 @@ export default function Header() {
             </Link>
           </>
         )}
-    <Image 
-          src='/EZKL_LOGO.jpeg' 
-          alt='EZKL Logo' 
-          width={50}  // Adjust width as needed
-          height={50}  // Adjust height as needed
+        <Image
+          src='/EZKL_LOGO.jpeg'
+          alt='EZKL Logo'
+          width={50} // Adjust width as needed
+          height={50} // Adjust height as needed
         />
       </div>
       {/* right */}

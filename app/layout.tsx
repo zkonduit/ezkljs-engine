@@ -1,4 +1,4 @@
-// import Header from './components/Header'
+import Header from './components/Header'
 import './globals.css'
 import type { Metadata } from 'next'
 import APINavColumn from './components/APINavColumn'
@@ -19,8 +19,10 @@ export default function RootLayout({
     <SharedResourcesProvider>
       <html lang='en'>
         <body className='m-0 h-screen flex flex-col'>
+          {/* <!-- Top Navbar --> */}
+          <Header />
           {/* <!-- Content Area --> */}
-          <div className='flex-grow flex flex-row mt-0'>
+          <div className='flex-grow flex flex-row pt-16'>
             {/* <!-- Left Navigation Column --> */}
             <APINavColumn />
 

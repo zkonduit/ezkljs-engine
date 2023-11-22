@@ -37,7 +37,7 @@ export default function APINavColumn() {
       <div>
         {/* Wide screen side nav */}
         <div
-          className={`bg-black border-r-2 border-slate-300 w-64 fixed z-[100] top-0 left-0 overflow-y-auto h-full hidden md:block`}
+          className={`bg-black border-r-2 border-slate-300 w-64 fixed z-[100] top-16 left-0 overflow-y-auto h-full hidden md:block`}
         >
           <NavList />
         </div>

@@ -79,13 +79,13 @@ export default function Hashing() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='flex flex-column justify-around'>
       {buffer && !warning ? (
-        <div className='w-10/12 flex flex-col'>
+        <div className='flex flex-col justify-around'>
           <h1 className='text-2xl mb-6 '>{hashResult}</h1>
-          <div className='flex w-full justify-center pt-5'>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow'
               type='submit'
               onClick={() =>
                 utils.handleFileDownload(
@@ -97,14 +97,14 @@ export default function Hashing() {
               Download Hash
             </Button>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow mt-4'
               onClick={() => props.setOpenModal('default')}
               data-modal-target='witness-modal'
               data-modal-toggle='witness-modal'
             >
               Show Hash
             </Button>
-            <Button className='w-1/2' onClick={() => setBuffer(null)}>
+            <Button className='w-full flex-grow mt-4' onClick={() => setBuffer(null)}>
               Reset
             </Button>
             <Modal
@@ -113,8 +113,8 @@ export default function Hashing() {
             >
               <Modal.Header>Hash File Content: </Modal.Header>
               <Modal.Body className='bg-black'>
-                <div className='mt-4 p-4 bg-black-100 rounded border'>
-                  <pre className='blackspace-pre-wrap'>
+                <div className='mt-4 p-4 bg-black-100 rounded'>
+                  <pre className='blackspace-pre-wrap' style={{ fontSize: '13px' }}>
                     {stringify(hash, null, 6)}
                   </pre>
                 </div>

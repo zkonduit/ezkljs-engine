@@ -170,13 +170,13 @@ export default function Encryption() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center h-5/6 pb-20'>
+    <div className='flex flex-column justify-around'>
       {bufferCipher && !warningEncrypt ? (
-        <div className='w-10/12 flex flex-col'>
+        <div className='flex flex-col justify-around'>
           <h1 className='text-2xl mb-6 '>{cipherResult}</h1>
-          <div className='flex w-full justify-center pt-5'>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow'
               type='submit'
               onClick={() =>
                 utils.handleFileDownload('cipher.txt', bufferCipher)
@@ -185,14 +185,14 @@ export default function Encryption() {
               Download Cipher
             </Button>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow mt-4'
               onClick={() => props.setOpenModal('default')}
               data-modal-target='witness-modal'
               data-modal-toggle='witness-modal'
             >
               Show Cipher
             </Button>
-            <Button className='w-1/2' onClick={() => setBufferCipher(null)}>
+            <Button className='w-full flex-grow mt-4' onClick={() => setBufferCipher(null)}>
               Reset
             </Button>
             <Modal
@@ -215,7 +215,7 @@ export default function Encryption() {
           <h1 className='text-2xl mb-6 '>{decryptResult}</h1>
           <div className='flex w-full justify-center pt-5'>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow'
               type='submit'
               onClick={() =>
                 utils.handleFileDownload('decrypted.txt', bufferDecrypt)
@@ -224,14 +224,14 @@ export default function Encryption() {
               Download Message
             </Button>
             <Button
-              className='w-1/2 mr-3'
+              className='w-full flex-grow mt-4'
               onClick={() => props.setOpenModal('default')}
               data-modal-target='witness-modal'
               data-modal-toggle='witness-modal'
             >
               Show Message
             </Button>
-            <Button className='w-1/2' onClick={() => setBufferDecrypt(null)}>
+            <Button className='w-full flex-grow mt-4' onClick={() => setBufferDecrypt(null)}>
               Reset
             </Button>
             <Modal
@@ -240,8 +240,8 @@ export default function Encryption() {
             >
               <Modal.Header>Decrypted Cipher File Content: </Modal.Header>
               <Modal.Body className='bg-black'>
-                <div className='mt-4 p-4 bg-black-100 rounded border'>
-                  <pre className='whitespace-pre-wrap'>
+                <div className='mt-4 p-4 bg-black-100 rounded'>
+                  <pre className='whitespace-pre-wrap' style={{ fontSize: '13px' }}>
                     {stringify(decrypted, null, 5)}
                   </pre>
                 </div>
@@ -366,7 +366,7 @@ async function populateWithSampleFiles() {
 
 function ElgamalRandomVar({ utils }: { utils: Utils }) {
   return (
-    <div className='flex flex-col justify-center items-center h-4/6 pb-0'>
+    <div className='flex flex-col justify-center items-center pb-4'>
       <h1 className='text-2xl mb-3 '>Generate Random Elgamal Variables</h1>
       <Label
         color='white'

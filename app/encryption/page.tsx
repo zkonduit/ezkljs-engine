@@ -201,8 +201,8 @@ export default function Encryption() {
             >
               <Modal.Header>Cipher File Content: </Modal.Header>
               <Modal.Body className='bg-black'>
-                <div className='mt-4 p-4 bg-black-100 rounded border'>
-                  <pre className='blackspace-pre-wrap'>
+                <div className='mt-4 p-4 bg-black-100 rounded'>
+                  <pre className='blackspace-pre-wrap' style={{ fontSize: '13px' }}>
                     {stringify(cipher, null, 6)}
                   </pre>
                 </div>
@@ -211,9 +211,9 @@ export default function Encryption() {
           </div>
         </div>
       ) : bufferDecrypt && !warningDecrypt ? (
-        <div className='w-10/12 flex flex-col'>
+        <div className='flex flex-col justify-around'>
           <h1 className='text-2xl mb-6 '>{decryptResult}</h1>
-          <div className='flex w-full justify-center pt-5'>
+          <div className='flex flex-col flex-grow w-full items-center justify-around'>
             <Button
               className='w-full flex-grow'
               type='submit'

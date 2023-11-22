@@ -27,7 +27,7 @@ export default function FeltUtils() {
   const { engine } = useSharedResources()
 
   return (
-    <div className='flex flex-wrap h-screen pt-10 pb-20'>
+    <div className='flex flex-wrap h-screen'>
       <div className='flex flex-col w-1/2 h-1/2 justify-center items-center p-4'>
         <div className='w-full h-full overflow-auto'>
           <FloatToVecU64Form engine={engine} />

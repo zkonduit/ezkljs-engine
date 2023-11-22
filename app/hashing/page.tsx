@@ -125,7 +125,7 @@ export default function Hashing() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className='flex flex-col justify-between w-full items-center space-y-4'>
+        <div className='flex flex-col w-full items-center space-y-4'>
           <HashingArtifactForm
             handleSubmit={handleSubmitHashing}
             alert={alert}

@@ -96,8 +96,8 @@ export default function Verify() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className='flex flex-col justify-between w-full items-center space-y-4'>
-          <div className='flex justify-between w-full items-stretch space-x-8'>
+        <div className='flex flex-col w-full items-center space-y-4'>
+          <div className='flex w-full items-stretch space-x-8'>
             <VerifyingArtifactForm
               handleSubmit={handleSubmitVerify}
               alert={alertVerify}

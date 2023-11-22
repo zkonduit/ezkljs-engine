@@ -126,7 +126,7 @@ export default function GenWitness() {
             ) : loading ? (
                 <Spinner />
             ) : (
-                <div className='flex flex-col justify-between w-full items-center space-y-4'>
+                <div className='flex flex-col w-full items-center space-y-4'>
                     <WitnessArtifactForm
                         handleSubmit={handleSubmit}
                         alert={alert}
@@ -233,7 +233,7 @@ function WitnessArtifactForm({
             )}
             <form
                 onSubmit={handleSubmit}
-                className='flex flex-col flex-grow  justify-between'
+                className='flex flex-col flex-grow justify-between'
             >
                 {/* COMPILED ONNX */}
                 <div>

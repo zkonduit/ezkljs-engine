@@ -118,7 +118,7 @@ export default function InBrowserEvmVerify() {
       ) : loading ? (
         <Spinner />
       ) : (
-        <div className='flex flex-col justify-between w-full items-center space-y-4'>
+        <div className='flex flex-col w-full items-center space-y-4'>
           <VerifyingArtifactForm
             handleSubmit={handleSubmitVerify}
             alert={alertVerify}

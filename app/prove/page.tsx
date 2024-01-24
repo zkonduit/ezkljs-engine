@@ -125,7 +125,7 @@ export default function Prove() {
               <Modal.Header>Proof File Content: </Modal.Header>
               <Modal.Body className='bg-black'>
                 <div className='mt-4 p-4 bg-black-100 rounded'>
-                  <pre className='blackspace-pre-wrap' style={{ fontSize: '13px' }}>
+                  <pre className='blackspace-pre-wrap' style={{ fontSize: '13px', color: 'white' }}>
                     {stringify(proof, null, 6)}
                   </pre>
                 </div>

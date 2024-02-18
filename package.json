@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ezkljs/engine": "^3.10.0",
+    "@ezkljs/engine": "^8.3.0",
     "@ezkljs/verify": "^0.0.8",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",

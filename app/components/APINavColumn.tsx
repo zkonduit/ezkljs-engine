@@ -83,9 +83,6 @@ function NavList() {
         <Link href='/hashing'>Hashing</Link>
       </li>
       <li className='h-14 text-slate-500'>
-        <Link href='/encryption'>Encryption</Link>
-      </li>
-      <li className='h-14 text-slate-500'>
         <Link href='/prove'>Prove</Link>
       </li>
       <li className='h-14 text-slate-500'>

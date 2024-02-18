@@ -1,8 +1,5 @@
 import { useEffect, useRef } from 'react'
 import {
-  elgamalGenRandom,
-  elgamalEncrypt,
-  elgamalDecrypt,
   prove,
   poseidonHash,
   verify,
@@ -187,44 +184,6 @@ export async function handleGenProofButton<T extends FileMapping>(files: T) {
     executionTime: end - start,
   }
 }
-
-export function handleGenREVButton(): Uint8Array {
-  const seed = generate256BitSeed()
-  return elgamalGenRandom(seed)
-}
-
-export async function handleGenElgamalEncryptionButton<T extends FileMapping>(
-  files: T,
-): Promise<Uint8ArrayResult> {
-  const result = await convertFilesToFilesSer(files)
-
-  const start = performance.now() // Start the timer
-
-  let output = elgamalEncrypt(result['pk'], result['message'], result['r'])
-
-  const end = performance.now() // End the timer
-
-  return {
-    output: output,
-    executionTime: end - start,
-  }
-}
-
-export async function handleGenElgamalDecryptionButton<T extends FileMapping>(
-  files: T,
-): Promise<Uint8ArrayResult> {
-  const result = await convertFilesToFilesSer(files)
-  const start = performance.now() // Start the timer
-
-  let output = elgamalDecrypt(result['cipher'], result['sk'])
-
-  const end = performance.now() // End the timer
-
-  return {
-    output: output,
-    executionTime: end - start,
-  }
-}
 export async function handleGenWitnessButton<T extends FileMapping>(
   files: T,
 ): Promise<Uint8ArrayResult> {
@@ -251,7 +210,7 @@ export async function handleGenVkButton<T extends FileMapping>(
   const result = await convertFilesToFilesSer(files)
   const start = performance.now() // Start the timer
 
-  let output = genVk(result['compiled_onnx'], result['srs'])
+  let output = genVk(result['compiled_onnx'], result['srs'], false)
 
   const end = performance.now() // End the timer
 

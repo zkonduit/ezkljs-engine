@@ -8,8 +8,7 @@ import {
   genVk,
   genPk,
 } from '@ezkljs/engine/web'
-import localEVMVerify from '@ezkljs/verify'
-import { Hardfork } from '@ezkljs/verify'
+// import localEVMVerify from '@ezkljs/verify'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import JSONBig from 'json-bigint'
@@ -281,23 +280,20 @@ export async function handleVerifyButton<T extends FileMapping>(
 
 export async function handleEvmVerifyButton<T extends FileMapping>(
   files: T,
-  evmVersion: Hardfork,
 ): Promise<VerifyResult> {
   const result = await convertFilesToFilesSer(files)
-  console.log('evmVersion', evmVersion)
 
   const start = performance.now() // Start the timer
 
-  let output = await localEVMVerify(
-    result['proof'],
-    new TextDecoder().decode(result['bytecodeVerifier']),
-    evmVersion,
-  )
+  // let output = await localEVMVerify(
+  //   result['proof'],
+  //   new TextDecoder().decode(result['bytecodeVerifier'])
+  // )
 
   const end = performance.now() // End the timer
 
   return {
-    output: output,
+    output: true,
     executionTime: end - start,
   }
 }

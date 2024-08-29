@@ -45,8 +45,7 @@ export default function InBrowserEvmVerify() {
 
     const formInputs = {
       proof: formData.get('proof'),
-      bytecode_verifier: formData.get('bytecode_verifier'),
-      evm_version: formData.get('evm_version'),
+      bytecode_verifier: formData.get('bytecode_verifier')
     }
     // Validate form has valid inputs (zod)
     const validatedFormInputs = formDataSchemaEvmVerify.safeParse(formInputs)
@@ -65,9 +64,7 @@ export default function InBrowserEvmVerify() {
     // Missing data
     if (
       validatedFormInputs.data.proof === null ||
-      validatedFormInputs.data.bytecode_verifier === null ||
-      validatedFormInputs.data.evm_version === '' ||
-      validatedFormInputs.data.evm_version === null
+      validatedFormInputs.data.bytecode_verifier === null
     ) {
       setAlertVerify('Please upload all files')
       return
@@ -83,8 +80,7 @@ export default function InBrowserEvmVerify() {
     /* ================== ENGINE API ====================== */
     utils
       .handleEvmVerifyButton(
-        files as { [key: string]: File },
-        validatedFormInputs.data.evm_version as Hardfork,
+        files as { [key: string]: File }
       )
       .then(({ output, executionTime }) => {
         // Update result based on the outcome
@@ -158,7 +154,7 @@ async function populateWithSampleFiles() {
 
   // Names of the sample files in the public directory
   const sampleFileNames: { [key: string]: string } = {
-    proof: 'evm_verify.pf',
+    proof: 'proof.json',
     bytecode: 'bytecode.code',
   }
 

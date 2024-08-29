@@ -139,9 +139,9 @@ async function populateWithSampleFiles() {
   // Names of the sample files in the public directory
   const sampleFileNames: { [key: string]: string } = {
     srs: 'kzg',
-    proof: 'test.pf',
+    proof: 'proof.json',
     settings: 'settings.json',
-    vk: 'test.key',
+    vk: 'vk.key',
   }
 
   // Helper function to fetch and create a file object from a public URL

@@ -178,9 +178,9 @@ async function populateWithSampleFiles() {
 
   // Names of the sample files in the public directory
   const sampleFileNames: { [key: string]: string } = {
-    witness: 'test.witness.json',
-    pk: 'test.provekey',
-    compiled_onnx: 'test_network.compiled',
+    witness: 'witness.json',
+    pk: 'pk.key',
+    compiled_onnx: 'model.compiled',
     srs: 'kzg',
   }
 

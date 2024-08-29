@@ -10,8 +10,10 @@ describe('poseidonHash', () => {
     // e.i. an array of 4 u64s, the standard field element
     // serialization format.
     let message = [
-      [0, 0, 0, 0],
-      [1, 0, 0, 0],
+      "3102000000000000000000000000000000000000000000000000000000000000",
+      "3005000000000000000000000000000000000000000000000000000000000000",
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      "0000000000000000000000000000000000000000000000000000000000000000"
     ]
     console.log('Message that will be hashed (preimage)', message)
     // Serialize the message to a Uint8ClampedArray so that it can be ingested by the poseidonHash binding

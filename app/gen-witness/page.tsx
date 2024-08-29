@@ -166,7 +166,7 @@ async function populateWithSampleFiles() {
 
     // Names of the sample files in the public directory
     const sampleFileNames: { [key: string]: string } = {
-        compiled_onnx: 'test_network.compiled',
+        compiled_onnx: 'model.compiled',
         input: 'input.json',
     }
 

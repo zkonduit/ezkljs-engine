@@ -91,9 +91,9 @@ function NavList() {
       <li className='h-14 text-slate-500'>
         <Link href='/felt-utils'>Field Element Utilities</Link>
       </li>
-      <li className='h-14 text-slate-500'>
+      {/* <li className='h-14 text-slate-500'>
         <Link href='/in-browser-evm-verify'>In-Browser EVM Verification</Link>
-      </li>
+      </li> */}
     </ul>
   )
 }

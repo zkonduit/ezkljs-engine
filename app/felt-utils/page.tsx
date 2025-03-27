@@ -106,7 +106,7 @@ function FloatToFeltForm({ engine }: { engine: Engine }) {
     console.log('entries', entries)
     /* ================== ENGINE API ====================== */
     try {
-      const U64s = engine.floatToFelt(parseFloat(entries.fp), entries.scale)
+      const U64s = engine.floatToFelt(parseFloat(entries.fp), entries.scale, "f32")
       const deserializedU64s = engine.deserialize(U64s)
       setOutput(stringify(deserializedU64s, null, 4))
       console.log('U64s', deserializedU64s)

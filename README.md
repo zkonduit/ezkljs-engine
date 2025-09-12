@@ -17,7 +17,7 @@ pnpm add @ezkljs/engine
 
 The engine exposes useful JS bindings to the main ezkl repo that make hashing, encrypting, decrypting, proving and verifying in the browser/nodejs context seemless:
 
-- [genWitness](#genWitness): Generate a witness from a given input.
+- [genWitness](#generating-a-witness): Generate a witness from a given input.
 - [elgamalGenRandom](#elgamal-variables): Generate an ElGamal keypair from a random seed.
 - [elgamalEncrypt](#elgamal-encrypt): Encypt an arbitrary message using the ElGamal public key and randomness.
 - [elgamalDecrypt](#elgamal-decrypt): Decrypt a cipher text using the ElGamal secret key
